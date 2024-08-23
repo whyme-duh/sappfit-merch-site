@@ -1,0 +1,22 @@
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+
+
+a{
+    text-decoration:none;
+
+}
+.nav-items{
+    text-decoration:none;
+    color:rgb(137, 132, 132);
+    font-size: 1.55em;
+    padding: 1.85em;
+}
+.main{
+    display: flex;
+    justify-content: space-around;
+}

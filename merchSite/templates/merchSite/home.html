@@ -1,0 +1,29 @@
+{% extends 'merchSite/index.html' %}
+{% block title%} Sapp-Fit{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="main">
+        
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product-card">
+                <img src= "{{product.image}}" alt="img" class="product-image">
+                <h5 class="product-name">{{product.name}}</h5>
+                {% if product.discount %}
+                <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
+                <small class="discount-price">Rs. {{product.discount_price}}</small>
+                {% else %}
+                <small class="product-price">Rs. {{product.price}}</small>
+                {% endif %}
+                <div class="btn-grps">
+                    <a href="#" class="add-to-cart-btn">Add to Cart</a>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+
+    </div>
+    
+</div>
+{% endblock %}
