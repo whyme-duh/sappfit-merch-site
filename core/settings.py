@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'merchSite',
+    'users',
     'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -103,6 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'profile'
+
+LOGOUT_REDIRECT_URL = 'login'
+
+LOGIN_URL = 'login'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -118,6 +125,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 
 STATIC_URL = 'static/'
 

@@ -8,8 +8,10 @@
         <div class="product-list">
             {% for product in products %}
             <div class="product-card">
-                <img src= "{{product.image}}" alt="img" class="product-image">
-                <h5 class="product-name">{{product.name}}</h5>
+                <a href="{% url 'detail-page' product.slug %}">
+                    <img src= "{{product.image}}" alt="img" class="product-image">
+                    <h5 class="product-name">{{product.name}}</h5>
+                </a>
                 {% if product.discount %}
                 <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
                 <small class="discount-price">Rs. {{product.discount_price}}</small>

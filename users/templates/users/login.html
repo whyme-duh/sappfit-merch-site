@@ -1,0 +1,48 @@
+{% extends 'merchSite/index.html'%}
+
+{% load widget_tweaks %}
+{% block title %}Login{% endblock%}
+
+{% block content%}
+
+<section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="col-md-8 col-lg-7 col-xl-6">
+          <img src="https://img.freepik.com/free-vector/optical-shop-concept-illustration_114360-7426.jpg?w=740&t=st=1686026517~exp=1686027117~hmac=a03dffd43acf5c2cf5b43cec374e42af19dc83f22a3bd23b578164fa00b6f5bc"
+            class="img-fluid" alt="Phone image">
+        </div>
+        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+          <h2 class="pb-5">Sign In Now!</h2>
+
+          <form method = "POST">
+
+            {% csrf_token %}
+            <!-- {{form}} -->
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="username">Username</label>
+
+                {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
+            </div>
+  
+            <!-- Password input -->
+           <div class="form-outline mb-4">
+              <label class="form-label" for="password">Password</label>
+              {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
+
+            </div>
+  
+             
+  
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-lg btn-block" style="background-color:black; color:white;">Sign in</button>
+            
+            <p class="pt-md-5">Does not have an account? <a href="{% url 'sign-up' %}"><b>Sign Up Now!</b></a></p>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

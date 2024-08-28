@@ -11,6 +11,7 @@ class Product(models.Model):
     #TEST IMAGE WITH URL
     # Later might use real image stored in database
     image = models.URLField(null=True, blank=False)
+    slug = models.SlugField(null= True, blank=False)
 
 
     def __str__(self):

@@ -9,6 +9,7 @@ def index(request):
     products = Product.objects.all()
     return render(request, 'merchSite/home.html', {"products" : products})
 
+def detail_page(request, slug):
+    product = Product.objects.get(slug = slug)
+    return render(request, 'merchSite/product-detail.html', {"product": product})
 
-def sign_up(request):
-    return render(request, 'merchSite/signup.html')

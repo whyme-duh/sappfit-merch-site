@@ -1,0 +1,12 @@
+{% extends 'merchSite/index.html' %}
+{% block title %}{{user}}{% endblock %}
+{% block content %}
+<div class="profile">
+    <h1>Profile Page</h1>
+    {{user}}
+    <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</div>
+{% endblock %}

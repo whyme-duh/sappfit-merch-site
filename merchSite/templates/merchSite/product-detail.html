@@ -1,0 +1,24 @@
+{% extends 'merchSite/index.html'%}
+{% load static %}
+{% block title%}{{product.name}}{%endblock%}
+
+{% block content %}
+<div class="product-detail-main">
+    <img src="{{product.image}}" class="product-detail-image" alt="">
+    <div class="product-detail">
+        
+        <h3>{{product.name}}</h3>
+        <p>This tiny small ajsdfklasjdfkl.</p>
+        {% if product.discount %}
+        <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
+        <small class="discount-price">Rs. {{product.discount_price}}</small>
+        {% else %}
+        <small class="product-price">Rs. {{product.price}}</small>
+        {% endif %}
+        <div class="btn-grps">
+            <a href="#" class="add-to-cart-btn">Add to Cart</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

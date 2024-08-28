@@ -21,9 +21,10 @@
             <a href="#" class="nav-items">Featured</a>
             <a href="#" class="nav-items">Cart</a>
             {% if user.is_authenticated %}
-            <a href="#" class="nav-items">Profile</a>
+            <a href="{% url 'profile'%}" class="nav-items">Profile</a>
+            
             {% else %}
-            <a href="{% url 'sign-up'%}" class="nav-items">Sign Up</a>
+            <a href="{% url 'login'%}" class="nav-items">Login</a>
             {% endif %}
         </div>
     </nav>
