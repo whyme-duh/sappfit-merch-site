@@ -19,7 +19,7 @@
         <div class="nav-links">
             <a href="{% url 'home'%}" class="nav-items">Home</a>
             <a href="#" class="nav-items">Featured</a>
-            <a href="#" class="nav-items">Cart</a>
+            <a href="{% url 'my-cart' %}" class="nav-items">Cart</a>
             {% if user.is_authenticated %}
             <a href="{% url 'profile'%}" class="nav-items">Profile</a>
             

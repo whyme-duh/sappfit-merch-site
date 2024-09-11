@@ -1,0 +1,10 @@
+{% extends 'merchSite/index.html' %}
+
+{% block content %}
+<div class="my-cart">
+    <h1>My Cart</h1>
+    {{cartitem.product.name}}
+    <img src="{{cartitem.product.image.url}}" alt="">
+</div>
+
+{% endblock %}

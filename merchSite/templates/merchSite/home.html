@@ -9,7 +9,7 @@
             {% for product in products %}
             <div class="product-card">
                 <a href="{% url 'detail-page' product.slug %}">
-                    <img src= "{{product.image}}" alt="img" class="product-image">
+                    <img src= "{{product.image.url}}" alt="img" class="product-image">
                     <h5 class="product-name">{{product.name}}</h5>
                 </a>
                 {% if product.discount %}
@@ -19,9 +19,9 @@
                 <small class="product-price">Rs. {{product.price}}</small>
                 {% endif %}
                 <div class="btn-grps">
-                    <a href="#" class="add-to-cart-btn">Add to Cart</a>
+                    <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
                 </div>
-            </div>
+            </div> 
             {% endfor%}
         </div>
 
