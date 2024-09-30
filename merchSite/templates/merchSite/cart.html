@@ -1,10 +1,32 @@
 {% extends 'merchSite/index.html' %}
 
 {% block content %}
-<div class="my-cart">
+<div class="my-cart container">
     <h1>My Cart</h1>
-    {{cartitem.product.name}}
-    <img src="{{cartitem.product.image.url}}" alt="">
+    {% if cartitem %}
+    <div class="row">
+        <div class="col-md-6">
+            {% for cart in cartitem %}
+            <div class="cart-card col-md-12 d-flex justify-content-between">
+                <div class="cart-product-name">{{cart.product.name}}</div>
+                {% if cart.product.discount %}
+                <div class="cart-product-price">{{cart.product.discount_price}}</div>
+                {% else %}
+                <div class="cart-product-price">{{cart.product.discount_price}}</div>
+
+                {% endif %}
+                <img src="{{cart.product.image.url}}" alt="" width="200px" height="200px">
+                <a href="{% url 'delete-cart-item' cart.id %}" class="btn btn-danger">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <h5>Total</h5>
+        </div>
+    </div>
+    {% else %}
+    <small>It seems you have not added any items to your cart. Please add it so that you can check out!</small>
+    {% endif %}
 </div>
 
 {% endblock %}

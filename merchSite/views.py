@@ -26,5 +26,14 @@ def add_to_cart(request, id):
 
 
 def my_cart(request):
-    cartitem = Cart.objects.get(user = request.user)
+    cartitem = Cart.objects.filter(user = request.user)
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem})
+
+
+def delete_cart_item(request, id):
+    try:
+        cart_item = Cart.objects.get(id = id)
+        cart_item.delete()
+    except Exception as e:
+        print(e)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
