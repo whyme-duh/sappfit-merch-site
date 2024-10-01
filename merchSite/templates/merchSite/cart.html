@@ -12,7 +12,7 @@
                 {% if cart.product.discount %}
                 <div class="cart-product-price">{{cart.product.discount_price}}</div>
                 {% else %}
-                <div class="cart-product-price">{{cart.product.discount_price}}</div>
+                <div class="cart-product-price">{{cart.product.price}}</div>
 
                 {% endif %}
                 <img src="{{cart.product.image.url}}" alt="" width="200px" height="200px">
@@ -21,8 +21,11 @@
             {% endfor %}
         </div>
         <div class="col-md-6">
-            <h5>Total</h5>
+            <h5>Total</h5>: {{total_price}}
         </div>
+        <small>Delivery cost: Rs. {{delivery_cost}}</small>
+        <a href="#">Checkout</a>
+        <a href="{% url 'clear-cart' %}">Clear Cart</a>
     </div>
     {% else %}
     <small>It seems you have not added any items to your cart. Please add it so that you can check out!</small>

@@ -16,7 +16,7 @@
         <small class="product-price">Rs. {{product.price}}</small>
         {% endif %}
         <div class="btn-grps">
-            <a href="#" class="add-to-cart-btn">Add to Cart</a>
+            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
         </div>
     </div>
 </div>

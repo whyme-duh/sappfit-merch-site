@@ -18,7 +18,7 @@ def add_to_cart(request, id):
     product = Product.objects.get(id = id)
     user = request.user
     if request.user.is_authenticated:
-        cart, _ = Cart.objects.get_or_create(user = user, product= product)
+        Cart.objects.get_or_create(user = user, product= product)
         messages.success(request, f'Added to Cart')
     else:
         messages.error(request, f'You have to login in order to add items to cart')
@@ -27,7 +27,16 @@ def add_to_cart(request, id):
 
 def my_cart(request):
     cartitem = Cart.objects.filter(user = request.user)
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem})
+    total_price = 0
+    delivery_cost = 50
+    for cart in cartitem:
+        if cart.product.discount:
+            total_price += cart.product.discount_price
+        else:
+            total_price +=cart.product.price
+    total_price += delivery_cost        
+
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost})
 
 
 def delete_cart_item(request, id):
@@ -37,3 +46,9 @@ def delete_cart_item(request, id):
     except Exception as e:
         print(e)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def clear_cart(request):
+    Cart.objects.filter(user = request.user).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
+

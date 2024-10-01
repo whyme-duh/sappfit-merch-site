@@ -16,7 +16,7 @@ class Product(models.Model):
     # Later might use real image stored in database
     image = models.ImageField(upload_to='products', blank = True, null = True)
     slug = models.SlugField(null= True, blank=False)
-
+    
 
     def __str__(self):
         return self.name
@@ -44,14 +44,7 @@ class Order(models.Model):
 class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-    def get_cart_total(self):
-        cart_items = self.cart_items.all()
-        price = []
-        for item in cart_items:
-            price.append(item.product.price)
-        return sum(price)
+    quantity = models.PositiveIntegerField(default=1, null = True, blank = True)
     
 
 class CartItem(models.Model):
