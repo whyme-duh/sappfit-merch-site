@@ -1,35 +1,119 @@
 {% extends 'merchSite/index.html' %}
+{% load cart_tag% }
+{% block title %}My Cart{% endblock %}
 
 {% block content %}
 <div class="my-cart container">
-    <h1>My Cart</h1>
     {% if cartitem %}
-    <div class="row">
-        <div class="col-md-6">
-            {% for cart in cartitem %}
-            <div class="cart-card col-md-12 d-flex justify-content-between">
-                <div class="cart-product-name">{{cart.product.name}}</div>
-                {% if cart.product.discount %}
-                <div class="cart-product-price">{{cart.product.discount_price}}</div>
-                {% else %}
-                <div class="cart-product-price">{{cart.product.price}}</div>
-
-                {% endif %}
-                <img src="{{cart.product.image.url}}" alt="" width="200px" height="200px">
-                <a href="{% url 'delete-cart-item' cart.id %}" class="btn btn-danger">Delete</a>
+    <div class="whole-container " style="position: absolute;height: 100%;">
+        <div class="row d-flex">
+  
+          <div class="col-6 mt-5 me-3">
+  
+            <div class="d-flex justify-content-between align-items-start mb-4">
+              <h3 class="fw-normal mb-0 text-black">Your Cart</h3>
+              <a href="{% url 'clear-cart'%}" class="btn btn-danger">Delete <i class="fa fa-trash-o"></i></a>
+            
             </div>
+            {% for value in cartitem %}
+              <div class="card rounded-3 mb-4">
+                
+                <div class="card-body p-4">
+  
+                  <div class="row d-flex justify-content-between align-items-center">
+  
+                    <div class="col-md-2 col-lg-2 col-xl-2" >
+                      <img
+                        src="{{value.product.image.url}}"
+                        class="img-fluid rounded-3" alt="#">
+                    </div>
+                    <div class="col-md-4 col-lg-5 col-xl-5">
+                      <a href="{% url 'detail-page' value.product.slug %}" >
+  
+                      <p class="lead fw-normal mb-2">{{value.product.name}}</p>
+                      </a>
+  
+                    </div>
+                   
+                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 ">
+                        {% if value.product.discount %}
+                        <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.discount_price}}</h5>
+                        {% else %}
+                        <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.price}}</h5>
+                        {% endif%}
+
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+    
+                      <a href="{% url 'delete-cart-item' value.id %}"><i class="fa fa-trash-o" style="font-size:20px;color:red;" ></i></a>
+    
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
             {% endfor %}
-        </div>
-        <div class="col-md-6">
-            <h5>Total</h5>: {{total_price}}
-        </div>
-        <small>Delivery cost: Rs. {{delivery_cost}}</small>
-        <a href="#">Checkout</a>
-        <a href="{% url 'clear-cart' %}">Clear Cart</a>
-    </div>
+          </div>
+          <div class="col-4 d-flex justify-content-between mt-5 ">
+      
+            <div class="col-md-12 order-view">
+                <h3 class="text-left">Your Order</h3>
+        
+                {% for value in cartitem %}
+                    <div class="payout-order-container w-100 d-flex justify-content-between align-items-end p-2">
+                        <div class="img-container">
+                            <img src="{{value.product.image.url}}" alt="" width="100" height="70">
+                        </div>
+                        <div class="card-detail ps-3 pt-2">
+                            <a href="{% url 'detail-page' value.product.slug %}" class="text-decoration:none;color:black;">
+                             <h5 >{{value.product.name}}</h5>
+                            </a>
+                            <p>Rs.{{value.product.price}}</p>
+                            
+                        </div>
+                    </div>
+                {% endfor %}
+                <hr style="color: rgb(233, 228, 228);">
+                <div class="payout-order-view p-3">
+                    <div class="delivery d-flex justify-content-between">
+                        <p>Items cost : </p> <p>{{item_costs}} </p>
+                    </div>
+                    <div class="delivery d-flex justify-content-between">
+                        <p>Delivery : </p> <p>{{delivery_cost}} </p>
+                    </div>
+                    <!-- <div class="discount d-flex justify-content-between">
+                        <p>Discount : </p> <p>{{discount}} </p>
+        
+                    </div> -->
+                    <div class="total">
+                        <strong class="d-flex justify-content-between">
+                        <p>Total : </p><p>Rs. {{total_price}}</p>
+                        </strong>
+        
+                    </div>
+                    <small>Note: Billing address will be able to form after payment.</small>
+  
+                  <div class="payment-btns d-flex justify-content-center">
+                    <a href="">
+                      <button   class="btn  btn-lg mt-3 w-100 m-2" style="background-color: #5E338D;color: white;" > Checkout With Khalti</button>
+                    </a>
+                    
+                  </div>
+                </div>
+               
+                
+            </div>
     {% else %}
-    <small>It seems you have not added any items to your cart. Please add it so that you can check out!</small>
-    {% endif %}
+    <div class="containear-fluid mt-5 pt-5 d-flex justify-content-center flex-column align-items-center">
+        <img src="/media/images/cart.png" alt="" width="100" height="100">
+        <div class="content pt-5 d-flex flex-column justify-content-center align-items-center">
+          <h2>Your Cart Is <span style="color:red;">Empty</span></h2>
+          <p>Must add the items to cart before you proceed to checkout. </p>
+          <a href="{% url 'home' %}" class="btn btn-warning mt-3 ">Go Back Shopping</a>
+        </div>
+      </div>
+    </div>
 </div>
+{% endif%}
 
 {% endblock %}

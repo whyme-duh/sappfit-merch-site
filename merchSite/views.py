@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from . models import Product, Cart, CartItem
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+import random
 
 # Create your views here.
 
@@ -12,7 +13,16 @@ def index(request):
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
-    return render(request, 'merchSite/product-detail.html', {"product": product})
+    product_ids = []
+    product_array = []
+    products = Product.objects.all()
+    for p in products:
+        product_ids.append(p.id)
+    
+    for i in range(3):
+        rn = random.choice(product_ids)
+        product_array.append(Product.objects.filter(id=rn).exclude(slug=slug))
+    return render(request, 'merchSite/product-detail.html', {"product": product, "other_products" : product_array})
 
 def add_to_cart(request, id):
     product = Product.objects.get(id = id)
@@ -29,14 +39,18 @@ def my_cart(request):
     cartitem = Cart.objects.filter(user = request.user)
     total_price = 0
     delivery_cost = 50
+    item_costs = 0
     for cart in cartitem:
         if cart.product.discount:
             total_price += cart.product.discount_price
+            item_costs = total_price
         else:
             total_price +=cart.product.price
+            item_costs = total_price
+
     total_price += delivery_cost        
 
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost})
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
 
 
 def delete_cart_item(request, id):
