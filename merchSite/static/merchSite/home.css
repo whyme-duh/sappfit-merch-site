@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Freeman&display=swap');
+
+:root{
+    --intro-paragraph-font: "Dancing Script", serif;
+    --intro-heading-font: "Freeman", serif;
+}
+
+.intro{
+    width: 80%;
+}
+
+.home-heading{
+    font-size: 2.5em;
+    font-family: var(--intro-heading-font);
+}
+.home-paragraph{
+    font-size:1.5em;
+    font-family: var(--intro-paragraph-font);
+}
+
+.view-btn{
+    margin-top:1em;
+    padding: 1em;
+    border: none;
+    background-color: antiquewhite;
+    border-radius: 0.5em;
+    font-family: var(--intro-heading-font);
+}
+
+.featured-products{
+    width: 80%;
+    margin-top: 5em;
+    margin-bottom: 2em;
+}

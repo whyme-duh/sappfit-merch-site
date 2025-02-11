@@ -59,20 +59,6 @@
             <div class="col-md-12 order-view">
                 <h3 class="text-left">Your Order</h3>
         
-                {% for value in cartitem %}
-                    <div class="payout-order-container w-100 d-flex justify-content-between align-items-end p-2">
-                        <div class="img-container">
-                            <img src="{{value.product.image.url}}" alt="" width="100" height="70">
-                        </div>
-                        <div class="card-detail ps-3 pt-2">
-                            <a href="{% url 'detail-page' value.product.slug %}" class="text-decoration:none;color:black;">
-                             <h5 >{{value.product.name}}</h5>
-                            </a>
-                            <p>Rs.{{value.product.price}}</p>
-                            
-                        </div>
-                    </div>
-                {% endfor %}
                 <hr style="color: rgb(233, 228, 228);">
                 <div class="payout-order-view p-3">
                     <div class="delivery d-flex justify-content-between">

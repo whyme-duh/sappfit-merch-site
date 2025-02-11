@@ -4,11 +4,16 @@
 
 {% block content %}
 <div class="product-detail-main">
-    <img src="{{product.image.url}}" class="product-detail-image" alt="">
+    <div class="product-img-collection">
+        <img src="{{product.image.url}}" class="product-detail-image-big" alt="">
+        <div class="small-images">
+            <img src="{{product.image.url}}" class="product-detail-image-smallOne" alt="">
+            <img src="{{product.image.url}}" class="product-detail-image-smallTwo" alt="">
+        </div>
+    </div>
     <div class="product-detail">
-        
         <h3>{{product.name}}</h3>
-        <p>This tiny small ajsdfklasjdfkl.</p>
+        <small>Note: It has a delivery charge.</small>
         {% if product.discount %}
         <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
         <small class="discount-price">Rs. {{product.discount_price}}</small>
@@ -30,6 +35,7 @@
                     <img src="{{product.image.url}}" width="200" height="200">
                     <div class="details">
                         <h5>{{product.name}}</h5>
+
                         <p>Rs. {{product.price }}</p>
                     </div>
                 </a>

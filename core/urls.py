@@ -19,9 +19,11 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from . import settings
 from django.contrib.auth import views as auth_views
+import django_browser_reload
 
 
 urlpatterns = [
+    path('__reload__/', include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
     path('', include('merchSite.urls')),
     path('users/', include('users.urls')),
