@@ -3,55 +3,58 @@
 {% block title%}{{product.name}}{%endblock%}
 
 {% block content %}
-<div class="product-detail-main">
-    <div class="product-img-collection">
-        <img src="{{product.image.url}}" class="product-detail-image-big" alt="">
-        <div class="small-images">
-            <img src="{{product.image.url}}" class="product-detail-image-smallOne" alt="">
-            <img src="{{product.image.url}}" class="product-detail-image-smallTwo" alt="">
+<div class="product-container container">
+    <div class="product-detail-main">
+        <div class="product-img-collection">
+            <img src="{{product.image.url}}" class="product-detail-image" alt="">
+            <img src="{{product.image.url}}" class="product-detail-image" alt="">
+            <img src="{{product.image.url}}" class="product-detail-image" alt="">
+            <img src="{{product.image.url}}" class="product-detail-image" alt="">
+        </div>
+        <div class="product-detail">
+            <h3 class="product-name">{{product.name}}</h3>
+            {% if product.discount %}
+            <strike class="product-dis-price" style="color:red" >Rs. {{product.price}}</strike>
+            <h5 class="discount-price">Rs. {{product.discount_price}}</h5>
+            {% else %}
+            <small class="product-price">Rs. {{product.price}}</small>
+            {% endif %}
+            {% if product.quantity < 5 %}
+            <p>Remaining Product: {{product.quantity}}</p>
+            {% else %}
+            <p></p>
+            {% endif %}
+            Size: M L XL SL
+            <div class="btn-grps">
+                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
+            </div>
         </div>
     </div>
-    <div class="product-detail">
-        <h3>{{product.name}}</h3>
-        <p>{{product.description}}</p>
-        {% if product.quantity < 5 %}
-        <p>Remaining Product: {{product.quantity}}</p>
-        {% endif %}
-        {% if product.discount %}
-        <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
-        <small class="discount-price">Rs. {{product.discount_price}}</small>
-        {% else %}
-        <small class="product-price">Rs. {{product.price}}</small>
-        {% endif %}
-        <div class="btn-grps">
-            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
-        </div>
-    </div>
-</div>
-<div class="container-fluid d-flex justify-content-center flex-column align-items-center pb-5 mb-5 mt-5">
-    <h1 class="d-related-products">You may also like</h1>
-    <div class="d-product-list w-100 d-flex justify-content-center">
-        {% for p in other_products%}
-            {% for product in p%}
-                <a href="{% url 'detail-page' product.slug%}">
-                <div class="one" >
-                    <img src="{{product.image.url}}" width="200" height="200">
-                    <div class="details">
-                        <h5>{{product.name}}</h5>
-
-                        <p>Rs. {{product.price }}</p>
+    <div class="container-fluid d-flex justify-content-center flex-column align-items-center pb-5 mb-5 mt-5">
+        <h1 class="d-related-products">You may also like</h1>
+        <div class="d-product-list w-100 d-flex justify-content-center">
+            {% for p in other_products%}
+                {% for product in p%}
+                    <a href="{% url 'detail-page' product.slug%}">
+                    <div class="one" >
+                        <img src="{{product.image.url}}" width="200" height="200">
+                        <div class="details">
+                            <h5>{{product.name}}</h5>
+    
+                            <p>Rs. {{product.price }}</p>
+                        </div>
+                    </a>
+                        <div class="buttonGroup">
+                            <a href="{%url 'add_to_cart' product.id %}">
+                                <button id="cart-sunglass">
+                                    Add To Cart
+                                </button>
+                            </a>
+                        </div>
                     </div>
-                </a>
-                    <div class="buttonGroup">
-                        <a href="{%url 'add_to_cart' product.id %}">
-                            <button id="cart-sunglass">
-                                Add To Cart
-                            </button>
-                        </a>
-                    </div>
-                </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </div>
+        </div>
+</div>
 
 {% endblock %}
