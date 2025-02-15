@@ -16,7 +16,6 @@ class Product(models.Model):
     # Later might use real image stored in database
     image = models.ImageField(upload_to='products', blank = True, null = True)
     slug = models.SlugField(null= True, blank=False)
-    
 
     def __str__(self):
         return self.name

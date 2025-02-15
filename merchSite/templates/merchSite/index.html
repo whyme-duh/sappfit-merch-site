@@ -19,7 +19,7 @@
         <a href="{% url 'home'%}" ><img src="{% static 'merchSite/sappfit.png' %}" alt="logo" width="150" height="90" style="margin:0;padding: 0;"></a>
         <div class="nav-links">
             <a href="{% url 'home'%}" class="nav-items">Home</a>
-            <a href="#" class="nav-items">Featured</a>
+            <a href="{% url 'products'%}" class="nav-items">Products</a>
             {% if user.is_authenticated %}
             <a href="{% url 'my-cart' %}" class="nav-items">My Cart</a>
 

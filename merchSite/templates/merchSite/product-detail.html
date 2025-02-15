@@ -13,7 +13,10 @@
     </div>
     <div class="product-detail">
         <h3>{{product.name}}</h3>
-        <small>Note: It has a delivery charge.</small>
+        <p>{{product.description}}</p>
+        {% if product.quantity < 5 %}
+        <p>Remaining Product: {{product.quantity}}</p>
+        {% endif %}
         {% if product.discount %}
         <strike class="product-price" style="color:red" >Rs. {{product.price}}</strike>
         <small class="discount-price">Rs. {{product.discount_price}}</small>

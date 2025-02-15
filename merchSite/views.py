@@ -8,8 +8,12 @@ import random
 # Create your views here.
 
 def index(request):
+    featured_products = Product.objects.filter(discount = True)
+    return render(request, 'merchSite/home.html', {"products" : featured_products})
+
+def products_page(request):
     products = Product.objects.all()
-    return render(request, 'merchSite/home.html', {"products" : products})
+    return render(request, 'merchSite/productsPage.html', {"products" : products})
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
