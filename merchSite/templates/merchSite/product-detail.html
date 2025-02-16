@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="product-container container">
-    <div class="product-detail-main">
+    <div class="product-detail-main ">
         <div class="product-img-collection">
             <div class="product-img-top">
                 <img src="{{product.image.url}}" class="product-detail-image" alt="">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="product-detail">
-            <h3 class="product-name">{{product.name}}</h3>
+            <h3 class="product-detail-name">{{product.name}}</h3>
             
             {% if product.discount %}
             <strike class="product-dis-price" style="color:red" >Rs. {{product.price}}</strike>
@@ -43,26 +43,44 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid d-flex justify-content-center flex-column align-items-center pb-5 mb-5 mt-5">
-        <h1 class="d-related-products">Related Products</h1>
-        <div class="d-product-list w-100 d-flex justify-content-center">
-            {% for product in related_products%}
-                {% for product in p%}
-                    <a href="{% url 'detail-page' product.slug%}">
-                    <div class="one" >
-                        <img src="{{product.image.url}}" width="200" height="200">
+    <div class="related-prod d-flex flex-column">
+        <h1 class="d-related-products mb-5">Related Products</h1>
+        <div class="d-product-list">
+            {% for product in related_products %}
+                    <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
+                    <div class="related-product-card p-0" >
+                        <img src="{{product.image.url}}" width="400" height="500">
                         <div class="details">
-                            <h5>{{product.name}}</h5>
+                            <h5 class="mt-3">{{product.name}}</h5>
     
                             <p>Rs. {{product.price }}</p>
                         </div>
                     </a>
                        
                     </div>
-                {% endfor %}
             {% endfor %}
         </div>
-        
+    </div>
+    
+    <div class="related-prod d-flex flex-column">
+        <h1 class="d-related-products mb-5">Other Products</h1>
+        <div class="d-product-list">
+            {% for product in other_products %}
+                    <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
+                    <div class="related-product-card p-0" >
+                        <img src="{{product.image.url}}" width="400" height="500">
+                        <div class="details">
+                            <h5 class="mt-3">{{product.name}}</h5>
+    
+                            <p>Rs. {{product.price }}</p>
+                        </div>
+                    </a>
+                       
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}
