@@ -3,6 +3,8 @@ from users.models import User
 import datetime
 import PIL
 from django.views import View
+from django.forms import fields, forms
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 class Product(models.Model):
@@ -10,12 +12,16 @@ class Product(models.Model):
     price = models.IntegerField(blank = False, null = False)
     discount = models.BooleanField(default= False)
     discount_price = models.IntegerField(blank = True, null = True)
-    description = models.CharField(max_length=255, blank = True, null = True)
+    description = RichTextField(blank= True, null = True)
     quantity = models.IntegerField(default=1)
     #TEST IMAGE WITH URL
     # Later might use real image stored in database
     image = models.ImageField(upload_to='products', blank = True, null = True)
+    second_image = models.ImageField(upload_to='products', blank = True, null = True)
+    third_image = models.ImageField(upload_to='products', blank = True, null = True)
+    fourth_image = models.ImageField(upload_to='products', blank = True, null = True)
     slug = models.SlugField(null= True, blank=False)
+    category = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name

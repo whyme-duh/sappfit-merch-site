@@ -77,15 +77,25 @@ nav{
     display: flex;
     justify-content: space-between;
     margin-top:5em;
+    gap: 3em;
     width: 100%;
 }
 .product-img-collection{
     width: 75%;
     display: flex;
-    flex-direction: row;
-    gap: 0.25em;
+    flex-direction: column;
+    gap: 0.5em;
     justify-content: center;
-    flex-wrap: wrap;
+}
+.product-img-top{
+    width: 100%;
+    display: flex;
+    gap: 0.5em;
+}
+.product-img-below{
+    width: 100%;
+    gap: 0.5em;
+    display: flex;
 }
 .product-detail-image{
     width: 50%;
@@ -94,6 +104,7 @@ nav{
 
 
 .product-detail{
+    width: 30%;
     display: flex;
     flex-direction: column;
 }
@@ -103,6 +114,17 @@ nav{
 }
 .product-price{
     font-size: 1.5em;
+}
+.size-btns button{
+    margin-top: 1em;
+    border: 1px solid black;
+    padding: 1em;
+    background: white;
+    width: 20%;
+}
+.size-btns button:hover{
+    background-color: antiquewhite;
+    color: black;
 }
 /* cart */
 .payout-order-container{

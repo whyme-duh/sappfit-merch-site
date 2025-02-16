@@ -17,16 +17,10 @@ def products_page(request):
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
-    product_ids = []
-    product_array = []
-    products = Product.objects.all()
-    for p in products:
-        product_ids.append(p.id)
-    
-    for i in range(3):
-        rn = random.choice(product_ids)
-        product_array.append(Product.objects.filter(id=rn).exclude(slug=slug))
-    return render(request, 'merchSite/product-detail.html', {"product": product, "other_products" : product_array})
+    similar_product_array= []
+    other_product_array = []
+    similar_product_array.append(Product.objects.filter(category = product.category).exclude(slug=slug))
+    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_product_array, 'other_products':other_product_array})
 
 def add_to_cart(request, id):
     product = Product.objects.get(id = id)
