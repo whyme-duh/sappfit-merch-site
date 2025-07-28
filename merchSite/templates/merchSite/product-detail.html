@@ -32,15 +32,27 @@
             <h5>Product Description</h5>
             <p>{{product.description|safe}}</p>
             <h5>Available Sizes</h5>
-            <div class="size-btns">
-                <button>XS</button>
-                <button>M</button>
-                <button>XL</button>
-                <button>S</button>
-            </div>
-            <div class="btn-grps">
+            
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="size">Size:</label>
+                    <select name="size" required>
+                        {% for size, quantity in sizes.items %}
+                        <option value="{{ size }}">{{ size }} ({{ quantity }} available)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" value="1" min="1" required>
+                </div>
+                
+                <button type="submit">Add to Cart</button>
+            </form>
+                <!-- <div class="btn-grps">
                 <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Bag</a>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="related-prod d-flex flex-column">

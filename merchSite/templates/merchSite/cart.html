@@ -1,4 +1,5 @@
 {% extends 'merchSite/index.html' %}
+{% load widget_tweaks %}
 {% load cart_tag% }
 {% block title %}My Cart{% endblock %}
 
@@ -29,10 +30,11 @@
                     </div>
                     <div class="col-md-4 col-lg-5 col-xl-5">
                       <a href="{% url 'detail-page' value.product.slug %}" >
-  
-                      <p class="lead fw-normal mb-2">{{value.product.name}}</p>
+                      
+                      <p class="lead fw-normal mb-2">{{value.product.name}} </p>
                       </a>
-  
+                      Size: {{value.size}}
+                      Quantities: {{value.quantity}}
                     </div>
                    
                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 ">
@@ -77,17 +79,34 @@
                         </strong>
         
                     </div>
-                    <small>Note: Billing address will be able to form after payment.</small>
-  
-                  <div class="payment-btns d-flex justify-content-center">
-                    <a href="">
-                      <button   class="btn  btn-lg mt-3 w-100 m-2" style="background-color: #5E338D;color: white;" > Checkout With Khalti</button>
-                    </a>
+                    <h3 class="text-left">Billing Address</h3>
+        
+                    <hr style="color: rgb(233, 228, 228);">
+                   <form method = "POST">
+
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control">
+                    </div>
                     
-                  </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Enter your email" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Delivery Address</label>
+                        <input type="text" name="location" id="location" placeholder="Enter your address" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control">
+                    </div>
+                    <button type = "submit" class="btn  btn-lg mt-3 w-100 m-2" style="background-color: #5E338D;color: white;" > Checkout</button>
+                  </form>
                 </div>
-               
-                
             </div>
     {% else %}
     <div class="containear-fluid mt-5 pt-5 d-flex justify-content-center flex-column align-items-center">

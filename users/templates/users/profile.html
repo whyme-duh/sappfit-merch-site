@@ -2,11 +2,20 @@
 {% block title %}{{user}}{% endblock %}
 {% block content %}
 <div class="profile">
-    <h1>Profile Page</h1>
-    {{user}}
     <form action="{% url 'logout' %}" method="POST">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
+    <h1>Profile Page</h1>
+    {{user}}
+    <h2>Your Orders</h2>
+    {% for order in orders %}
+    
+    <p>Product Name: {{order.product}}</p>
+    <p>Size: {{order.size}}</p>
+    <p>Quantity: {{order.quantity}}</p>
+    <p>Delivered: Yet to be delivered</p>
+    {% endfor %}
+    
 </div>
 {% endblock %}
