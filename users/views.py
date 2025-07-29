@@ -3,12 +3,24 @@ from django.contrib.auth.decorators import login_required
 from . forms import UserRegistrationForm
 from merchSite.models import Order
 from django.contrib.auth.models import User
+import json
 
 @login_required
 def profile(request):
-    orders = Order.objects.filter(user = request.user)
-    return render(request, 'users/profile.html', {"orders" : orders})
+    orders = Order.objects.filter(user=request.user)
+    order_products = []
 
+    for order in orders:
+        if order.product:  # Check if products field is not empty
+            products = json.loads(order.product)  # Deserialize JSON string into a list of products
+            order_products.append({
+                'order': order,
+                'products': products
+            })
+
+    return render(request, 'users/profile.html', {
+        "order_products": order_products
+    })
 def sign_up(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)

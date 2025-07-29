@@ -1,6 +1,9 @@
 {% extends 'merchSite/index.html' %}
 
 {% block content %}
+<div class="categories">
+    <h5>Categories: </h5>
+</div>
 <div class="products container">
     <div class="product-list mt-5">
         {% for product in products%}
@@ -8,14 +11,16 @@
 
             <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
                 <img src= "{{product.image.url}}" alt="img" class="product-image">
+                        <small class="size-info">Available in Small, Medium, and Large sizes</small>
+
                 <h5 class="product-name">{{product.name}}</h5>
             </a>
             {% if product.discount %}
             <div class="price d-block">
                 <strike class="discount-price" style="color:red" >Rs. {{product.price}}</strike>
-                <small class="discount-price">Rs. {{product.discount_price}}</small></div>
+                <small class="original-price">Rs. {{product.discount_price}}</small></div>
             {% else %}
-            <small class="product-price">Rs. {{product.price}}</small>
+            <small class="original-price">Rs. {{product.price}}</small>
             {% endif %}
             <!-- <div class="btn-grps">
                 <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>

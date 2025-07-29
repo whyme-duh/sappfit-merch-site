@@ -64,12 +64,15 @@ def my_cart(request):
             phone = phone,
             user = request.user,
             price = total_price,
-            date = datetime.datetime.now(),
-            product = cart.product,
-            size = cart.size,
-            quantity = cart.quantity,
-            status = True
+            date = datetime.datetime.now()
         )
+        for cart in cartitem:
+            if cart.product.discount:
+                price = cart.product.discount_price * cart.quantity
+            else:
+                price = cart.product.price * cart.quantity
+            order.add_product(cart.product, cart.size, cart.quantity, price)
+
         cart.product.size_options[cart.size] -= cart.quantity
         cart.product.save()
         Cart.objects.filter(user = request.user).delete()

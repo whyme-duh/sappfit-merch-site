@@ -6,6 +6,7 @@ from django.views import View
 from django.forms import fields, forms
 from ckeditor.fields import RichTextField
 from django.db.models import JSONField
+import json
 # Create your models here.
 
 
@@ -15,6 +16,12 @@ from django.db.models import JSONField
 #     def __str__(self):
 #         return self.option
 
+class Categorie(models.Model):
+    category_name = models.CharField(max_length=100, null = True, blank = True)
+
+    def __str__(self):
+        return self.category_name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100, blank = False, null = False)
@@ -22,15 +29,13 @@ class Product(models.Model):
     discount = models.BooleanField(default= False)
     discount_price = models.IntegerField(blank = True, null = True)
     description = RichTextField(blank= True, null = True)
-    #TEST IMAGE WITH URL
-    # Later might use real image stored in database
     image = models.ImageField(upload_to='products', blank = True, null = True)
     second_image = models.ImageField(upload_to='products', blank = True, null = True)
     third_image = models.ImageField(upload_to='products', blank = True, null = True)
     fourth_image = models.ImageField(upload_to='products', blank = True, null = True)
     slug = models.SlugField(null= True, blank=False)
-    category = models.CharField(max_length=50, blank=True, null=True)
-    size_options = JSONField(default=dict)
+    category = models.ForeignKey(Categorie, on_delete = models.CASCADE, null = True, blank = True)
+    size_options = JSONField(default= dict)
 
     def __str__(self):
         return self.name
@@ -51,18 +56,28 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.IntegerField( default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=False)
+    delivered = models.BooleanField(default=False)
     name = models.CharField(max_length = 80, blank = True, null = True)
     location = models.CharField(max_length = 80, blank = True, null = True)
     email = models.EmailField(max_length = 80, blank = True, null = True)
     phone = models.IntegerField( blank = True, null = True)
-    size = models.CharField(max_length = 80, blank = True, null = True)
-    quantity = models.IntegerField( blank = True, null = True)
 
     def __str__(self):
-        return f"Order from {self.name} ({self.user}) - {self.product} - size ({self.size}) - quantity ({self.quantity})"
+        return f"Order from {self.name} ({self.user}) - {self.product} "
 
-    def placeOrder(self):
+    def add_product(self, product, size, quantity, price):
+        product_data = {
+            'product': product.name, 
+            'size': size,
+            'quantity': quantity,
+            'price': price,
+        }
+        if self.product:
+            product_list = json.loads(self.product)
+        else:
+            product_list = []
+        product_list.append(product_data)
+        self.product = json.dumps(product_list)
         self.save()
 
     @staticmethod

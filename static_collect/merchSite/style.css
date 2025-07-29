@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Headland+One&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root{
-    --nav-font-family: "Playwrite GB S", cursive;
+    --nav-font-family: "Ubuntu", sans-serif;
     --header-font-family:"Ubuntu", sans-serif;
 }
 nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-section{
+    width: 85%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,10 +21,15 @@ nav{
 
 .nav-items{
     text-decoration:none;
-    color:rgb(137, 132, 132);
+    color:rgb(0, 0, 0);
     font-size: clamp(1.25em, 2vh, 1.55em);
-    padding: 1.85em;
+    margin-inline: 1.85em;
+    padding-bottom: 0.25em;
     font-family: var(--nav-font-family)
+}
+.nav-items:hover{
+    color: rgb(137,136,112);
+    border-bottom: 1px solid rgb(137,136,112);
 }
 .main{
     display: flex;
@@ -29,33 +41,62 @@ nav{
 }
 
 /* PRODUCT */
+
+.product-list-home{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content:start;
+}
 .product-list{
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content:center;
+}
+.product-card-home{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
 }
 .product-card{
     display: flex;
     flex-direction: column;
     width: 20%;
 }
+.product-card:hover .product-name{
+    text-decoration: underline;
+}
+.product-card-home:hover .product-name{
+    text-decoration: underline;
+}
 .product-image{
-    object-fit: cover;
-    height: 20em;
     width: 100%;
+    height:50vh;
     border-radius: 5px;
+    max-height: 70vh;
     padding-block: 0.5em;
 }
+.size-info{
+    color: grey;
+    font-size: 0.75em;
+    font-style: italic;
+}
 .product-name {
-    padding-block: 0.5em;
+    padding-top: 0.5em;
     color: black;
     text-decoration: none;
     font-size: clamp(1.15em, 2vh, 1.55em);
     font-family: var(--header-font-family);
 }
-.product-price, .discount-price{
-    font-weight: 900;
+.discount-price{
+    font-size: 0.85em;
+}
+.original-price{
+    font-size: 1em;
+    font-weight: 600;
 }
 .btn-grps{
     margin-top: 2em;
@@ -76,22 +117,82 @@ nav{
 /* PRODUCT-DETAIL-STYLE */
 .product-detail-main{
     display: flex;
-    width: 80%;
-    margin-top:2em ;
-    gap: 5em;
-    justify-content: center;
-
+    justify-content: space-between;
+    margin-top:5em;
+    gap: 3em;
+    width: 100%;
 }
-.product-detail-image{
-    width: 40%;
-}
-.product-detail{
+.product-img-collection{
+    width: 55%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 0.5em;
+    justify-content: center;
+}
+.product-img-top{
+    width: 100%;
+    display: flex;
+    gap: 0.5em;
+}
+.product-img-below{
+    width: 100%;
+    gap: 0.5em;
+    display: flex;
+}
+.product-detail-image{
+    width: 50%;
+    height: 70vh;
 }
 
+
+.product-detail{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-detail-name{
+    font-size: 2.5em;
+}
+.product-price{
+    font-size: 1.25em;
+}
+.size-btns button{
+    margin-top: 1em;
+    border: 1px solid black;
+    padding: 1em;
+    background: white;
+    width: 20%;
+}
+.size-btns button:hover{
+    background-color: antiquewhite;
+    color: black;
+}
+a{
+    text-decoration: none;
+}
+.d-product-list{
+    display: flex;
+    width:100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.related-prod{
+    margin-top: 10em;
+}
+.related-product-card:hover .details h5{
+    text-decoration: underline;
+}
 /* cart */
 .payout-order-container{
     align-items: end;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* related products */
+.d-related-product{
+    margin-top: 10em;
 }

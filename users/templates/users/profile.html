@@ -1,21 +1,62 @@
 {% extends 'merchSite/index.html' %}
-{% block title %}{{user}}{% endblock %}
+{% block title %}Profile - {{user}}{% endblock %}
 {% block content %}
 <div class="profile">
-    <form action="{% url 'logout' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    <h1>Profile Page</h1>
-    {{user}}
-    <h2>Your Orders</h2>
-    {% for order in orders %}
-    
-    <p>Product Name: {{order.product}}</p>
-    <p>Size: {{order.size}}</p>
-    <p>Quantity: {{order.quantity}}</p>
-    <p>Delivered: Yet to be delivered</p>
-    {% endfor %}
+   
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p>Email: {{ user.email }}</p>
+                <p>Joined: {{ user.date_joined }}</p>
+            </div>
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn"><i class="fa fa-sign-out"></i></button>
+            </form>
+        </div>
+     <div class="orders-section">
+            <h2>Your Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Date</th>
+                        <th>Products</th>
+                        <th>Delivered</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in order_products %}
+                        <tr>
+                            <td>{{ order.order.id }}</td>
+                            <td>{{ order.order.date }}</td>
+
+                             <td>
+                                <ul>
+                                    {% for product in order_products.products %}
+                                        
+                                        <li>
+                                            {{product.price}}
+                                            <strong>{{ product.product }}</strong> (Size: {{ product.size }}, Quantity: {{ product.quantity }})
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ order.delivered }}</td>
+                            <td>Rs.{{ order.price }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">You have no orders yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     
 </div>
 {% endblock %}
