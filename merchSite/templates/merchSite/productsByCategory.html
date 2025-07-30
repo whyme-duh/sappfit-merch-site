@@ -5,8 +5,13 @@
 <div class="products container">
     <div class="product-list mt-5">
         <div class="categories-list">
+           
             {%for category in categories%}
+            {% if id == category.id %}
+            <a href="{% url 'categories-page' category.id%}" class="category-btn-active">{{category.category_name}}</a>
+            {% else %}
             <a href="{% url 'categories-page' category.id%}" class="category-btn">{{category.category_name}}</a>
+            {% endif %}
             {% endfor %}
         </div>
         {% for product in products%}

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="profile">
    
-    <div class="profile-container">
+    <div class="profile-container mt-5">
         <!-- Profile Header -->
         <div class="profile-header">
             
@@ -34,20 +34,21 @@
                         <tr>
                             <td>{{ order.order.id }}</td>
                             <td>{{ order.order.date }}</td>
-
                              <td>
-                                <ul>
-                                    {% for product in order_products.products %}
-                                        
+                                <ol>
+                                    {% for item in order.products %}
                                         <li>
-                                            {{product.price}}
-                                            <strong>{{ product.product }}</strong> (Size: {{ product.size }}, Quantity: {{ product.quantity }})
+                                            <strong>{{ item.product }}</strong> (Size: <strong>{{ item.size }}</strong>, Quantity: <strong>{{ item.quantity }}</strong>)
                                         </li>
                                     {% endfor %}
-                                </ul>
+                                </ol>
                             </td>
-                            <td>{{ order.delivered }}</td>
-                            <td>Rs.{{ order.price }}</td>
+                            {% if order.order.delivered %}
+                            <td>Delivered</td>
+                            {% else %}
+                            <td>Not Delivered</td>
+                            {% endif %}
+                            <td>Rs. {{ order.order.price }}</td>
                         </tr>
                     {% empty %}
                         <tr>

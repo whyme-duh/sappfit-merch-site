@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from . models import Product, Cart, Order
+from . models import Product, Cart, Order, Categorie
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 import random
@@ -11,9 +11,15 @@ def index(request):
     featured_products = Product.objects.filter(discount = True)
     return render(request, 'merchSite/home.html', {"products" : featured_products})
 
+def products_by_category(request, id):
+    categories = Categorie.objects.all()
+    products = Product.objects.filter(category = id)
+    return render(request, 'merchSite/productsByCategory.html', {"products" : products, "categories" : categories, "id": id})
+
 def products_page(request):
+    categories = Categorie.objects.all()
     products = Product.objects.all()
-    return render(request, 'merchSite/productsPage.html', {"products" : products})
+    return render(request, 'merchSite/productsPage.html', {"products" : products, "categories" : categories})
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)

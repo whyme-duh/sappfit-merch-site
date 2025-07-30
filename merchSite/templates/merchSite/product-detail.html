@@ -20,9 +20,9 @@
             
             {% if product.discount %}
             <strike class="product-dis-price" style="color:red" >Rs. {{product.price}}</strike>
-            <h5 class="discount-price">Rs. {{product.discount_price}}</h5>
+            <h5 class="original-price">Rs. {{product.discount_price}}</h5>
             {% else %}
-            <small class="product-price">Rs. {{product.price}}</small>
+            <h5 class="original-price">Rs. {{product.price}}</h5>
             {% endif %}
             {% if product.quantity < 5 %}
             <p>Remaining Product: {{product.quantity}}</p>
@@ -31,8 +31,6 @@
             {% endif %}
             <h5>Product Description</h5>
             <p>{{product.description|safe}}</p>
-            <h5>Available Sizes</h5>
-            
             <form method="POST" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
                 <div class="form-group">
@@ -48,23 +46,22 @@
                     <input type="number" name="quantity" value="1" min="1" required>
                 </div>
                 
-                <button type="submit">Add to Cart</button>
+                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
             </form>
-                <!-- <div class="btn-grps">
-                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Bag</a>
-            </div> -->
+                
         </div>
     </div>
     <div class="related-prod d-flex flex-column">
-        <h1 class="d-related-products mb-5">Related Products</h1>
+        <h1 class="d-related-products mb-5">Similar Products</h1>
+
         <div class="d-product-list">
             {% for product in related_products %}
                     <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
                     <div class="related-product-card p-0" >
-                        <img src="{{product.image.url}}" width="400" height="500">
+                        <img src="{{product.image.url}}" class="related-prod-img">
                         <div class="details">
-                            <h5 class="mt-3">{{product.name}}</h5>
-    
+                            <h5 class="mt-3 mb-0">{{product.name}}</h5>
+                            <small class="size-info">Available in Small, Medium, and Large sizes</small>
                             <p>Rs. {{product.price }}</p>
                         </div>
                     </a>
@@ -80,10 +77,10 @@
             {% for product in other_products %}
                     <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
                     <div class="related-product-card p-0" >
-                        <img src="{{product.image.url}}" width="400" height="500">
+                        <img src="{{product.image.url}}" class="related-prod-img">
                         <div class="details">
-                            <h5 class="mt-3">{{product.name}}</h5>
-    
+                            <h5 class="mt-3 mb-0">{{product.name}}</h5>
+                            <small class="size-info">Available in Small, Medium, and Large sizes</small>
                             <p>Rs. {{product.price }}</p>
                         </div>
                     </a>

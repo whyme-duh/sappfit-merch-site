@@ -11,16 +11,15 @@ def profile(request):
     order_products = []
 
     for order in orders:
-        if order.product:  # Check if products field is not empty
-            products = json.loads(order.product)  # Deserialize JSON string into a list of products
+        if order.product: 
+            products = json.loads(order.product) 
+            print(products[0])
             order_products.append({
                 'order': order,
                 'products': products
             })
+    return render(request, 'users/profile.html', {"order_products": order_products})
 
-    return render(request, 'users/profile.html', {
-        "order_products": order_products
-    })
 def sign_up(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
