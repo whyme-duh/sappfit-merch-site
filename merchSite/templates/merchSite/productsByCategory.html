@@ -2,7 +2,7 @@
 {% block title %}Products{%endblock %}
 {% block content %}
 
-<div class="products container">
+<div class="products container mb-5">
     <div class="product-list mt-5">
         <div class="categories-list">
            
@@ -19,7 +19,7 @@
 
             <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
                 <img src= "{{product.image.url}}" alt="img" class="product-image">
-                        <small class="size-info">Available in Small, Medium, and Large sizes</small>
+                        <small class="size-info">{{display}}</small>
 
                 <h5 class="product-name">{{product.name}}</h5>
             </a>

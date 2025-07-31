@@ -8,18 +8,30 @@ import datetime
 # Create your views here.
 
 def index(request):
+    display = ""
     featured_products = Product.objects.filter(discount = True)
-    return render(request, 'merchSite/home.html', {"products" : featured_products})
+    for product in featured_products:
+        available_sizes = [size for size, value in product.size_options.items() if value > 0]
+        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/home.html', {"products" : featured_products, "display" : display})
 
 def products_by_category(request, id):
+    display = ""
     categories = Categorie.objects.all()
     products = Product.objects.filter(category = id)
-    return render(request, 'merchSite/productsByCategory.html', {"products" : products, "categories" : categories, "id": id})
+    for product in products:
+        available_sizes = [size for size, value in product.size_options.items() if value > 0]
+        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsByCategory.html', {"display" : display, "products" : products, "categories" : categories, "id": id})
 
 def products_page(request):
+    display = ""
     categories = Categorie.objects.all()
     products = Product.objects.all()
-    return render(request, 'merchSite/productsPage.html', {"products" : products, "categories" : categories})
+    for product in products:
+        available_sizes = [size for size, value in product.size_options.items() if value > 0]
+        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsPage.html', {"display" : display, "products" : products, "categories" : categories})
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)

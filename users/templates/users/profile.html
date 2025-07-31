@@ -10,7 +10,7 @@
             <div class="profile-info">
                 <h1>{{ user.username }}</h1>
                 <p>Email: {{ user.email }}</p>
-                <p>Joined: {{ user.date_joined }}</p>
+                <p>Joined: {{ user.date_joined|date:"D d M Y"  }}</p>
             </div>
             <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}

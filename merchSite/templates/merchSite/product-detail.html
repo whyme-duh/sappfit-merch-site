@@ -52,12 +52,12 @@
         </div>
     </div>
     <div class="related-prod d-flex flex-column">
-        <h1 class="d-related-products mb-5">Similar Products</h1>
+        <h4 class="home-heading mb-5">Similar Products</h4>
 
         <div class="d-product-list">
-            {% for product in related_products %}
+            {% for product in related_products|slice:5 %}
                     <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
-                    <div class="related-product-card p-0" >
+                    <div class="related-product-card" >
                         <img src="{{product.image.url}}" class="related-prod-img">
                         <div class="details">
                             <h5 class="mt-3 mb-0">{{product.name}}</h5>
@@ -71,12 +71,12 @@
         </div>
     </div>
     
-    <div class="related-prod d-flex flex-column">
-        <h1 class="d-related-products mb-5">Other Products</h1>
+    <div class="other-prod d-flex flex-column">
+        <h4 class="home-heading mb-5">Other Products</h4>
         <div class="d-product-list">
             {% for product in other_products %}
                     <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
-                    <div class="related-product-card p-0" >
+                    <div class="related-product-card" >
                         <img src="{{product.image.url}}" class="related-prod-img">
                         <div class="details">
                             <h5 class="mt-3 mb-0">{{product.name}}</h5>
