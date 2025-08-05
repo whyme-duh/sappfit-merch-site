@@ -35,11 +35,11 @@
         </div>
     </nav>
     <main>
+        
         {% if messages %}
         {% for msg in messages %}
-        <div class="alert" id="alert">
-        {{msg}}
-    
+        <div class="alert-msg" >
+            <h5>{{msg}}</h5>
         </div>
         {% endfor %}
       {% endif %}

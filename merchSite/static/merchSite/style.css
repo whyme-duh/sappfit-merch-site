@@ -6,6 +6,31 @@
     --nav-font-family: "Ubuntu", sans-serif;
     --header-font-family:"Ubuntu", sans-serif;
 }
+.alert-msg{
+    width: 25%;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+    border-radius: 15px;
+    background-color: rgb(159, 255, 14);
+    color: white;
+    z-index: 1;
+    animation: alert-animation 1s ease-in;
+
+}
+
+@keyframes alert-animation {
+    0%{
+        display: none;
+        right: 100%;
+
+    }
+    100%{
+        display: block;
+        right: 0;
+    }
+    
+}
 nav{
     display: flex;
     justify-content: center;

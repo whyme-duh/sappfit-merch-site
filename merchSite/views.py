@@ -12,7 +12,7 @@ def index(request):
     featured_products = Product.objects.filter(discount = True)
     for product in featured_products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/home.html', {"products" : featured_products, "display" : display})
 
 def products_by_category(request, id):
@@ -21,8 +21,8 @@ def products_by_category(request, id):
     products = Product.objects.filter(category = id)
     for product in products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
-    return render(request, 'merchSite/productsByCategory.html', {"display" : display, "products" : products, "categories" : categories, "id": id})
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
 
 def products_page(request):
     display = ""
@@ -30,15 +30,22 @@ def products_page(request):
     products = Product.objects.all()
     for product in products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        display = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
-    return render(request, 'merchSite/productsPage.html', {"display" : display, "products" : products, "categories" : categories})
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
     sizes = product.size_options
     category = product.category
     other_products = Product.objects.exclude(category = category)
+    for item in other_products:
+        available_sizes = [size for size, value in item.size_options.items() if value > 0]
+        item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     similar_products = Product.objects.filter(category = product.category).exclude(slug=slug)
+    for item in similar_products:
+        available_sizes = [size for size, value in item.size_options.items() if value > 0]
+        item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    
     return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes})
 
 def add_to_cart(request, id):

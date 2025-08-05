@@ -11,11 +11,9 @@
         </div>
         {% for product in products%}
         <div class="product-card">
-
             <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
                 <img src= "{{product.image.url}}" alt="img" class="product-image">
-                        <small class="size-info">{{display}}</small>
-
+                    <small class="size-info">{{product.product_available_text}}</small>
                 <h5 class="product-name">{{product.name}}</h5>
             </a>
             {% if product.discount %}

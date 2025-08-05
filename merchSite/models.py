@@ -37,6 +37,7 @@ class Product(models.Model):
     slug = models.SlugField(null= True, blank=False)
     category = models.ForeignKey(Categorie, on_delete = models.CASCADE, null = True, blank = True)
     size_options = JSONField(default= dict)
+    product_available_text = models.TextField(max_length=100, blank = True, null = True)
 
     def __str__(self):
         return self.name

@@ -106,6 +106,18 @@
                     </div>
                     <button type = "submit" class="btn  btn-lg mt-3 w-100 m-2" style="background-color: #5E338D;color: white;" > Checkout</button>
                   </form>
+                  <form action="https://uat.esewa.com.np/epay/main" method="POST">
+            <input value="10" name="tAmt" type="hidden">
+            <input value="10" name="amt" type="hidden">
+            <input value="0" name="txAmt" type="hidden">
+            <input value="0" name="psc" type="hidden">
+            <input value="0" name="pdc" type="hidden">
+            <input value="EPAYTEST" name="scd" type="hidden">
+            <input value="{{order.order_id}}" name="pid" type="hidden">
+            <input value="http://127.0.0.1:8000/esewa-callback/" type="hidden" name="su">
+            <input value="http://127.0.0.1:8000/payment-failed/" type="hidden" name="fu">
+            <input value="Pay With Esewa" type="submit" class="btn btn-success"> 
+            </form>
                 </div>
             </div>
     {% else %}
