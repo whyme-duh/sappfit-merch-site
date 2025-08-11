@@ -21,7 +21,7 @@
     <nav>
         <div class="nav-section">
             <a href="{% url 'home'%}" ><img src="{% static 'merchSite/sappfit.png' %}" alt="logo" width="150" height="90" style="margin:0;padding: 0;"></a>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="{% url 'home'%}" class="nav-items">Home</a>
                 <a href="{% url 'products'%}" class="nav-items">Products</a>
                 {% if user.is_authenticated %}
@@ -31,14 +31,17 @@
                 <a href="{% url 'login'%}" class="nav-items">Login</a>
                 <a href="{% url 'sign-up'%}" class="nav-items">Sign Up</a>
                 {% endif %}
+                <a href="javascript:void(0);" class="icon" onclick="navbarFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
             </div>
         </div>
     </nav>
     <main>
-        
+      
         {% if messages %}
         {% for msg in messages %}
-        <div class="alert-msg" >
+       <div class="alert-{{msg.tags}} w-md-25" id="alert-msg">
             <h5>{{msg}}</h5>
         </div>
         {% endfor %}
@@ -46,4 +49,5 @@
         {% block content %}{% endblock %}
     </main>
 </body>
+<script src="{% static 'merchSite/index.js' %}"></script>
 </html>

@@ -2,15 +2,17 @@
 {% block title %}Products{%endblock %}
 {% block content %}
 
-<div class="products container mb-5">
+<div class="products mb-5">
     <div class="product-list mt-5">
         <div class="categories-list">
+            <a href="{% url 'products' }" class="category-btn-active">All Products</a>
+
             {%for category in categories%}
             <a href="{% url 'categories-page' category.id%}" class="category-btn">{{category.category_name}}</a>
             {% endfor %}
         </div>
         {% for product in products%}
-        <div class="product-card">
+        <div class="product-card mt-4">
             <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
                 <img src= "{{product.image.url}}" alt="img" class="product-image">
                     <small class="size-info">{{product.product_available_text}}</small>

@@ -3,16 +3,50 @@
 {% block title%}{{product.name}}{%endblock%}
 
 {% block content %}
-<div class="product-container container">
+<div class="product-container">
     <div class="product-detail-main ">
-        <div class="product-img-collection">
-            <div class="product-img-top">
-                <img src="{{product.image.url}}" class="product-detail-image" alt="">
-                <img src="{{product.second_image.url}}" class="product-detail-image" alt="">
+        <div class="main-container">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel__button-container carousel__button-container--prev is-hidden">
+                        <button class="carousel__button carousel__button--prev">
+                        </button>
+                    </div>
+                    <div class="carousel__track-container">
+                        <ul class="carousel__track">
+                            <li class="carousel__slide current-slide"><img src="{{product.image.url}}" alt=""
+                                    class="carousel__image">
+                            </li>
+                            <li class="carousel__slide"><img src="{{product.second_image.url}}" alt=""
+                                    class="carousel__image">
+                            </li>
+                            <li class="carousel__slide"><img src="{{product.third_image.url}}" alt=""
+                                    class="carousel__image">
+                            </li>
+                            <li class="carousel__slide"><img src="{{product.fourth_image.url}}" alt=""
+                                    class="carousel__image">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="carousel__button-container carousel__button-container--next">
+                        <button class="carousel__button carousel__button--next">
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="product-img-below">
-                <img src="{{product.third_image.url}}" class="product-detail-image" alt="">
-                <img src="{{product.fourth_image.url}}" class="product-detail-image" alt="">
+            <div class="carousel__indicator-container">
+                <div class="carousel__indicator indicator-1 current-slide">
+                    <img class="carousel__indicator--image" src="{{product.image.url}}" alt="">
+                </div>
+                <div class="carousel__indicator indicator-1">
+                    <img class="carousel__indicator--image" src="{{product.second_image.url}}" alt="">
+                </div>
+                <div class="carousel__indicator indicator-1">
+                    <img class="carousel__indicator--image" src="{{product.third_image.url}}" alt="">
+                </div>
+                <div class="carousel__indicator indicator-1">
+                    <img class="carousel__indicator--image" src="{{product.fourth_image.url}}" alt="">
+                </div>
             </div>
         </div>
         <div class="product-detail">
@@ -24,16 +58,12 @@
             {% else %}
             <h5 class="original-price">Rs. {{product.price}}</h5>
             {% endif %}
-            {% if product.quantity < 5 %}
-            <p>Remaining Product: {{product.quantity}}</p>
-            {% else %}
-            <p></p>
-            {% endif %}
-            <h5>Product Description</h5>
-            <p>{{product.description|safe}}</p>
-            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+           
+            <p class="product-description">{{product.description|safe}}</p>
+            <form method="POST" action="{% url 'add_to_cart' product.id %}" >
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="quantity-size">
+                    <div class="form-group">
                     <label for="size">Size:</label>
                     <select name="size" required>
                         {% for size, quantity in sizes.items %}
@@ -44,6 +74,7 @@
                 <div class="form-group">
                     <label for="quantity">Quantity:</label>
                     <input type="number" name="quantity" value="1" min="1" required>
+                </div>
                 </div>
                 
                 <button type="submit" class="add-to-cart-btn">Add to Cart</button>

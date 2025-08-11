@@ -4,12 +4,12 @@
 {% block title %}My Cart{% endblock %}
 
 {% block content %}
-<div class="my-cart container">
+<div class="my-cart container ">
     {% if cartitem %}
-    <div class="whole-container " style="position: absolute;height: 100%;">
-        <div class="row d-flex">
+    <div class="whole-container " style="height: 100%;">
+        <div class="row d-flex justify-content-between">
   
-          <div class="col-6 mt-5 me-3">
+          <div class="col-md-6 mt-5 me-3">
   
             <div class="d-flex justify-content-between align-items-start mb-4">
               <h3 class="fw-normal mb-0 text-black">Your Cart</h3>
@@ -56,7 +56,7 @@
               </div>
             {% endfor %}
           </div>
-          <div class="col-4 d-flex justify-content-between mt-5 ">
+          <div class="col-md-4 d-flex justify-content-between mt-5 ">
       
             <div class="col-md-12 order-view">
                 <h3 class="text-left">Your Order</h3>

@@ -3,53 +3,50 @@
 
 {% block content %}
 <div class="main">
-    <div class="main">
-        <div class="intro d-flex justify-content-between align-items-center">
-            <div class="intro-content">
-                <h4 class="home-heading">Welcome to <b>SapFitWear</b>!</h4>
-                <p class="home-paragraph">Get your premium fit wear by <b>SapFitWear</b> for your daily workouts!</p>
-                <a href="{% url 'products' %}"><button class="view-btn">View Products</button></a>
-            </div>
-            <img src="images/merchSite/web/finalized.png" alt="front-image">
+    <div class="intro d-flex justify-content-between align-items-center">
+        <div class="intro-content">
+            <h4 class="home-heading">Welcome to <b>SapFitWear</b>!</h4>
+            <p class="home-paragraph">Get your premium fit wear by <b>SapFitWear</b> for your daily workouts!</p>
+            <a href="{% url 'products' %}"><button class="view-btn">View Products</button></a>
         </div>
-        <div class="featured-products">
-            <div class="featured-head d-flex justify-content-between">
-                <div class="head-content">
-                    <h4 class="home-heading">Featured Products</h4>
-                    <p class="home-paragraph">Grab it and feel it!</p>
-                </div>
-                <!-- <a href="#"><button class="view-btn">View All</button></a> -->
-
-            </div>
-
-        
-            <div class="product-list-home mt-5">
-                {% for product in products %}
-                <div class="product-card-home">
-                    <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
-                        <img src= "{{product.image.url}}" alt="img" class="product-image">
-                        <small class="size-info"> {{product.product_available_text}}</small>
-                       
-                        <h5 class="product-name">{{product.name}}</h5>
-                    </a>
-
-                    {% if product.discount %}
-                    <div class="price d-block">
-                        <small class="original-price">Rs. {{product.discount_price}}</small>
-                        <strike class="discount-price" style="color:red" >Rs. {{product.price}}</strike>
-                    </div>
-
-                    {% else %}
-                    <small class="product-price">Rs. {{product.price}}</small>
-                    {% endif %}
-                    
-                </div> 
-                {% endfor%}
-
-            </div>
-        </div>
-
+        <img src="images/merchSite/web/finalized.png" alt="front-image">
     </div>
+    <div class="featured-products">
+        <div class="featured-head d-flex justify-content-between">
+            <div class="head-content">
+                <h4 class="home-heading">Featured Products</h4>
+                <p class="home-paragraph">Grab it and feel it!</p>
+            </div>
+
+        </div>
+
     
+        <div class="product-list-home mt-5">
+            {% for product in products %}
+            <div class="product-card-home">
+                <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
+                    <img src= "{{product.image.url}}" alt="img" class="product-image">
+                    <small class="size-info"> {{product.product_available_text}}</small>
+                    
+                    <h5 class="product-name">{{product.name}}</h5>
+                </a>
+
+                {% if product.discount %}
+                <div class="price d-block">
+                    <small class="original-price">Rs. {{product.discount_price}}</small>
+                    <strike class="discount-price" style="color:red" >Rs. {{product.price}}</strike>
+                </div>
+
+                {% else %}
+                <small class="product-price">Rs. {{product.price}}</small>
+                {% endif %}
+                
+            </div> 
+            {% endfor%}
+
+        </div>
+    </div>
+
 </div>
+    
 {% endblock %}
