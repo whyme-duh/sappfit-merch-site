@@ -85,4 +85,19 @@
     .orders-table th, .orders-table td {
         font-size: 12px;
     }
+    .sign-in-container{
+        margin: 0;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+    }
+    .sign-in-fields{
+        width: 100%;
+    }
+    .img-fluid{
+        width: 50%;
+    }
 }
