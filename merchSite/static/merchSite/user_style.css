@@ -99,5 +99,6 @@
     }
     .img-fluid{
         width: 50%;
+        display: none;
     }
 }

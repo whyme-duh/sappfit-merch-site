@@ -193,7 +193,7 @@ nav{
     font-size: 0.85em;
 }
 .original-price{
-    font-size: 1em;
+    font-size: 0.75em;
     font-weight: 600;
 }
 .btn-grps{
@@ -262,6 +262,9 @@ nav{
     display: flex;
     flex-direction: column;
 }
+.product-detail p{
+    text-align: justify;
+}
 
 .product-detail-name{
     font-family: var(--header-font-family);
@@ -270,7 +273,7 @@ nav{
 .product-price{
     font-size: 1.5em;
 }
-.original-price{
+.prod-detail-original-price{
     font-size: 1.5em;
 }
 
@@ -315,7 +318,6 @@ nav{
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    max-width: 350px;
     width: 100%;
 }
 
@@ -401,6 +403,9 @@ a{
     border-radius: 10px;
 }
 /* cart */
+.img-product-cart{
+    width: 100%;
+}
 .payout-order-container{
     align-items: end;
 }
@@ -574,7 +579,7 @@ a{
     display: none;
 }
 
-@media screen and (max-width:450px){
+@media screen and (max-width:400px){
     /* home page and nav section  */
     .nav-section{
         margin: 0 auto;
@@ -592,6 +597,7 @@ a{
         text-decoration: none;
         color: black;
         display: block;
+        font-size: 1.5em;
     }
     .nav-links.responsive{
         position: absolute;
@@ -748,9 +754,260 @@ a{
     .alert-success h5, .alert-error h5{
         font-size: 0.85em;
     }
-
-
+    .order-view{
+        justify-content: center;
+        width: 100%;
+    }
+    .my-cart{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .whole-container{
+        width: 90%;
+    }
 }
+/* 
+@media screen and (max-width:800px){
+    /* home page and nav section  
+    .nav-section{
+        margin: 0 auto;
+    }
+    .nav-section img{
+        width: 180px;
+        height: 100px;
+    }
+    
+    .nav-links a{
+        display: none;
+    }
+    .nav-links a.icon{
+        float: right;
+        text-decoration: none;
+        color: black;
+        display: block;
+        font-size: 2em;
+    }
+    .nav-links.responsive{
+        position: absolute;
+        top: 0;
+        margin: 0 auto;
+        margin-top: 0;
+        right: 0;
+        padding-top: 7em;
+        height: 100%;
+        z-index: 10;
+        width: 30%;
+        background-color: rgba(204, 204, 204, 0.613)
+        
+    }
+    .nav-links.nav-links.responsive a.icon{
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 1em;
+    }
+    .nav-links.responsive .nav-items {
+        display: block;
+        text-align: left;
+        font-size: 1.5em;
+        margin-left: 1em;
+    }
+    .main{
+        margin-top: 2em;
+    }
+    .intro{
+        flex-direction: column-reverse;
+        gap: 1.5em;
+    }
+    .intro img{
+        height: 50vh;
+        width: 100%;
+    }
+    .intro-content{
+        font-size: 1.15em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .view-btn{
+        font-size: 1.5em;
+        width: 100%;
+    }
+    .head-content{
+        font-size: 1.15em;
+    }
+    .product-list-home{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .product-card-home{
+        width: 45%;
+
+    }
+    .product-name{
+        font-size: 1.5em;
+    }
+    .size-info{
+        font-size: 1em;
+    }
+    .original-price, .product-price{
+        font-size: 1.5em;
+    }
+
+    /* product page 
+    .categories-list{
+        font-size: 1.15em;
+    }
+    .product-list{
+        display: flex;
+        justify-content: space-between;
+    }
+    .product-card{
+        width: 45%;
+    }
+    /* product detail page 
+    .product-detail-main{
+        display: flex;
+        width: 80%;
+        margin-top: 0;
+        flex-direction: column;
+
+    }
+    .main-container{
+        width: 100%;
+
+    }
+    .carousel-container {
+        width: 100%;
+
+    }
+    .current-slide{
+        width: 100%;
+    }
+
+    .carousel__track-container {
+        border-radius: 12px;
+        width: 285%;
+        height: 70vh;
+
+    }
+    .carousel__slide{
+        width: 100%;
+    }
+    .carousel__slide .current-slide{
+        width: 100%;
+
+    }
+    .carousel__image{
+        width: 100%;
+    }
+    .carousel__indicator-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .carousel__indicator {
+        max-width: 20%;
+        height: 10vh;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .carousel__indicator--image {
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .carousel__indicator.current-slide {
+        border: 1px solid var(--orange);
+    }
+
+    .carousel__indicator.current-slide img {
+        opacity: .5;
+    }
+    .carousel__indicator:hover {
+        opacity: .5;
+    }
+
+    .carousel__button-container {
+        display: none;
+    }
+    .product-detail{
+        margin-top: 2em;
+        width: 100%;
+    }
+    .quantity-size{
+        width: 100%;
+        
+    }
+   
+    .product-detail-name{
+        font-size: 2.5em;
+    }
+    .product-dis-price{
+        font-size: 1.5em;
+    }
+    .original-price{
+        font-size: 1.5em;
+    }
+    .product-detail p, ul{
+        font-size: 2em;
+        text-align: justify;
+    }
+    .form-group label{
+        font-size: 1.85em;
+    }
+    .form-group{
+        width: 100%;
+    }
+    .form-group select,
+    .form-group input {
+        font-size: 1.5em;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+    }
+    .form-group option{
+        font-size: 0.5em;
+        width: 10%;
+    }
+   
+    .add-to-cart-btn{
+        font-size: 1.5em;
+    }
+    .alert-success, .alert-error{
+        width: 80%;
+    }
+    .alert-success h5, .alert-error h5{
+        font-size: 0.85em;
+    }
+
+    /* related prod 
+    .home-heading{
+        font-size: 2.5em;
+    }
+    
+    .related-product-card{
+        width: 50%;
+        font-size: 1.5em;
+        padding-bottom: 1em;
+    }
+    .size-info{
+        font-size: 0.85em;
+    }
+   
+
+} */
+
 @media screen and (max-width: 960px) {
  .carousel-container {
         display: flex;
@@ -818,10 +1075,6 @@ a{
         height: 100%;
         border-radius: 5px;
     }
-
-
-
-
 
 
     .carousel__indicator.current-slide {

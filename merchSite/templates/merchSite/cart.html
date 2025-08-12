@@ -26,7 +26,7 @@
                     <div class="col-md-2 col-lg-2 col-xl-2" >
                       <img
                         src="{{value.product.image.url}}"
-                        class="img-fluid rounded-3" alt="#">
+                        class="img-product-cart rounded-3" alt="#">
                     </div>
                     <div class="col-md-4 col-lg-5 col-xl-5">
                       <a href="{% url 'detail-page' value.product.slug %}" >
@@ -56,7 +56,7 @@
               </div>
             {% endfor %}
           </div>
-          <div class="col-md-4 d-flex justify-content-between mt-5 ">
+          <div class=" col-md-4 d-flex justify-content-between mt-5 ">
       
             <div class="col-md-12 order-view">
                 <h3 class="text-left">Your Order</h3>
@@ -87,26 +87,26 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control">
+                        <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Enter your email" class="form-control">
+                        <input type="email" name="email" id="email" placeholder="Enter your email" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="location">Delivery Address</label>
-                        <input type="text" name="location" id="location" placeholder="Enter your address" class="form-control">
+                        <input type="text" name="location" id="location" placeholder="Enter your address" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control">
+                        <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control" required>
                     </div>
-                    <button type = "submit" class="btn  btn-lg mt-3 w-100 m-2" style="background-color: #5E338D;color: white;" > Checkout</button>
+                    <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout</button>
                   </form>
-                  <form action="https://uat.esewa.com.np/epay/main" method="POST">
+                  <!-- <form action="https://uat.esewa.com.np/epay/main" method="POST">
             <input value="10" name="tAmt" type="hidden">
             <input value="10" name="amt" type="hidden">
             <input value="0" name="txAmt" type="hidden">
@@ -117,7 +117,7 @@
             <input value="http://127.0.0.1:8000/esewa-callback/" type="hidden" name="su">
             <input value="http://127.0.0.1:8000/payment-failed/" type="hidden" name="fu">
             <input value="Pay With Esewa" type="submit" class="btn btn-success"> 
-            </form>
+            </form> -->
                 </div>
             </div>
     {% else %}
