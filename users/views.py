@@ -7,7 +7,7 @@ import json
 
 @login_required
 def profile(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).order_by('-date')
     order_products = []
 
     for order in orders:

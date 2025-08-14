@@ -739,7 +739,7 @@ a{
     }
     .product-detail{
         margin-top: 2em;
-        width: 90%;
+        width: 100%;
     }
     .quantity-size{
         width: 100%;
@@ -766,6 +766,9 @@ a{
     }
     .whole-container{
         width: 90%;
+    }
+    .d-product-list{
+        gap:1em;
     }
 }
 /* 

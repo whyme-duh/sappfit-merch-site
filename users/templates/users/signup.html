@@ -5,7 +5,7 @@
 {% block title%} Sign Up{% endblock %}
 {% block content %}
 <section class="vh-100" >
-  <div class="container h-100 ">
+  <div class="container h-100 col-md-6 ">
       <p class=" h1 fw-bold mb-md-5 mx-1 mx-md-4 mt-4">Sign up</p>
       <form class="mx-1 mx-md-4" method = "POST" novalidate>
         {% csrf_token %}
@@ -35,18 +35,18 @@
         </div>
         {% if form.errors %}
         <div class="alert alert-danger">
-          {{form.errors}}
+          {% for key, val in form.errors.items %}
+            <p>{{val}}</p>
+          {% endfor %}
         </div>
         {% else %}
         {% endif %}
-        <div class="d-flex mb-3 mb-lg-4">
+        <div class="mb-3 mb-lg-2 d-flex w-100">
           <button type="submit" class="btn btn-lg mt-3" style="background-color:black; color:white;">Register</button>
         </div> 
         <p class="pt-xl-5">Already have an account? <a href="{% url 'login' %}" class="text-decoration-none text-black"><b>Sign In!</b></a></p>
         </form>
-      <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-        <img src="/images/merchSite/web/signup.png" class="img-fluid" alt="Sample image">
-      </div>
+      
     </div>
   </section>
 
