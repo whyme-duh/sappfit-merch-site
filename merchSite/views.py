@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
+
+from core import settings
 from . models import Product, Cart, Order, Categorie
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.core.mail import send_mail
 import random
 import datetime
 # Create your views here.
@@ -101,6 +104,8 @@ def my_cart(request):
         cart.product.size_options[cart.size] -= cart.quantity
         cart.product.save()
         Cart.objects.filter(user = request.user).delete()
+        order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
+        send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
         return redirect('checkout')
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
 
