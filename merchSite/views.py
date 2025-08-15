@@ -27,14 +27,41 @@ def products_by_category(request, id):
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
 
+def product_filter_along_with_category(request, id, filter):
+    products = Product.objects.all()
+    if filter == "lowtohigh":
+        products = Product.objects.filter(category = id).order_by('price')
+    if filter == "hightolow":
+        products = Product.objects.filter(category = id).order_by('-price')
+    categories = Categorie.objects.all()
+    for product in products:
+        available_sizes = [size for size, value in product.size_options.items() if value > 0]
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
+
+
+
 def products_page(request):
-    display = ""
     categories = Categorie.objects.all()
     products = Product.objects.all()
     for product in products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
+
+def product_filter(request, filter):
+    products = Product.objects.all()
+    if filter == "lowtohigh":
+        products = Product.objects.all().order_by('price')
+    if filter == "hightolow":
+        products = Product.objects.all().order_by('-price')
+    categories = Categorie.objects.all()
+    for product in products:
+        available_sizes = [size for size, value in product.size_options.items() if value > 0]
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
+
+
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)

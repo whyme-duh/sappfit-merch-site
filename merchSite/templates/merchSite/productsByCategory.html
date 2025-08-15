@@ -3,18 +3,24 @@
 {% block content %}
 
 <div class="products mb-5">
-    <div class="product-list mt-5">
-        <div class="categories-list">
-            <a href="{% url 'products' %}" class="category-btn">All Products</a>
-           
+    <div class="header-top">
+            <div class="categories-list">
+            <a href="{% url 'products' %}" class="category-btn-active">All Products</a>
+
             {%for category in categories%}
-            {% if id == category.id %}
-            <a href="{% url 'categories-page' category.id%}" class="category-btn-active">{{category.category_name}}</a>
-            {% else %}
             <a href="{% url 'categories-page' category.id%}" class="category-btn">{{category.category_name}}</a>
-            {% endif %}
             {% endfor %}
         </div>
+        <div class="filters">
+            <label for="filter">Sort By:</label>
+            <select name="filter" id="filters" onchange="window.location.href = this.value">
+                <option value="lowtohighprice">Filters</option>
+                <option value="{% url 'products-filter-category'  id 'lowtohigh' %}">Low to High (Price)</option>
+                <option value="{% url 'products-filter-category' id 'hightolow' %}">High to Low (Price)</option>
+            </select>
+        </div>
+    </div>
+    <div class="product-list mt-5">
         {% for product in products%}
         <div class="product-card mt-4">
 
