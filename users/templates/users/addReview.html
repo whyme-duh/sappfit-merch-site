@@ -1,0 +1,13 @@
+{% extends 'merchSite/index.html' %}
+{% block title %}Profile - {{user}}{% endblock %}
+{% block content %}
+<div class="main">
+    <h1>Add Review</h1>
+    <form method = "POST">
+        {% csrf_token %}
+        {{form}}
+        <button type="Submit">Submit</button>
+    </form>
+</div>
+
+{%endblock %}

@@ -79,9 +79,30 @@
                 
                 <button type="submit" class="add-to-cart-btn">Add to Cart</button>
             </form>
+            <div class="reviews">
+        <h5 >Reviews</h5>
+        <div class="review-info">
+            {% for review in reviews|slice:2 %}
+            <p>{{review.user.username}}</p>
+            {% if review.review_star == 1 %}
+            <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
+            {% elif review.review_star == 2 %}
+            <img src="/images/merchSite/web/twostar.png" alt="star" width="100" height="20">
+            {% elif review.review_star == 3 %}
+            <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
+            {% elif review.review_star == 4 %}
+            <img src="/images/merchSite/web/fourstar.png" alt="star" width="100" height="20">
+            {% elif review.review_star == 5 %}
+            <img src="/images/merchSite/web/fivestar.png" alt="">
+            {% endif %}
+            <p>{{review.review}}</p> 
+        </div>
+        {% endfor %}
+    </div>
                 
         </div>
     </div>
+    
     <div class="related-prod d-flex flex-column">
         <h4 class="home-heading mb-5">Similar Products</h4>
 

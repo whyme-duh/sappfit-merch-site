@@ -601,7 +601,18 @@ a{
 .carousel__button-container {
     display: none;
 }
-
+.reviews{
+    background-color: rgb(247, 242, 242);
+    position:relative;
+    width: 100%;
+    margin-top: 1em;
+    padding: 1em;
+    border-radius: 5px;
+}
+.review-info{
+    display: flex;
+    flex-direction: column;
+}
 @media screen and (max-width:400px){
     /* home page and nav section  */
     .nav-section{

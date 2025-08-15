@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-
 from core import settings
 from . models import Product, Cart, Order, Categorie
 from django.contrib import messages
@@ -8,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 import random
 import datetime
+from users.models import Review
 # Create your views here.
 
 def index(request):
@@ -65,6 +65,8 @@ def product_filter(request, filter):
 
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
+    reviews = Review.objects.filter(product = product)
+
     sizes = product.size_options
     category = product.category
     other_products = Product.objects.exclude(category = category)
@@ -76,7 +78,7 @@ def detail_page(request, slug):
         available_sizes = [size for size, value in item.size_options.items() if value > 0]
         item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     
-    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes})
+    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews})
 
 def add_to_cart(request, id):
     product = Product.objects.get(id = id)

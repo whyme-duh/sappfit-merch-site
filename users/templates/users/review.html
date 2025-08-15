@@ -1,0 +1,12 @@
+{% extends 'merchSite/index.html' %}
+{% block title %}Profile - {{user}}{% endblock %}
+{% block content %}
+<div class="main">
+    <h1>Review Products you have purchased.</h1>
+    {% for product in delivered_products %}
+        {{product.name}}
+        <a href="{% url 'add-review' product.id%}">Review</a>
+    {% endfor %}
+</div>
+
+{%endblock %}

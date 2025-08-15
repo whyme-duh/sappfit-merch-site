@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from . models import Profile
+from . models import Profile, Review
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required= True)
@@ -18,3 +18,10 @@ class UserRegistrationForm(UserCreationForm):
             if user.email == email:
                 self._errors['email'] = self.error_class(['Please user different email as there is already an account under this email.'])
         return self.cleaned_data
+
+
+class ReviewForm(forms.ModelForm):
+    
+    class Meta:
+        model = Review
+        fields = ['review', 'review_star']

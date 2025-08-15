@@ -58,6 +58,25 @@
                 </tbody>
             </table>
         </div>
+        <div class="review-section">
+            <h5>This is the review section.</h5>
+            <ol>
+                {% for review in reviews %}
+                <li>
+                    <div class="review-card">
+                        <p><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></p>
+                        <p>{{review.review}} {{review.review_star}}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+            {% for product in delivered_products %}
+                {{product.name}}
+                <a href="{% url 'add-review' product.id%}">Review</a>
+            {% endfor %}
+            <a href="{% url 'review' %}">Review</a>
+            
+        </div>
     
 </div>
 {% endblock %}
