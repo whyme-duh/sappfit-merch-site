@@ -72,10 +72,12 @@ class Order(models.Model):
 
     def add_product(self, product, size, quantity, price):
         product_data = {
+            'id': product.id,
             'product': product.name, 
             'size': size,
             'quantity': quantity,
             'price': price,
+            'reviewed': False
         }
         if self.product:
             product_list = json.loads(self.product)

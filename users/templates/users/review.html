@@ -3,10 +3,16 @@
 {% block content %}
 <div class="main">
     <h1>Review Products you have purchased.</h1>
+    <ol>
     {% for product in delivered_products %}
-        {{product.name}}
-        <a href="{% url 'add-review' product.id%}">Review</a>
+        <li>
+            {{product.product}}
+            <a href="{% url 'add-review' product.id %}">Review It</a>
+        </li>
+          
+
     {% endfor %}
+    </ol>
 </div>
 
 {%endblock %}

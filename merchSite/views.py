@@ -134,7 +134,7 @@ def my_cart(request):
         cart.product.save()
         Cart.objects.filter(user = request.user).delete()
         order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
-        send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
+        # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
         return redirect('checkout')
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
 

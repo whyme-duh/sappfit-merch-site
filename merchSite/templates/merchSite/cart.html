@@ -82,7 +82,7 @@
                     <h3 class="text-left">Billing Address</h3>
         
                     <hr style="color: rgb(233, 228, 228);">
-                   <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method = "POST">
+                   <form method = "POST">
 
                     {% csrf_token %}
                     <div class="form-group">
@@ -104,7 +104,7 @@
                         <label for="phone">Phone</label>
                         <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control" required>
                     </div>
-                    <input type="text" id="amount" name="amount" value="100" required>
+                    <!-- <input type="text" id="amount" name="amount" value="100" required>
                   <input type="text" id="tax_amount" name="tax_amount" value ="10" required>
                   <input type="text" id="total_amount" name="total_amount" value="110" required>
                   <input type="text" id="transaction_uuid" name="transaction_uuid" value="241028123" required>
@@ -114,7 +114,7 @@
                   <input type="text" id="success_url" name="success_url" value="http://127.0.0.1:8000/checkout" required>
                   <input type="text" id="failure_url" name="failure_url" value="http://127.0.0.1:8000/products" required>
                   <input type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
-                  <input type="text" id="signature" name="signature" value="i94zsd3oXF6ZsSr/kGqT4sSzYQzjj1W/waxjWyRwaME=" required>
+                  <input type="text" id="signature" name="signature" value="i94zsd3oXF6ZsSr/kGqT4sSzYQzjj1W/waxjWyRwaME=" required> -->
                   <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout</button>
                   
                 </form>

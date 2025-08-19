@@ -602,16 +602,22 @@ a{
     display: none;
 }
 .reviews{
-    background-color: rgb(247, 242, 242);
+    background-color: rgb(255, 255, 255);
     position:relative;
     width: 100%;
     margin-top: 1em;
-    padding: 1em;
     border-radius: 5px;
 }
 .review-info{
     display: flex;
     flex-direction: column;
+}
+.review-card{
+    width: 100%;
+    padding: 1em;
+    border-radius: 5px;
+    background-color: rgb(227, 227, 227);
+
 }
 @media screen and (max-width:400px){
     /* home page and nav section  */
