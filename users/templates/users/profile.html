@@ -17,7 +17,7 @@
                 <button type="submit" class="logout-btn"><i class="fa fa-sign-out"></i></button>
             </form>
         </div>
-     <div class="orders-section">
+        <div class="orders-section">
             <h2>Your Orders</h2>
             <table class="orders-table">
                 <thead>
@@ -58,25 +58,30 @@
                 </tbody>
             </table>
         </div>
-        <div class="review-section">
-            <h5>This is the review section.</h5>
-            <ol>
-                {% for review in reviews %}
-                <li>
-                    <div class="review-card">
-                        <p><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></p>
-                        <p>{{review.review}} {{review.review_star}}</p>
-                    </div>
-                </li>
-                {% endfor %}
-            </ol>
-            {% for product in delivered_products %}
-                {{product.name}}
-                <a href="{% url 'add-review' product.id%}">Review</a>
-            {% endfor %}
-            <a href="{% url 'review' %}">Review</a>
+        <div class="orders-section">
+            <h2>Your Reviews</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Products</th>
+                        <th>Review Star</th>
+                        <th>Review Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+
+                        <tr>
+                            <td><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></td>
+                            <td>{{review.review_star}}</td>
+                            <td>{{review.review}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             
         </div>
+        <a href="{% url 'review' %}"><h5 class="p-3">Review Other Products</h5></a>
     
 </div>
 {% endblock %}

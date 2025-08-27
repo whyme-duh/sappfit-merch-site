@@ -1,3 +1,6 @@
+import base64
+import hashlib
+import hmac
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from core import settings
@@ -96,6 +99,7 @@ def add_to_cart(request, id):
 
 
 def my_cart(request):
+    
     cartitem = Cart.objects.filter(user = request.user)
     total_price = 0
     delivery_cost = 50
@@ -108,8 +112,32 @@ def my_cart(request):
             total_price +=cart.product.price * cart.quantity
             item_costs = total_price
 
-    total_price += delivery_cost     
+    total_price += delivery_cost   
+    if cartitem:
+        order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+        secret_key = b"8gBm/:&EnhH.1/q"  # Encode the key to bytes
+        message = f'total_amount={total_price},transaction_uuid={order_id},product_code=EPAYTEST'.encode('utf-8') # Encode the message to bytes
+        hmac_sha256 = hmac.new(secret_key, message, hashlib.sha256)
+        digest = hmac_sha256.digest()
+        signature = base64.b64encode(digest).decode('utf-8')
+        esewa_data = {
+            'amount': total_price,
+            'tax_amount': 0,
+            'service_charge': 0,
+            'delivery_charge': delivery_cost,
+            'total_amount': total_price,
+            'transaction_uuid': order_id,
+            'product_code': 'EPAYTEST',
+            'signature': signature,
+            
+            'success_url': request.build_absolute_uri('payment-success/'), 
+            'failure_url': request.build_absolute_uri('payment-failure/'), 
+        }
+    else:
+        esewa_data = {} 
+     
     if request.method == 'POST':
+       
         name = request.POST['name']
         email = request.POST['email']
         location = request.POST['location']
@@ -129,14 +157,14 @@ def my_cart(request):
             else:
                 price = cart.product.price * cart.quantity
             order.add_product(cart.product, cart.size, cart.quantity, price)
-
-        cart.product.size_options[cart.size] -= cart.quantity
-        cart.product.save()
+            cart.product.size_options[cart.size] -= cart.quantity
+            cart.product.save()
+       
         Cart.objects.filter(user = request.user).delete()
         order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
         # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
         return redirect('checkout')
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "esewa_data": esewa_data})
 
 
 def delete_cart_item(request, id):

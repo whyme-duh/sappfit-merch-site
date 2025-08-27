@@ -76,34 +76,38 @@
                     <input type="number" name="quantity" value="1" min="1" required>
                 </div>
                 </div>
-                
                 <button type="submit" class="add-to-cart-btn">Add to Cart</button>
             </form>
             {% if reviews %}
             <div class="reviews">
                 <div class="review-info">
+                    <div class="arrows">
+                        <div class="left-arrow"><i class="fa fa-arrow-left"></i></div>
+                        <div class="right-arrow"><i class="fa fa-arrow-right"></i></div>
+                    </div>
+
                     {% for review in reviews|slice:2 %}
                     <div class="review-card">
-                        <p>{{review.user.username}}</p>
-                        {% if review.review_star == 1 %}
-                        <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
-                        {% elif review.review_star == 2 %}
-                        <img src="/images/merchSite/web/twostar.png" alt="star" width="100" height="20">
-                        {% elif review.review_star == 3 %}
-                        <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
-                        {% elif review.review_star == 4 %}
-                        <img src="/images/merchSite/web/fourstar.png" alt="star" width="100" height="20">
-                        {% elif review.review_star == 5 %}
-                        <img src="/images/merchSite/web/fivestar.png" alt="star" width="100" height="20">
-                        {% endif %}
-                        <p>{{review.review}}</p>
+                        <p class="pb-2 mb-0 user-name-review"><b>{{review.user.username}}</b></p>
+                        <div class="review-stars pb-2">
+                            {% if review.review_star == 1 %}
+                            <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
+                            {% elif review.review_star == 2 %}
+                            <img src="/images/merchSite/web/twostar.png" alt="star" width="100" height="20">
+                            {% elif review.review_star == 3 %}
+                            <img src="/images/merchSite/web/threestar.png" alt="star" width="100" height="20">
+                            {% elif review.review_star == 4 %}
+                            <img src="/images/merchSite/web/fourstar.png" alt="star" width="100" height="20">
+                            {% elif review.review_star == 5 %}
+                            <img src="/images/merchSite/web/fivestar.png" alt="star" width="100" height="20">
+                            {% endif %}
+                        </div>
+                        <p class="pt-2">{{review.review}}</p>
                     </div>
                     {% endfor %}
-
                 </div>
             </div>
             {% endif %}
-
         </div>
     </div>
     
@@ -128,9 +132,9 @@
                             <small class="original-price">Rs. {{product.price}}</small>
                             {% endif %}
                         </div>
-                    </a>
-                       
                     </div>
+                    </a>
+
             {% endfor %}
         </div>
     </div>
