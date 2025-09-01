@@ -602,43 +602,76 @@ a{
 .carousel__button-container {
     display: none;
 }
-.reviews{
+.reviews {
     background-color: rgb(255, 255, 255);
-    position:relative;
+    position: relative;
     width: 100%;
     margin-top: 1em;
     border-radius: 5px;
 }
-.review-info{
+
+.review-info {
+    position: relative;
     display: flex;
     flex-direction: column;
 }
-.left-arrow, .right-arrow{
-    position: absolute;
-    z-index: 1;
-}
-.left-arrow{
-    left: 0;
-    top:50px;
 
+.review-carousel-container {
+    display: flex;
+    overflow: hidden;
 }
-.right-arrow{
-    right: 0;
-    top: 50px;
-}
-.review-card{
-    position: absolute;
+
+.review-card {
     width: 100%;
     padding: 1em;
     border-radius: 5px;
     background-color: rgb(227, 227, 227);
-
-}
-.arrows{
+    transition: transform 0.5s ease-in-out;
 }
 
-.user-name-review{
-    font-size: 1.25em;
+.arrows {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    right: 0;
+    transform: translateY(-50%);
+    justify-content: space-between;
+    z-index: 10;
+}
+.left-arrow{ 
+    left: -150px; 
+    background: rgb(237, 237, 237); 
+    border-radius:50% ; 
+    top:50px; 
+    padding-block: 1em; 
+    padding-inline:1.25em;
+} 
+.right-arrow{ 
+    right: -30px; 
+    top: 50px; 
+    background: rgb(237, 237, 237); 
+    border-radius:50%; 
+    top:50px; 
+    padding-block: 1em; 
+    padding-inline:1.25em; 
+}
+
+
+.left-arrow,
+.right-arrow {
+    background-color: rgba(237, 237, 237, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.left-arrow:hover,
+.right-arrow:hover {
+    background-color: rgba(237, 237, 237, 1);
+}
+
+.user-name-review {
+    font-weight: bold;
 }
 @media screen and (max-width:400px){
     /* home page and nav section  */

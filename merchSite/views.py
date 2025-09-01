@@ -133,6 +133,7 @@ def my_cart(request):
             'success_url': request.build_absolute_uri('payment-success/'), 
             'failure_url': request.build_absolute_uri('payment-failure/'), 
         }
+        print(esewa_data)
     else:
         esewa_data = {} 
      

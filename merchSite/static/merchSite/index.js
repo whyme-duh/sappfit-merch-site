@@ -1,3 +1,4 @@
+
 const alert = document.getElementById('alert-msg');
 console.log(alert);
 setTimeout(function(){
@@ -105,7 +106,59 @@ indicatorsNav.addEventListener('click', e => {
     updateIndicators(currentIndi, targetIndi);
     showHideArrows(targetIndex, prevButton, nextButton, slides);
 })
+document.addEventListener("DOMContentLoaded", () => {
+    // Select all review cards and the arrows
+    const reviewCards = document.querySelectorAll(".review-card");
+    const leftArrow = document.getElementById("left-arrow");
+    const rightArrow = document.getElementById("right-arrow");
+    
+    // Initialize the current review index
+    let currentReviewIndex = 0;
+    
+    // Function to show a specific review and hide others
+    const showReview = (index) => {
+        // Loop through all review cards
+        reviewCards.forEach((card, i) => {
+            // If the current card's index matches the desired index, show it
+            if (i === index) {
+                card.style.display = "block";
+            } else {
+                // Otherwise, hide the card
+                card.style.display = "none";
+            }
+        });
+    };
+    
+    // Initial call to show the first review
+    showReview(currentReviewIndex);
+    
+    // Event listener for the left arrow
+    leftArrow.addEventListener("click", () => {
+        // Decrement the index. If it goes below zero, wrap around to the last review.
+        currentReviewIndex = (currentReviewIndex - 1 + reviewCards.length) % reviewCards.length;
+        showReview(currentReviewIndex);
+    });
+    
+    // Event listener for the right arrow
+    rightArrow.addEventListener("click", () => {
+        // Increment the index. If it goes past the last review, wrap around to the first.
+        currentReviewIndex = (currentReviewIndex + 1) % reviewCards.length;
+        showReview(currentReviewIndex);
+    });
 
+    // Optional: Add hover functionality to show/hide arrows
+    const reviewsContainer = document.querySelector(".reviews");
+    const arrowsContainer = document.getElementById("arrows");
+
+    if (arrowsContainer) {
+        reviewsContainer.addEventListener("mouseenter", () => {
+            arrowsContainer.style.display = "flex";
+        });
+        reviewsContainer.addEventListener("mouseleave", () => {
+            arrowsContainer.style.display = "none";
+        });
+    }
+});
 
 
 
