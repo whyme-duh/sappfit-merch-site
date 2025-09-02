@@ -12,7 +12,6 @@
             {% endfor %}
         </div>
         <div class="filters">
-            <label for="filter">Sort By:</label>
             <select name="filter" id="filters" onchange="window.location.href = this.value">
                 <option value="lowtohighprice">Filters</option>
                 <option value="{% url 'products-filter-category'  id 'lowtohigh' %}">Low to High (Price)</option>

@@ -7,22 +7,16 @@
 <div class="my-cart container ">
     {% if cartitem %}
     <div class="whole-container " style="height: 100%;">
-        <div class="row d-flex justify-content-between">
-  
-          <div class="col-md-6 mt-5 me-3">
-  
+        <div class="row d-flex justify-content-between ">
+          <div class="col-md-7 mt-5 me-3">
             <div class="d-flex justify-content-between align-items-start mb-4">
-              <h3 class="fw-normal mb-0 text-black">Your Cart</h3>
-              <a href="{% url 'clear-cart'%}" class="btn btn-danger">Delete <i class="fa fa-trash-o"></i></a>
-            
+              <h3 class="mb-0 text-black ">Your Cart</h3>
+              <a href="{% url 'clear-cart'%}" class="btn btn-danger">Delete All</a>
             </div>
             {% for value in cartitem %}
               <div class="card rounded-3 mb-4">
-                
                 <div class="card-body p-4">
-  
                   <div class="row d-flex justify-content-between align-items-center">
-  
                     <div class="col-md-2 col-lg-2 col-xl-2" >
                       <img
                         src="{{value.product.image.url}}"
@@ -30,37 +24,29 @@
                     </div>
                     <div class="col-md-4 col-lg-5 col-xl-5">
                       <a href="{% url 'detail-page' value.product.slug %}" >
-                      
                       <p class="lead fw-normal mb-2">{{value.product.name}} </p>
                       </a>
                       Size: {{value.size}}
                       Quantities: {{value.quantity}}
                     </div>
-                   
                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 ">
                         {% if value.product.discount %}
                         <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.discount_price}}</h5>
                         {% else %}
                         <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.price}}</h5>
                         {% endif%}
-
                     </div>
                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-    
                       <a href="{% url 'delete-cart-item' value.id %}"><i class="fa fa-trash-o" style="font-size:20px;color:red;" ></i></a>
-    
                     </div>
                   </div>
-                  
                 </div>
               </div>
             {% endfor %}
           </div>
           <div class=" col-md-4 d-flex justify-content-between mt-5 ">
-      
             <div class="col-md-12 order-view">
                 <h3 class="text-left">Your Order</h3>
-        
                 <hr style="color: rgb(233, 228, 228);">
                 <div class="payout-order-view p-3">
                     <div class="delivery d-flex justify-content-between">
@@ -71,18 +57,16 @@
                     </div>
                     <!-- <div class="discount d-flex justify-content-between">
                         <p>Discount : </p> <p>{{discount}} </p>
-        
                     </div> -->
                     <div class="total">
                         <strong class="d-flex justify-content-between">
                         <p>Total : </p><p>Rs. {{total_price}}</p>
                         </strong>
-        
                     </div>
                     <h3 class="text-left">Billing Address</h3>
         
                     <hr style="color: rgb(233, 228, 228);">
-                   <form action = "https://rc-epay.esewa.com.np/api/epay/main/v2/form" method = "POST">
+                   <form method = "POST">
 
                     {% csrf_token %}
                     <div class="form-group">
@@ -104,7 +88,7 @@
                         <label for="phone">Phone</label>
                         <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control" required>
                     </div>
-                    <input type="hidden" name="scd" value="EPAYTEST">
+                    <!-- <input type="hidden" name="scd" value="EPAYTEST">
                   <input type="hidden" name="su" value="{{ esewa_data.success_url }}">
                   <input type="hidden" name="fu" value="{{ esewa_data.failure_url }}">
                   <input type="hidden" name="oid" value="{{ esewa_data.transaction_uuid }}">
@@ -112,11 +96,9 @@
                   <input type="hidden" name="txAmt" value="{{ esewa_data.tax_amount }}">
                   <input type="hidden" name="psc" value="{{ esewa_data.service_charge }}">
                   <input type="hidden" name="pdc" value="{{ esewa_data.delivery_charge }}">
-                  <input type="hidden" name="tAmt" value="{{ esewa_data.total_amount }}">
-                  <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout</button>
-                  
+                  <input type="hidden" name="tAmt" value="{{ esewa_data.total_amount }}"> -->
+                  <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout by Khalti</button>
                 </form>
-
                 </div>
             </div>
     {% else %}

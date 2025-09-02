@@ -1,8 +1,7 @@
 from django.urls import include, path
 from django.conf.urls.static import static
 from core import settings
-from .views import index, detail_page, add_to_cart, my_cart, delete_cart_item, clear_cart, products_page, checkout, products_by_category, product_filter, product_filter_along_with_category
-
+from .views import index, detail_page, add_to_cart, my_cart, delete_cart_item, clear_cart, products_page, checkout, products_by_category, product_filter, product_filter_along_with_category, khalti_failure, khalti_success
 urlpatterns = [
     path('', index, name='home' ),
     path('products/', products_page, name='products' ),
@@ -15,5 +14,7 @@ urlpatterns = [
     path('delete-cart-item/<int:id>/', delete_cart_item , name= 'delete-cart-item'),
     path('checkout/', checkout, name='checkout' ),
     path('clear-cart/', clear_cart , name= 'clear-cart'),
+    path('my-cart/khalti-success/', khalti_success, name='khalti-success'),
+    path('my-cart/khalti-failure/', khalti_failure, name='khalti-failure'),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

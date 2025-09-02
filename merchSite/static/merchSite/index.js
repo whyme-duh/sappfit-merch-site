@@ -162,4 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+const reviewSection = document.getElementById("reviews");
+if (reviewSection){
+    const relatedProd = document.getElementById("related-prod");
+    relatedProd.style.marginTop = "5em";
+}
+else{
+    const relatedProd = document.getElementById("related-prod");
+    relatedProd.style.marginTop = "20em";
+
+}
 

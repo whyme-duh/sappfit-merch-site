@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        .icon {
+            color: #dc3545;
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        .btn.secondary {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">❌</div>
+        <h1>Payment Failed</h1>
+        <p>Unfortunately, your payment could not be processed. This may be due to a few reasons, such as insufficient balance or a technical issue. Please try again or contact support.</p>
+        
+        <div class="btn-group">
+            <a href="{% url 'my-cart' %}" class="btn">Try Again</a>
+            <a href="{% url 'home' %}" class="btn secondary">Return to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>

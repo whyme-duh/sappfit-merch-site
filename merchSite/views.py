@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 import random
 import datetime
 from users.models import Review
-# Create your views here.
+import requests
 
 def index(request):
     display = ""
@@ -99,7 +99,6 @@ def add_to_cart(request, id):
 
 
 def my_cart(request):
-    
     cartitem = Cart.objects.filter(user = request.user)
     total_price = 0
     delivery_cost = 50
@@ -113,59 +112,167 @@ def my_cart(request):
             item_costs = total_price
 
     total_price += delivery_cost   
-    if cartitem:
-        order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
-        secret_key = b"8gBm/:&EnhH.1/q"  # Encode the key to bytes
-        message = f'total_amount={total_price},transaction_uuid={order_id},product_code=EPAYTEST'.encode('utf-8') # Encode the message to bytes
-        hmac_sha256 = hmac.new(secret_key, message, hashlib.sha256)
-        digest = hmac_sha256.digest()
-        signature = base64.b64encode(digest).decode('utf-8')
-        esewa_data = {
-            'amount': total_price,
-            'tax_amount': 0,
-            'service_charge': 0,
-            'delivery_charge': delivery_cost,
-            'total_amount': total_price,
-            'transaction_uuid': order_id,
-            'product_code': 'EPAYTEST',
-            'signature': signature,
-            
-            'success_url': request.build_absolute_uri('payment-success/'), 
-            'failure_url': request.build_absolute_uri('payment-failure/'), 
-        }
-        print(esewa_data)
-    else:
-        esewa_data = {} 
-     
+    
     if request.method == 'POST':
-       
+        
         name = request.POST['name']
         email = request.POST['email']
         location = request.POST['location']
         phone = request.POST['phone']
-        order = Order.objects.create(
-            name = name,
-            email = email, 
-            location = location,
-            phone = phone,
-            user = request.user,
-            price = total_price,
-            date = datetime.datetime.now()
-        )
-        for cart in cartitem:
-            if cart.product.discount:
-                price = cart.product.discount_price * cart.quantity
+
+        order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+        payload =   {
+            "return_url": request.build_absolute_uri('khalti-success/'),
+            "website_url": request.build_absolute_uri('/'),
+            "amount": int(total_price * 100),
+            "purchase_order_id": order_id,
+            "purchase_order_name": f'Order by {request.user.username}'
+        }
+        headers = {
+            "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+            "Content-Type": "application/json"
+        }
+        try:
+            response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
+            response_data = response.json()
+            if response.status_code == 200:
+                order = Order.objects.create(
+                    name = name,
+                    email = email, 
+                    location = location,
+                    phone = phone,
+                    user = request.user,
+                    price = total_price,
+                    date = datetime.datetime.now()
+                )
+                for cart in cartitem:
+                    if cart.product.discount:
+                        price = cart.product.discount_price * cart.quantity
+                    else:
+                        price = cart.product.price * cart.quantity
+                    order.add_product(cart.product, cart.size, cart.quantity, price)
+                    # cart.product.size_options[cart.size] -= cart.quantity
+                    cart.product.save()
+            
+                Cart.objects.filter(user = request.user).delete()
+                order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
+                # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
+                return redirect(response_data['payment_url'])
             else:
-                price = cart.product.price * cart.quantity
-            order.add_product(cart.product, cart.size, cart.quantity, price)
-            cart.product.size_options[cart.size] -= cart.quantity
-            cart.product.save()
+                error_message = response_data.get('detail', 'An unknown error occurred.')
+                return render(request, 'merchSite/cart.html', {"error_message": error_message})
+        except requests.exceptions.RequestException as e:
+             return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+
+
+def khalti_success(request):
+    if request.method == 'GET':
+        # Safely get the required parameters from the URL
+        pidx = request.GET.get('pidx')  # This is the 'token' for verification
        
-        Cart.objects.filter(user = request.user).delete()
-        order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
-        # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
-        return redirect('checkout')
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "esewa_data": esewa_data})
+
+        print(pidx)
+
+        # Prepare the payload for Khalti's verification API
+        payload = {
+            # Use pidx as the token for verification
+            "pidx": pidx,
+        }
+        
+        headers = {
+            "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        try:
+            # Make the API call to verify the payment
+            response = requests.post(settings.KHALTI_LOOKUP_URL, json=payload, headers=headers)
+            response_data = response.json()
+            print(response, response_data)
+            # Check if the verification was successful and status is 'Completed'
+            if response.status_code == 200 and response_data.get('status') == 'Completed':
+                return render(request, 'merchSite/khalti-sucess.html')
+            else:
+                return redirect('khalti-failure')
+        
+        except requests.exceptions.RequestException:
+            # Handle network errors during API call
+            return redirect('khalti-failure')
+
+    return redirect('home')
+
+def khalti_failure(request):
+    return render(request, 'merchSite/khalti-failure.html')
+
+# def my_cart(request):
+    
+#     cartitem = Cart.objects.filter(user = request.user)
+#     total_price = 0
+#     delivery_cost = 50
+#     item_costs = 0
+#     for cart in cartitem:
+#         if cart.product.discount:
+#             total_price += cart.product.discount_price * cart.quantity
+#             item_costs = total_price
+#         else:
+#             total_price +=cart.product.price * cart.quantity
+#             item_costs = total_price
+
+#     total_price += delivery_cost   
+#     if cartitem:
+#         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+#         secret_key = b"8gBm/:&EnhH.1/q"  # Encode the key to bytes
+#         message = f'total_amount={total_price},transaction_uuid={order_id},product_code=EPAYTEST'.encode('utf-8') # Encode the message to bytes
+#         hmac_sha256 = hmac.new(secret_key, message, hashlib.sha256)
+#         digest = hmac_sha256.digest()
+#         signature = base64.b64encode(digest).decode('utf-8')
+#         esewa_data = {
+#             'amount': total_price,
+#             'tax_amount': 0,
+#             'service_charge': 0,
+#             'delivery_charge': delivery_cost,
+#             'total_amount': total_price,
+#             'transaction_uuid': order_id,
+#             'product_code': 'EPAYTEST',
+#             'signature': signature,
+            
+#             'success_url': request.build_absolute_uri('payment-success/'), 
+#             'failure_url': request.build_absolute_uri('payment-failure/'), 
+#         }
+#         print(esewa_data)
+#     else:
+#         esewa_data = {} 
+     
+#     if request.method == 'POST':
+       
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         location = request.POST['location']
+#         phone = request.POST['phone']
+#         order = Order.objects.create(
+#             name = name,
+#             email = email, 
+#             location = location,
+#             phone = phone,
+#             user = request.user,
+#             price = total_price,
+#             date = datetime.datetime.now()
+#         )
+#         for cart in cartitem:
+#             if cart.product.discount:
+#                 price = cart.product.discount_price * cart.quantity
+#             else:
+#                 price = cart.product.price * cart.quantity
+#             order.add_product(cart.product, cart.size, cart.quantity, price)
+#             cart.product.size_options[cart.size] -= cart.quantity
+#             cart.product.save()
+       
+#         Cart.objects.filter(user = request.user).delete()
+#         order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
+#         # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
+#         return redirect('checkout')
+#     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "esewa_data": esewa_data})
 
 
 def delete_cart_item(request, id):

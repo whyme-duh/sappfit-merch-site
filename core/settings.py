@@ -153,3 +153,10 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "sappfitmerch@gmail.com"
 EMAIL_HOST_PASSWORD = 'vevp tulk ouwq ghik'
+
+
+# Khalti API Gateway
+KHALTI_SECRET_KEY = "33d4a7f776bf4367980869da3b7e0d82"
+KHALTI_INITIATE_URL = 'https://dev.khalti.com/api/v2/epayment/initiate/'
+KHALTI_VERIFY_URL = 'https://dev.khalti.com/api/v2/payment/verify/'
+KHALTI_LOOKUP_URL = 'https://dev.khalti.com/api/v2/epayment/lookup/'
