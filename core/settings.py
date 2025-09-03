@@ -151,12 +151,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "sappfitmerch@gmail.com"
-EMAIL_HOST_PASSWORD = 'vevp tulk ouwq ghik'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 # Khalti API Gateway
-KHALTI_SECRET_KEY = "33d4a7f776bf4367980869da3b7e0d82"
+KHALTI_SECRET_KEY = os.environ.get('KHALTI_SECRET_KEY')
 KHALTI_INITIATE_URL = 'https://dev.khalti.com/api/v2/epayment/initiate/'
 KHALTI_VERIFY_URL = 'https://dev.khalti.com/api/v2/payment/verify/'
 KHALTI_LOOKUP_URL = 'https://dev.khalti.com/api/v2/epayment/lookup/'

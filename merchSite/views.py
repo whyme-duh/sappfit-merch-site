@@ -114,13 +114,17 @@ def my_cart(request):
     total_price += delivery_cost   
     
     if request.method == 'POST':
-        
-        name = request.POST['name']
-        email = request.POST['email']
-        location = request.POST['location']
-        phone = request.POST['phone']
-
         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+
+        request.session['order_data']={
+            'name': request.POST['name'],
+            'email' : request.POST['email'],
+            'location': request.POST['location'],
+            'phone': request.POST['phone'],
+            'total_price' : total_price,
+        }
+      
+
         payload =   {
             "return_url": request.build_absolute_uri('khalti-success/'),
             "website_url": request.build_absolute_uri('/'),
@@ -136,14 +140,44 @@ def my_cart(request):
             response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
             response_data = response.json()
             if response.status_code == 200:
+                return redirect(response_data['payment_url'])
+            else:
+                error_message = response_data.get('detail', 'An unknown error occurred.')
+                return render(request, 'merchSite/cart.html', {"error_message": error_message})
+        except requests.exceptions.RequestException as e:
+             return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+
+
+def khalti_success(request):
+    cartitem = Cart.objects.filter(user = request.user)
+    if request.method == 'GET':
+        pidx = request.GET.get('pidx') 
+        purchase_order_id = request.GET.get('purchase_order_id')
+
+        payload = {
+            "pidx": pidx,
+        }
+        
+        headers = {
+            "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        try:
+            response = requests.post(settings.KHALTI_LOOKUP_URL, json=payload, headers=headers)
+            response_data = response.json()
+            if response.status_code == 200 and response_data.get('status') == 'Completed':
+                order_data = request.session.get('order_data')
                 order = Order.objects.create(
-                    name = name,
-                    email = email, 
-                    location = location,
-                    phone = phone,
+                    name= order_data['name'],
+                    email = order_data['email'],
+                    location = order_data['location'],
+                    phone = order_data['phone'],
                     user = request.user,
-                    price = total_price,
-                    date = datetime.datetime.now()
+                    price = order_data['total_price'],
+                    order_id = purchase_order_id,
+                    transaction_id = response_data.get('transaction_id')
                 )
                 for cart in cartitem:
                     if cart.product.discount:
@@ -157,53 +191,17 @@ def my_cart(request):
                 Cart.objects.filter(user = request.user).delete()
                 order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
                 # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
-                return redirect(response_data['payment_url'])
-            else:
-                error_message = response_data.get('detail', 'An unknown error occurred.')
-                return render(request, 'merchSite/cart.html', {"error_message": error_message})
-        except requests.exceptions.RequestException as e:
-             return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
-
-
-def khalti_success(request):
-    if request.method == 'GET':
-        # Safely get the required parameters from the URL
-        pidx = request.GET.get('pidx')  # This is the 'token' for verification
-       
-
-        print(pidx)
-
-        # Prepare the payload for Khalti's verification API
-        payload = {
-            # Use pidx as the token for verification
-            "pidx": pidx,
-        }
-        
-        headers = {
-            "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
-            "Content-Type": "application/json"
-        }
-
-        try:
-            # Make the API call to verify the payment
-            response = requests.post(settings.KHALTI_LOOKUP_URL, json=payload, headers=headers)
-            response_data = response.json()
-            print(response, response_data)
-            # Check if the verification was successful and status is 'Completed'
-            if response.status_code == 200 and response_data.get('status') == 'Completed':
-                return render(request, 'merchSite/khalti-sucess.html')
+                return render(request, 'merchSite/khalti/khalti-success.html')
             else:
                 return redirect('khalti-failure')
         
         except requests.exceptions.RequestException:
-            # Handle network errors during API call
             return redirect('khalti-failure')
 
     return redirect('home')
 
 def khalti_failure(request):
-    return render(request, 'merchSite/khalti-failure.html')
+    return render(request, 'merchSite/khalti/khalti-failure.html')
 
 # def my_cart(request):
     
