@@ -67,8 +67,8 @@ class Order(models.Model):
     email = models.EmailField(max_length = 80, blank = True, null = True)
     phone = models.IntegerField( blank = True, null = True)
     is_paid = models.BooleanField(default=False, null = True, blank = True)
-    order_id = models.TextField(blank = True, null = True)
-    transaction_id = models.TextField(blank = True, null = True)
+    order_id = models.CharField(max_length = 255, blank = True, null = True)
+    transaction_id = models.CharField(max_length = 255, blank = True, null = True)
 
     def __str__(self):
         return f"Order from {self.name} ({self.user}) - {self.product} "

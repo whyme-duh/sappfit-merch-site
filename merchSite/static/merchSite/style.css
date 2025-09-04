@@ -904,6 +904,232 @@ a{
         gap:1em;
     }
 }
+
+@media screen and (max-width:300px){
+    /* home page and nav section  */
+    .nav-section{
+        margin: 0 auto;
+    }
+    .nav-section img{
+        width: 80px;
+        height: 50px;
+    }
+    
+    .nav-links a{
+        display: none;
+    }
+    .nav-links a.icon{
+        float: right;
+        text-decoration: none;
+        color: black;
+        display: block;
+        font-size: 1.5em;
+    }
+    .nav-links.responsive{
+        position: absolute;
+        top: 0;
+        margin: 0 auto;
+        margin-top: 0;
+        right: 0;
+        padding-top: 5em;
+        height: 100%;
+        z-index: 10;
+        background-color: rgba(204, 204, 204, 0.613)
+        
+    }
+    .nav-links.nav-links.responsive a.icon{
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 1em;
+    }
+    .nav-links.responsive .nav-items {
+        display: block;
+        text-align: left;
+        margin-left: 1em;
+    }
+    .main{
+        margin-top: 2em;
+    }
+    .intro{
+        flex-direction: column-reverse;
+        gap: 1.5em;
+    }
+    .intro img{
+        height: 40vh;
+        width: 100%;
+    }
+    .intro-content{
+        font-size: 0.75em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .view-btn{
+        font-size: 1.25em;
+        width: 100%;
+    }
+    .head-content{
+        font-size: 0.75em;
+    }
+    .product-list-home{
+        width: 100%;
+    }
+    .product-card-home{
+        width: 100%;
+
+    }
+    .product-name{
+        font-size: 1.5em;
+    }
+    .original-price, .product-price{
+        font-size: 1em;
+    }
+
+    /* product page */
+    .header-top{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+        gap: 0.5em;
+
+    }
+    .filters{
+        width: 90%;
+        margin-top:1em;
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5em;
+        align-items: center;
+    }
+    .filters label, option, select{
+        font-size: 1em;
+    }
+    .filters select{
+        padding-block: 0.6em;
+
+    }
+
+    .categories-list{
+        font-size: 0.85em;
+    }
+    .product-card{
+        width: 100%;
+    }
+    .home-heading{
+        font-size: 1.5em;
+    }
+    /* product detail page */
+    .product-detail-main{
+        display: flex;
+        width: 80%;
+        margin-top: 0;
+        flex-direction: column;
+
+    }
+    .main-container{
+        width: 100%;
+
+    }
+    .carousel-container {
+        width: 100%;
+
+    }
+    .current-slide{
+        width: 100%;
+    }
+
+    .carousel__track-container {
+        border-radius: 12px;
+        width: 285%;
+        height: 50vh;
+
+    }
+    .carousel__slide{
+        width: 100%;
+    }
+    .carousel__slide .current-slide{
+        width: 100%;
+
+    }
+    .carousel__image{
+        width: 100%;
+    }
+    .carousel__indicator-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .carousel__indicator {
+        max-width: 20%;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .carousel__indicator--image {
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .carousel__indicator.current-slide {
+        border: 1px solid var(--orange);
+    }
+
+    .carousel__indicator.current-slide img {
+        opacity: .5;
+    }
+    .carousel__indicator:hover {
+        opacity: .5;
+    }
+
+    .carousel__button-container {
+        display: none;
+    }
+    .product-detail{
+        margin-top: 2em;
+        width: 100%;
+    }
+    .quantity-size{
+        width: 100%;
+        display: block;
+    }
+    .product-detail-name{
+        font-size: 1.85em;
+    }
+    .reviews{
+        margin-top: 3em;
+    }
+    .review-card{
+        margin-top: 1em;
+    }
+    .alert-success, .alert-error, .alert-warning{
+        width: 80%;
+    }
+    .alert-success h5, .alert-error h5, .alert-warning h5{
+        font-size: 0.85em;
+    }
+    .order-view{
+        justify-content: center;
+        width: 100%;
+    }
+    .my-cart{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .whole-container{
+        width: 90%;
+    }
+    .d-product-list{
+        gap:1em;
+    }
+}
 /* 
 @media screen and (max-width:800px){
     /* home page and nav section  

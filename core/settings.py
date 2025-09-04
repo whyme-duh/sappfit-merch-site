@@ -84,14 +84,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    'default': dj_database_url.config(
-        default ='postgresql://postgres:admin@localhost:5432/merch',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+    # 'default': dj_database_url.config(
+    #     default ='postgresql://postgres:admin@localhost:5432/merch',
+    #     conn_max_age=600
+    # )
 
 }
 
@@ -137,7 +137,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = "/images/"
 
