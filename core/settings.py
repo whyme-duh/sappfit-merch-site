@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-load_dotenv()
+load_dotenv(override=True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import dj_database_url
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "192.168.1.151:8000"]
+ALLOWED_HOSTS = ["*", "192.168.1.70:8000"]
 
 
 # Application definition
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,10 +84,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    'default': dj_database_url.config(
+        default ='postgresql://postgres:admin@localhost:5432/merch',
+        conn_max_age=600
+    )
+
 }
 
 
@@ -156,7 +163,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 # Khalti API Gateway
-KHALTI_SECRET_KEY = os.environ.get('KHALTI_SECRET_KEY')
+KHALTI_SECRET_KEY = os.environ.get("KHALTI_SECRET_KEY")
 KHALTI_INITIATE_URL = 'https://dev.khalti.com/api/v2/epayment/initiate/'
 KHALTI_VERIFY_URL = 'https://dev.khalti.com/api/v2/payment/verify/'
 KHALTI_LOOKUP_URL = 'https://dev.khalti.com/api/v2/epayment/lookup/'

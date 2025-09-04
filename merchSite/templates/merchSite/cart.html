@@ -106,6 +106,8 @@
         <img src="/images/merchSite/web/cart.png" alt="" width="200" height="100">
         <div class="content pt-5 d-flex flex-column justify-content-center align-items-center">
           <h2>Your Cart Is <span style="color:red;">Empty</span></h2>
+                {{error_message}}
+
           <p>Must add the items to cart before you proceed to checkout. </p>
           <a href="{% url 'products' %}" class="btn btn-warning mt-3 ">Go Back Shopping</a>
         </div>
