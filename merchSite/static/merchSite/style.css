@@ -905,7 +905,7 @@ a{
     }
 }
 
-@media screen and (max-width:300px){
+@media  (min-width: 400.02px) and (max-width: 499.98px) {
     /* home page and nav section  */
     .nav-section{
         margin: 0 auto;

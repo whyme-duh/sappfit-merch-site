@@ -84,6 +84,7 @@ def detail_page(request, slug):
     return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews})
 
 def add_to_cart(request, id):
+    cartitem = Cart.objects.filter(user = request.user)
     product = Product.objects.get(id = id)
     selected_size = request.POST.get('size')
     quantity = request.POST.get('quantity')
@@ -91,6 +92,7 @@ def add_to_cart(request, id):
         if request.user.is_authenticated:
             Cart.objects.create(user = request.user, product = product, size = selected_size, quantity = quantity)
             messages.success(request, f'Added to Cart')
+            return redirect('my-cart')
         else:
             messages.error(request, f'You have to login in order to add items to cart')
     else:
