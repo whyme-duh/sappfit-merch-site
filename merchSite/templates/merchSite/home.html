@@ -1,4 +1,5 @@
 {% extends 'merchSite/index.html' %}
+{% load static %}
 {% block title%} Sapp-Fit{% endblock %}
 
 {% block content %}
@@ -9,7 +10,7 @@
             <p class="home-paragraph">Get your premium fit wear by <b>SappFitWear</b> for your daily workouts!</p>
             <a href="{% url 'products' %}"><button class="view-btn">View Products</button></a>
         </div>
-        <img src="images/merchSite/web/finalized.png" alt="front-image">
+        <img src="{% static 'merchSite/finalized.png' %}" alt="front-image">
     </div>
     <div class="featured-products">
         <div class="featured-head d-flex justify-content-between">
