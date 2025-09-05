@@ -27,10 +27,23 @@
             <!-- Password input -->
            <div class="form-outline mb-4">
               <label class="form-label" for="password">Password</label>
-              {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
+              <div class="password-div">
+                {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
+                <i class="fa fa-eye" id="eye" onclick="hidePassword('eye-slash', 'eye','id_password')"></i>
+                <i class="fa fa-eye-slash" id="eye-slash" onclick="showPassword('eye', 'eye-slash','id_password')"></i>
+
+              </div>
 
             </div>
-            {{forms.error}}
+
+            {% if form.errors %}
+        <div class="alert alert-danger">
+          {% for key, val in form.errors.items %}
+            <p class="error-message">{{val}}</p>
+          {% endfor %}
+        </div>
+        {% else %}
+        {% endif %}
              
   
             <!-- Submit button -->

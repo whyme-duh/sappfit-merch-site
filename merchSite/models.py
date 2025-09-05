@@ -59,7 +59,7 @@ class Product(models.Model):
 class Order(models.Model):
     product = models.TextField(blank = True, null = True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.IntegerField( default = '', blank = True, null = True)
+    price = models.IntegerField(default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
     delivered = models.BooleanField(default=False)
     name = models.CharField(max_length = 80, blank = True, null = True)
@@ -67,8 +67,8 @@ class Order(models.Model):
     email = models.EmailField(max_length = 80, blank = True, null = True)
     phone = models.IntegerField( blank = True, null = True)
     is_paid = models.BooleanField(default=False, null = True, blank = True)
-    order_id = models.CharField(max_length = 255, blank = True, null = True)
-    transaction_id = models.CharField(max_length = 255, blank = True, null = True)
+    order_id = models.CharField(max_length = 1000, blank = True, null = True)
+    transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
 
     def __str__(self):
         return f"Order from {self.name} ({self.user}) - {self.product} "

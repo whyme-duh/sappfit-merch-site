@@ -24,14 +24,23 @@
         <div class="d-flex flex-row align-items-center mb-4">
           <div class="form-outline flex-fill mb-0">
             <label class="form-label" for="form3Example4c">Password</label>
-            {% render_field form.password1 class="form-control" placeholder="Enter Password" type="password" %}
+            <div class="password-div">
+                {% render_field form.password1 class="form-control" placeholder="Enter Password" type="password" %}
+                <i class="fa fa-eye" id="eye-password1" onclick="hidePassword('eye-slash-password1', 'eye-password1','id_password1')"></i>
+                <i class="fa fa-eye-slash" id="eye-slash-password1" onclick="showPassword('eye-password1', 'eye-slash-password1','id_password1')"></i>
+              </div>
           </div>
         </div>
         <div class="d-flex flex-row align-items-center mb-4">
           <div class="form-outline flex-fill mb-0">
             <label class="form-label" for="form3Example4cd">Repeat your password</label>
-            {% render_field form.password2 class="form-control" placeholder="Enter Password" type="password" %}
+            <div class="password-div">
+                {% render_field form.password2 class="form-control" placeholder="Enter Password" type="password" %}
+                <i class="fa fa-eye" id="eye-password2" onclick="hidePassword('eye-slash-password2', 'eye-password2','id_password2')"></i>
+                <i class="fa fa-eye-slash" id="eye-slash-password2" onclick="showPassword('eye-password2', 'eye-slash-password2','id_password2')"></i>
+              </div>
           </div>
+          
         </div>
         {% if form.errors %}
         <div class="alert alert-danger">

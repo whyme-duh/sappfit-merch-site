@@ -38,15 +38,21 @@
         </div>
     </nav>
     <main>
-      
+        
         {% if messages %}
         {% for msg in messages %}
-       
-       <div class="alert-{{msg.tags}} w-md-25" id="alert-msg">
+        {% if msg.tags == "cart success" %}
+        
+        <a class="alert-{{msg.tags}} w-md-25" id="alert-msg" href="{% url 'my-cart' %}">
+            <h5>{{msg}}</h5>
+        </a>
+        {% else %}
+        <div class="alert-{{msg.tags}} w-md-25" id="alert-msg">
             <h5>{{msg}}</h5>
         </div>
+        {% endif %}
         {% endfor %}
-      {% endif %}
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 </body>

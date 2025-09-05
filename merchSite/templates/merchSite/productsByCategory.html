@@ -5,10 +5,14 @@
 <div class="products mb-5">
     <div class="header-top">
             <div class="categories-list">
-            <a href="{% url 'products' %}" class="category-btn-active">All Products</a>
+            <a href="{% url 'products' %}" class="category-btn">All Products</a>
 
-            {%for category in categories%}
+            {% for category in categories %}
+            {% if category.id == id %}
+            <a href="{% url 'categories-page' category.id%}" class="category-btn-active">{{category.category_name}}</a>
+            {% else %}
             <a href="{% url 'categories-page' category.id%}" class="category-btn">{{category.category_name}}</a>
+            {% endif %}
             {% endfor %}
         </div>
         <div class="filters">

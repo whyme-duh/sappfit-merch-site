@@ -88,15 +88,27 @@ def add_to_cart(request, id):
     product = Product.objects.get(id = id)
     selected_size = request.POST.get('size')
     quantity = request.POST.get('quantity')
-    if selected_size in product.size_options and product.size_options[selected_size] > 0:
-        if request.user.is_authenticated:
-            Cart.objects.create(user = request.user, product = product, size = selected_size, quantity = quantity)
-            messages.success(request, f'Added to Cart')
-            return redirect('my-cart')
+    product_exist_or_not_in_cart = False
+    for cart in cartitem:
+        print(cart.size)
+        if product.name == cart.product.name and selected_size in cart.size:
+            product_exist_or_not_in_cart = True
+    if not product_exist_or_not_in_cart:
+        if selected_size in product.size_options and product.size_options[selected_size] > 0:
+            if int(quantity) <= int(product.size_options[selected_size]):
+                if request.user.is_authenticated:
+                    Cart.objects.create(user = request.user, product = product, size = selected_size, quantity = quantity)
+                    messages.success(request, f'Added to Cart! Go to Cart?', extra_tags="cart", )
+                else:
+                    messages.error(request, f'You have to login in order to add items to cart')
+            else:
+                messages.error(request, f'Quantities not available.')
+                
         else:
-            messages.error(request, f'You have to login in order to add items to cart')
+            messages.error(request, f'{selected_size} is out of stock')
     else:
-        messages.error(request, f'{selected_size} is out of stock')
+        messages.error(request, f'It seems you have already added this product and same size in the cart already.')
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
