@@ -1,0 +1,104 @@
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #e2f1f8;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-header .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-header .profile-info h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-header .profile-info p {
+    color: #777;
+    font-size: 14px;
+}
+
+.orders-section {
+    padding: 20px;
+}
+
+.orders-section h2 {
+    font-size: 22px;
+    color: #333;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.orders-table th, .orders-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.orders-table th {
+    background-color: #f2f2f2;
+}
+
+.orders-table td {
+    font-size: 14px;
+}
+
+.logout-btn{
+    border: none;
+    background: none;
+    color: red;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-container {
+        padding: 10px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .orders-section h2 {
+        font-size: 18px;
+    }
+
+    .orders-table th, .orders-table td {
+        font-size: 12px;
+    }
+    .sign-in-container{
+        margin: 0;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+    }
+    .sign-in-fields{
+        width: 100%;
+    }
+    .img-fluid{
+        width: 50%;
+        display: none;
+    }
+}

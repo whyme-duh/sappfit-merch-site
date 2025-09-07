@@ -1,6 +1,7 @@
 
 setTimeout(function(){
     const alert = document.getElementById('alert-msg');
+
     alert.style.display = "none";
 }, 4000)
 
@@ -24,19 +25,23 @@ const eye = document.getElementById("eye");
 const eyepassword1 = document.getElementById("eye-password1");
 const eyepassword2 = document.getElementById("eye-password2");
 
-
-eyeSlashPassword1.addEventListener("click", function(){
+if (eyeSlashPassword1){
+    eyeSlashPassword1.addEventListener("click", function(){
     const passwordField1 = document.getElementById("id_password1");
     passwordField1.type = "text";
     eyeSlashPassword1.style.display = "none";
     eyepassword1.style.display = "block";
 })
-eye.addEventListener("click", function(){
+}
+if(eye){
+    eye.addEventListener("click", function(){
     const passwordField = document.getElementById("id_password");
     passwordField.type = "password";
     eyeSlash.style.display = "block";
     eye.style.display = "none";
 })
+}
+
 
 function showPassword(hiddenId, iId, passwordField){
     const eyeIcon = document.getElementById(hiddenId);

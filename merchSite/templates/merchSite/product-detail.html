@@ -150,17 +150,16 @@
         <h4 class="home-heading mb-5">Other Products</h4>
         <div class="d-product-list">
             {% for product in other_products %}
-                    <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
-                    <div class="related-product-card" >
-                        <img src="{{product.image.url}}" class="related-prod-img">
-                        <div class="details">
-                            <small class="size-info">{{product.product_available_text}}</small>
-                            <h5 class="mb-0">{{product.name}}</h5>
-                            <p>Rs. {{product.price }}</p>
-                        </div>
-                    </a>
-                       
-                    </div>
+            <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
+            <div class="related-product-card" >
+                <img src="{{product.image.url}}" class="related-prod-img">
+                <div class="details">
+                    <small class="size-info">{{product.product_available_text}}</small>
+                    <h5 class="mb-0">{{product.name}}</h5>
+                    <p>Rs. {{product.price }}</p>
+                </div>
+            </a>
+            </div>
             {% endfor %}
         </div>
     </div>
