@@ -1,6 +1,7 @@
 {% extends 'merchSite/index.html' %}
 {% load widget_tweaks %}
 {% load cart_tag% }
+{% load static %}
 {% block title %}My Cart{% endblock %}
 
 {% block content %}
@@ -103,7 +104,7 @@
             </div>
     {% else %}
     <div class="containear-fluid mt-5 pt-5 d-flex justify-content-center flex-column align-items-center">
-        <img src="/images/merchSite/web/cart.png" alt="" width="200" height="100">
+        <img src="{% static 'merchSite/cart.png' %}" alt="" width="200" height="100">
         <div class="content pt-5 d-flex flex-column justify-content-center align-items-center">
           <h2>Your Cart Is <span style="color:red;">Empty</span></h2>
                 {{error_message}}

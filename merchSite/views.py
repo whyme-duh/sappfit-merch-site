@@ -69,7 +69,9 @@ def product_filter(request, filter):
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
     reviews = Review.objects.filter(product = product)
-
+    product_original_price = product.price
+    product_price_with_discount = product.discount_price
+    discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
     sizes = product.size_options
     category = product.category
     other_products = Product.objects.exclude(category = category)
@@ -81,7 +83,7 @@ def detail_page(request, slug):
         available_sizes = [size for size, value in item.size_options.items() if value > 0]
         item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     
-    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews})
+    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews, "discount_rate" : discount_rate})
 
 def add_to_cart(request, id):
     cartitem = Cart.objects.filter(user = request.user)

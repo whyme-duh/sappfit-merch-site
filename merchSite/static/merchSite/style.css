@@ -278,6 +278,28 @@ nav{
     justify-content: center;
     margin-top:5em;
 }
+.product-category{
+    color: grey;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.product-price{
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+.product-dis-price{
+    font-size: 0.75em;
+}
+.discount-rate{
+    border-radius: 10%;
+    padding-inline:0.5em;
+    color: black;
+    font-weight: 600;
+    font-size: 0.65em;
+    padding-block: 0.25em;
+    background-color: rgb(220, 254, 220);
+}
 .product-description{
     text-align: justify;
 }
@@ -325,7 +347,9 @@ nav{
     font-size: 1.5em;
 }
 .prod-detail-original-price{
-    font-size: 1.5em;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
 }
 
 /* category */
@@ -634,14 +658,12 @@ a{
 }
 .reviews {
     background-color: rgb(255, 255, 255);
-    position: relative;
     width: 80%;
     margin-top: 15em;
     border-radius: 5px;
 }
 
 .review-info {
-    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -649,17 +671,26 @@ a{
 .review-carousel-container {
     display: flex;
     overflow: hidden;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1em;
+  
 }
 
 .review-card {
-    width: 100%;
+    width: 45%;
     padding: 1em;
     border-radius: 5px;
     background-color: rgb(247, 247, 247);
     transition: transform 0.5s ease-in-out;
 }
-
-.arrows {
+.user-review{
+    display: flex;
+    justify-content: space-between;
+}
+/* .arrows {
     display: none;
     position: absolute;
     top: 50%;
@@ -698,20 +729,18 @@ a{
 .left-arrow:hover,
 .right-arrow:hover {
     background-color: rgba(237, 237, 237, 1);
-}
+} */
 
 .user-name-review {
-    font-weight: bold;
+    font-size: 1.5em;
+    text-transform: capitalize;
 }
 @media screen and (max-width:400px){
     /* home page and nav section  */
     .nav-section{
         margin: 0 auto;
     }
-    .nav-section img{
-        width: 80px;
-        height: 50px;
-    }
+    
     
     .nav-links a{
         display: none;
@@ -753,9 +782,9 @@ a{
         flex-direction: column-reverse;
         gap: 1.5em;
     }
-    .intro img{
-        height: 40vh;
-        width: 100%;
+    .nav-section img{
+        width: 80px;
+        height: 60px;
     }
     .intro-content{
         font-size: 0.75em;
