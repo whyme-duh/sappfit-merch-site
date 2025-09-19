@@ -71,6 +71,7 @@ def detail_page(request, slug):
     reviews = Review.objects.filter(product = product)
     product_original_price = product.price
     product_price_with_discount = product.discount_price
+    # this is to find the discount rate
     discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
     sizes = product.size_options
     category = product.category
@@ -100,7 +101,7 @@ def add_to_cart(request, id):
             if int(quantity) <= int(product.size_options[selected_size]):
                 if request.user.is_authenticated:
                     Cart.objects.create(user = request.user, product = product, size = selected_size, quantity = quantity)
-                    messages.success(request, f'Added to Cart! Go to Cart?', extra_tags="cart", )
+                    messages.success(request, f'Added to your bag.', extra_tags="cart", )
                 else:
                     messages.error(request, f'You have to login in order to add items to cart')
             else:
