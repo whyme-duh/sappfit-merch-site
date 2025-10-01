@@ -62,7 +62,7 @@ def product_filter(request, filter):
     for product in products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
-    return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
+    return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories, 'active_filter': filter})
 
 
 
@@ -72,7 +72,11 @@ def detail_page(request, slug):
     product_original_price = product.price
     product_price_with_discount = product.discount_price
     # this is to find the discount rate
-    discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
+    if product_price_with_discount:
+        discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
+    else:
+        discount_rate = 0
+
     sizes = product.size_options
     category = product.category
     other_products = Product.objects.exclude(category = category)

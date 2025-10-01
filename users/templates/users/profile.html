@@ -81,6 +81,29 @@
             </table>
             
         </div>
+        <div class="orders-section">
+            <h2>Review Other Products</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Products</th>
+                        <th>Review Star</th>
+                        <th>Review Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+
+                        <tr>
+                            <td><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></td>
+                            <td>{{review.review_star}}</td>
+                            <td>{{review.review}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
         <a href="{% url 'review' %}"><h5 class="p-3">Review Other Products</h5></a>
     
 </div>

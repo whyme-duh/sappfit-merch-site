@@ -70,8 +70,7 @@ class Order(models.Model):
     order_id = models.CharField(max_length = 1000, blank = True, null = True)
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
 
-    def __str__(self):
-        return f"Order from {self.name} ({self.user}) - {self.product} "
+    
 
     def add_product(self, product, size, quantity, price):
         product_data = {
