@@ -4,7 +4,7 @@ import hmac
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from core import settings
-from . models import Product, Cart, Order, Categorie
+from . models import Product, Cart,  Order, Categorie
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
@@ -12,14 +12,15 @@ import random
 import datetime
 from users.models import Review
 import requests
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
-    display = ""
     featured_products = Product.objects.filter(discount = True)
     for product in featured_products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
-    return render(request, 'merchSite/home.html', {"products" : featured_products, "display" : display})
+    return render(request, 'merchSite/home.html', {"products" : featured_products })
 
 def products_by_category(request, id):
     display = ""
@@ -90,49 +91,117 @@ def detail_page(request, slug):
     
     return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews, "discount_rate" : discount_rate})
 
+def get_cart_items(request):
+    if request.user.is_authenticated:
+        return Cart.objects.filter(user = request.user)
+    else:
+        if not request.session.session_key:
+            request.session.create()
+        return Cart.objects.filter(session_id = request.session.session_key)
+
 def add_to_cart(request, id):
-    cartitem = Cart.objects.filter(user = request.user)
+    
     product = Product.objects.get(id = id)
     selected_size = request.POST.get('size')
-    quantity = request.POST.get('quantity')
-    product_exist_or_not_in_cart = False
-    for cart in cartitem:
-        print(cart.size)
-        if product.name == cart.product.name and selected_size in cart.size:
-            product_exist_or_not_in_cart = True
-    if not product_exist_or_not_in_cart:
-        if selected_size in product.size_options and product.size_options[selected_size] > 0:
-            if int(quantity) <= int(product.size_options[selected_size]):
-                if request.user.is_authenticated:
-                    Cart.objects.create(user = request.user, product = product, size = selected_size, quantity = quantity)
-                    messages.success(request, f'Added to your bag.', extra_tags="cart", )
-                else:
-                    messages.error(request, f'You have to login in order to add items to cart')
-            else:
-                messages.error(request, f'Quantities not available.')
-                
-        else:
-            messages.error(request, f'{selected_size} is out of stock')
+    quantity = int(request.POST.get('quantity',1))
+
+    user = None
+    session_id = None
+
+    if request.user.is_authenticated:
+        user = request.user
     else:
-        messages.error(request, f'It seems you have already added this product and same size in the cart already.')
+        if not request.session.session_key:
+            request.session.create()
+        session_id = request.session.session_key
+   
+    if selected_size in product.size_options and int(product.size_options[selected_size]) > 0:
+        
+        if quantity <= int(product.size_options[selected_size]):
+            
+            if user:
+                item_exists = Cart.objects.filter(user=user, product=product, size=selected_size).exists()
+            else:
+                item_exists = Cart.objects.filter(session_id=session_id, product=product, size=selected_size).exists()
+
+            if not item_exists:
+                Cart.objects.create(
+                    user=user, 
+                    session_id=session_id, 
+                    product=product, 
+                    size=selected_size, 
+                    quantity=quantity
+                )
+                messages.success(request, 'Added to your bag.', extra_tags="cart")
+            else:
+                messages.error(request, 'Item already in cart. Go to cart to update quantity.')
+        
+        else:
+            messages.error(request, 'Quantities not available.')
+    else:
+        messages.error(request, f'{selected_size} is out of stock')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+# def add_to_cart(request, id):
+#     cart = Cart(request)
+#     product = Product.objects.get(id = id)
+#     print("product_id ", id)
+#     print("product ", product)
+#     selected_size = request.POST.get('size')
+#     quantity = int(request.POST.get('quantity', 1))
+#     cart.add(product, selected_size, quantity)
+#     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# def my_cart(request):
+#     cart = Cart(request)
+#     print(cart.cart['1'])
+#     total_price = 0
+#     delivery_cost = 50
+#     item_costs = 0
+   
+#     if request.method == 'POST':
+#         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+
+#         request.session['order_data']={
+#             'name': request.POST['name'],
+#             'email' : request.POST['email'],
+#             'location': request.POST['location'],
+#             'phone': request.POST['phone'],
+#             'total_price' : total_price,
+#         }
+#         payload =   {
+#             "return_url": request.build_absolute_uri('khalti-success/'),
+#             "website_url": request.build_absolute_uri('/'),
+#             "amount": int(total_price * 100),
+#             "purchase_order_id": order_id,
+#             "purchase_order_name": f'Order by {request.user.username}'
+#         }
+#         headers = {
+#             "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+#             "Content-Type": "application/json"
+#         }
+#         try:
+#             response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
+#             response_data = response.json()
+#             if response.status_code == 200:
+#                 return redirect(response_data['payment_url'])
+#             else:
+#                 error_message = response_data.get('detail', 'An unknown error occurred.')
+#                 return render(request, 'merchSite/cart.html', {"error_message": error_message})
+#         except requests.exceptions.RequestException as e:
+#              return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+#     return render(request, 'merchSite/cart.html', {"cartitem": cart, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+
+
 
 def my_cart(request):
-    cartitem = Cart.objects.filter(user = request.user)
-    total_price = 0
+    cartitem = get_cart_items(request)
     delivery_cost = 50
-    item_costs = 0
-    for cart in cartitem:
-        if cart.product.discount:
-            total_price += cart.product.discount_price * cart.quantity
-            item_costs = total_price
-        else:
-            total_price +=cart.product.price * cart.quantity
-            item_costs = total_price
-
-    total_price += delivery_cost   
+    item_costs = sum(item.get_total_cost for item in cartitem)
+    total_price = item_costs + delivery_cost
+    
     
     if request.method == 'POST':
         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'

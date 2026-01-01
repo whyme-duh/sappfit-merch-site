@@ -24,6 +24,8 @@
             <div class="nav-links" id="nav-links">
                 <a href="{% url 'home'%}" class="nav-items">Home</a>
                 <a href="{% url 'products'%}" class="nav-items">Products</a>
+                <a href="{% url 'my-cart' %}" class="nav-items">My Bag</a>
+
                 {% if user.is_authenticated %}
                 <a href="{% url 'my-cart' %}" class="nav-items">My Bag</a>
                 <a href="{% url 'profile'%}" class="nav-items">Profile</a>

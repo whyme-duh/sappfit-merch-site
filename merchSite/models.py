@@ -70,7 +70,8 @@ class Order(models.Model):
     order_id = models.CharField(max_length = 1000, blank = True, null = True)
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
 
-    
+    def __str__(self):
+        return f"Order from {self.name} ({self.user}) - {self.product} "
 
     def add_product(self, product, size, quantity, price):
         product_data = {
@@ -95,10 +96,17 @@ class Order(models.Model):
     
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
+    session_id = models.CharField(max_length=40, null= True, blank = True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank = True, null = True)
     size = models.TextField(max_length=50, blank = True, null = True)
     quantity = models.IntegerField(blank= True, null = True)
+
+    @property
+    def get_total_cost(self):
+        if self.product.discount:
+            return self.product.discount_price * self.quantity
+        return self.product.price * self.quantity
 
     def __str__(self):
         return f"Cart for {self.user}"

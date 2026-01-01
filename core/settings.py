@@ -26,9 +26,9 @@ import dj_database_url
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*", "192.168.1.155:8000"]
+ALLOWED_HOSTS = ["*",  "192.168.1.155:8000"]
 
 
 # Application definition
@@ -202,3 +202,6 @@ KHALTI_SECRET_KEY = os.environ.get("KHALTI_SECRET_KEY")
 KHALTI_INITIATE_URL = 'https://dev.khalti.com/api/v2/epayment/initiate/'
 KHALTI_VERIFY_URL = 'https://dev.khalti.com/api/v2/payment/verify/'
 KHALTI_LOOKUP_URL = 'https://dev.khalti.com/api/v2/epayment/lookup/'
+
+
+CART_SESSION_ID = 'cart'
