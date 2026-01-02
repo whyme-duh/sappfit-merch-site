@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from . import settings
 from django.contrib.auth import views as auth_views
+from users.views import CustomLoginView
 import django_browser_reload
 
 
@@ -27,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('merchSite.urls')),
     path('users/', include('users.urls')),
-    path('login/',auth_views.LoginView.as_view(template_name = 'users/login.html', redirect_authenticated_user= True), name = 'login'),
+    path('login/',CustomLoginView.as_view(template_name = 'users/login.html', redirect_authenticated_user= True), name = 'login'),
     path('logout/',auth_views.LogoutView.as_view(template_name = 'users/login.html'), name = 'logout'),
 
 ] 

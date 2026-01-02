@@ -115,31 +115,42 @@ def add_to_cart(request, id):
             request.session.create()
         session_id = request.session.session_key
    
-    if selected_size in product.size_options and int(product.size_options[selected_size]) > 0:
-        
-        if quantity <= int(product.size_options[selected_size]):
-            
+    if selected_size in product.size_options:
+        max_stock = int(product.size_options[selected_size])
+        if max_stock > 0:
+            cart_item = None
+                
             if user:
-                item_exists = Cart.objects.filter(user=user, product=product, size=selected_size).exists()
+                cart_item = Cart.objects.filter(user=user, product=product, size=selected_size).first()
             else:
-                item_exists = Cart.objects.filter(session_id=session_id, product=product, size=selected_size).exists()
+                cart_item = Cart.objects.filter(session_id=session_id, product=product, size=selected_size).first()
+            
+            if cart_item:
+                current_qty_in_cart = cart_item.quantity
+                propsed_new_total = current_qty_in_cart + quantity
 
-            if not item_exists:
-                Cart.objects.create(
-                    user=user, 
-                    session_id=session_id, 
-                    product=product, 
-                    size=selected_size, 
-                    quantity=quantity
-                )
-                messages.success(request, 'Added to your bag.', extra_tags="cart")
+                if propsed_new_total <= max_stock:
+                    cart_item.quantity = propsed_new_total
+                    cart_item.save()
+                    messages.success(request, f'Updated the cart!')
+                else:
+                    messages.error(request, f'Cannot add the item anymore in the cart.')
             else:
-                messages.error(request, 'Item already in cart. Go to cart to update quantity.')
-        
+                if quantity <= max_stock:
+                    Cart.objects.create(
+                        user=user, 
+                        session_id=session_id, 
+                        product=product, 
+                        size=selected_size, 
+                        quantity=quantity
+                    )
+                    messages.success(request, 'Added to your bag.', extra_tags="cart")
+                else:   
+                    messages.error(request, f'Only {max_stock} items available.')
         else:
-            messages.error(request, 'Quantities not available.')
+            messages.error(request, f'{selected_size} is out of stock')
     else:
-        messages.error(request, f'{selected_size} is out of stock')
+        messages.error(request, 'Invalid size selected')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

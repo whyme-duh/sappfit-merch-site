@@ -9,6 +9,20 @@ import json
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import LoginView
+from merchSite.utils import merge_cart
+
+
+class CustomLoginView(LoginView):
+    template_name = "users/login.html"
+
+    def form_valid(self, form):
+        old_session_key = self.request.session.session_key
+        response = super().form_valid(form)
+        if old_session_key:
+            merge_cart(old_session_key, self.request.user)
+        return response
+
 
 @login_required
 def profile(request):

@@ -27,7 +27,6 @@
                 <a href="{% url 'my-cart' %}" class="nav-items">My Bag</a>
 
                 {% if user.is_authenticated %}
-                <a href="{% url 'my-cart' %}" class="nav-items">My Bag</a>
                 <a href="{% url 'profile'%}" class="nav-items">Profile</a>
                 {% else %}
                 <a href="{% url 'login'%}" class="nav-items">Login</a>
