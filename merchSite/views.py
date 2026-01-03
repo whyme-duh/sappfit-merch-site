@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     featured_products = Product.objects.filter(discount = True)
+    
+    
     for product in featured_products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
@@ -376,7 +378,10 @@ def khalti_failure(request):
 
 def delete_cart_item(request, id):
     try:
-        cart_item = Cart.objects.get(id = id)
+        if request.user.is_authenticated:
+            cart_item = Cart.objects.get(id = id, user = request.user)
+        else:
+            cart_item = Cart.objects.get(id = id, session_id = request.session.session_key)
         cart_item.delete()
     except Exception as e:
         print(e)
@@ -384,7 +389,12 @@ def delete_cart_item(request, id):
 
 
 def clear_cart(request):
-    Cart.objects.filter(user = request.user).delete()
+    if request.user.is_authenticated:
+        cart_item = Cart.objects.filter(user = request.user)
+    else:
+        cart_item = Cart.objects.filter(session_id = request.session.session_key)
+    cart_item.delete()
+    messages.success(request, f'Deleted the cart items successfully!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
 
 

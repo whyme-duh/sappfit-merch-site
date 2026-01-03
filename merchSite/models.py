@@ -43,6 +43,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+    def discount_rate(self):
+        if self.discount:
+            return f'-{int((self.discount_price/self.price) * 100)}%'
+    
         
     
 # class ProductVarient(models.Model):
@@ -94,6 +98,8 @@ class Order(models.Model):
     def get_orders_by_user(user_id):
         return Order.objects.filter(user = user_id).order_by('-date')
     
+   
+    
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
@@ -110,6 +116,17 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart for {self.user}"
+    
+    def get_cart_length(self, request):
+        if request.user.is_authenticated:
+            cart_item = Cart.objects.filter(user = request.user)
+        else:
+            cart_item = Cart.objects.filter(session_id = request.user.session_key)
+        return len(cart_item)
+
+
+    
+
 
     
 

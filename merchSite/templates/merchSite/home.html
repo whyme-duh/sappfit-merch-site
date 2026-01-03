@@ -26,15 +26,19 @@
             {% for product in products %}
             <div class="product-card-home">
                 <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
-                    <img src= "{{product.image.url}}" alt="img" class="product-image">
+                    <div class="img-discount-over">
+                        <img src= "{{product.image.url}}" alt="img" class="product-image">
+                        <div class="discount-rate-home">
+                            <p>{{product.discount_rate}}</p>
+                        </div>
+                    </div>
                     <small class="size-info"> {{product.product_available_text}}</small>
-                    
                     <h5 class="product-name">{{product.name}}</h5>
                 </a>
 
                 {% if product.discount %}
-                <div class="price d-block">
-                    <small class="original-price">Rs. {{product.discount_price}}</small>
+                <div class="price d-flex gap-2">
+                    <p class="original-price">Rs. {{product.discount_price}}</p>
                     <strike class="discount-price" style="color:red" >Rs. {{product.price}}</strike>
                 </div>
 

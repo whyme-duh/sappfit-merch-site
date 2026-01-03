@@ -10,16 +10,13 @@
       <div class="sign-in-container  ">
         <img src="{% static 'merchSite/signin.png' %}" class="img-fluid" alt="Sign-in image">
         <div class="sign-in-fields">
-          <p class=" h1 fw-bold mb-md-5 mt-4">Sign up</p>
+          <p class=" h1 fw-bold mb-md-5 mt-4">Sign In</p>
           <form method = "POST">
             {% csrf_token %}
-            <!-- {{form}} -->
-            <!-- Email input -->
             <div class="form-outline mb-4">
               <label class="form-label" for="username">Username</label>
                 {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
             </div>
-            <!-- Password input -->
            <div class="form-outline mb-4">
               <label class="form-label" for="password">Password</label>
               <div class="password-div">
@@ -42,7 +39,7 @@
              
   
             <!-- Submit button -->
-            <button type="submit" class="btn btn-lg btn-block" style="background-color:black; color:white;">Sign in</button>
+            <button type="submit" class="btn btn-lg btn-block" style="background-color:rgb(255, 206, 154); color:black;font-size: clamp(1em, 1vh, 1.55em);font-weight: 700;">Login</button>
             
             <p class="pt-md-5 pt-3">Does not have an account? <a href="{% url 'sign-up' %}" class="text-decoration-none text-black"><b>Sign Up Now!</b></a></p>
   

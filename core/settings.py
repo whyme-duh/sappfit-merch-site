@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*",  "192.168.1.155:8000"]
+ALLOWED_HOSTS = ["*",  "192.168.1.167:8000"]
 
 
 # Application definition
@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'merchSite.context_processors.get_cart_count',
             ],
         },
     },
