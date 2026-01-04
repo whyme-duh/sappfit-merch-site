@@ -1,40 +1,82 @@
 {% extends 'merchSite/index.html' %}
 {% block content %}
-<h3 class="text-left">Billing Address</h3>
-        
-                    <hr style="color: rgb(233, 228, 228);">
-                   <form method = "POST">
-
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Enter your email" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="location">Delivery Address</label>
-                        <input type="text" name="location" id="location" placeholder="Enter your address" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control" required>
-                    </div>
-                    <!-- <input type="hidden" name="scd" value="EPAYTEST">
-                  <input type="hidden" name="su" value="{{ esewa_data.success_url }}">
-                  <input type="hidden" name="fu" value="{{ esewa_data.failure_url }}">
-                  <input type="hidden" name="oid" value="{{ esewa_data.transaction_uuid }}">
-                  <input type="hidden" name="amt" value="{{ esewa_data.amount }}">
-                  <input type="hidden" name="txAmt" value="{{ esewa_data.tax_amount }}">
-                  <input type="hidden" name="psc" value="{{ esewa_data.service_charge }}">
-                  <input type="hidden" name="pdc" value="{{ esewa_data.delivery_charge }}">
-                  <input type="hidden" name="tAmt" value="{{ esewa_data.total_amount }}"> -->
-                  <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout by Khalti</button>
-                </form>
+<div class="container mt-5">
+   <div class="checkout-page-info row d-flex justify-content-evenly">
+        <div class="col-md-6">
+            <h3 class="text-left">Billing Address</h3>
+            <hr style="color: rgb(233, 228, 228);">
+            <form method = "POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Enter your full name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Delivery Address</label>
+                    <input type="text" name="location" id="location" placeholder="Enter your address" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="number" name="phone" id="phone" placeholder="Enter your phone number" class="form-control" required>
+                </div>
+                <!-- <input type="hidden" name="scd" value="EPAYTEST">
+                <input type="hidden" name="su" value="{{ esewa_data.success_url }}">
+                <input type="hidden" name="fu" value="{{ esewa_data.failure_url }}">
+                <input type="hidden" name="oid" value="{{ esewa_data.transaction_uuid }}">
+                <input type="hidden" name="amt" value="{{ esewa_data.amount }}">
+                <input type="hidden" name="txAmt" value="{{ esewa_data.tax_amount }}">
+                <input type="hidden" name="psc" value="{{ esewa_data.service_charge }}">
+                <input type="hidden" name="pdc" value="{{ esewa_data.delivery_charge }}">
+                <input type="hidden" name="tAmt" value="{{ esewa_data.total_amount }}"> -->
+                <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Checkout by Khalti</button>
+            </form>
+        </div>
+        <div class="order-summary col-md-4">
+            <h5>Order Summary</h5>
+            <hr>
+            {% for cart in cartitem %}
+            <div class="cart-summary-info d-flex justify-content-between align-items-center">
+                <p>x{{cart.quantity}}</p>
+                <img src="{{cart.product.image.url}}" alt="" class="order-summary-image">
+                <a href="{% url 'detail-page' cart.product.slug %}" style="
+                text-decoration: none; color: black;">
+                    <p> <strong>{{cart.product}}</strong> ({{cart.size}})</p>
+                </a>
+                {% if cart.product.discount %}
+                <p>Rs. {{cart.product.discount_price}}</p>
+                {% else %}
+                <p>Rs. {{cart.product.price}}</p>
+                {% endif %}
+                <a href="{% url  'delete-cart-item' cart.id %}"><i class="fa fa-trash"></i></a>
+            </div>
+            <hr>
+            {% endfor %}
+            <div class="payout-order-view p-3">
+                <div class="delivery d-flex justify-content-between">
+                    <p class="mb-0">Items cost : </p> <p>{{item_costs}} </p>
+                </div>
+                <div class="delivery d-flex justify-content-between">
+                    <p class="mb-0">Delivery Charge: </p> <p>{{delivery_cost}} </p>
+                </div>
+                <!-- <div class="discount d-flex justify-content-between">
+                    <p>Discount : </p> <p>{{discount}} </p>
+                </div> -->
+                <hr>
+                <div class="total">
+                    <strong class="d-flex justify-content-between">
+                    <h5>Order Total : </h5><h5>Rs. {{total_price}}</h5>
+                    </strong>
+                </div>
+            </div>
+        </div>
+   </div>
+</div>
 
 {% endblock %}

@@ -14,6 +14,12 @@ from users.models import Review
 import requests
 from django.contrib.auth.decorators import login_required
 
+def error_404_view(request, exception):
+    return render(request, 'error/404.html')
+
+def error_500_view(request):
+    return render(request, 'error/500.html')
+
 
 def index(request):
     featured_products = Product.objects.filter(discount = True)
@@ -146,7 +152,7 @@ def add_to_cart(request, id):
                         size=selected_size, 
                         quantity=quantity
                     )
-                    messages.success(request, 'Added to your bag.', extra_tags="cart")
+                    messages.success(request, 'Added this item to your bag. View your bag. ', extra_tags="cart")
                 else:   
                     messages.error(request, f'Only {max_stock} items available.')
         else:
@@ -156,66 +162,21 @@ def add_to_cart(request, id):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-# def add_to_cart(request, id):
-#     cart = Cart(request)
-#     product = Product.objects.get(id = id)
-#     print("product_id ", id)
-#     print("product ", product)
-#     selected_size = request.POST.get('size')
-#     quantity = int(request.POST.get('quantity', 1))
-#     cart.add(product, selected_size, quantity)
-#     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-# def my_cart(request):
-#     cart = Cart(request)
-#     print(cart.cart['1'])
-#     total_price = 0
-#     delivery_cost = 50
-#     item_costs = 0
-   
-#     if request.method == 'POST':
-#         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
-
-#         request.session['order_data']={
-#             'name': request.POST['name'],
-#             'email' : request.POST['email'],
-#             'location': request.POST['location'],
-#             'phone': request.POST['phone'],
-#             'total_price' : total_price,
-#         }
-#         payload =   {
-#             "return_url": request.build_absolute_uri('khalti-success/'),
-#             "website_url": request.build_absolute_uri('/'),
-#             "amount": int(total_price * 100),
-#             "purchase_order_id": order_id,
-#             "purchase_order_name": f'Order by {request.user.username}'
-#         }
-#         headers = {
-#             "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
-#             "Content-Type": "application/json"
-#         }
-#         try:
-#             response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
-#             response_data = response.json()
-#             if response.status_code == 200:
-#                 return redirect(response_data['payment_url'])
-#             else:
-#                 error_message = response_data.get('detail', 'An unknown error occurred.')
-#                 return render(request, 'merchSite/cart.html', {"error_message": error_message})
-#         except requests.exceptions.RequestException as e:
-#              return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-#     return render(request, 'merchSite/cart.html', {"cartitem": cart, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
-
-
 
 def my_cart(request):
     cartitem = get_cart_items(request)
     delivery_cost = 50
     item_costs = sum(item.get_total_cost for item in cartitem)
     total_price = item_costs + delivery_cost
-    
-    
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+
+
+@login_required
+def checkout(request):
+    cartitem = get_cart_items(request)
+    delivery_cost = 50
+    item_costs = sum(item.get_total_cost for item in cartitem)
+    total_price = item_costs + delivery_cost
     if request.method == 'POST':
         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
 
@@ -226,7 +187,7 @@ def my_cart(request):
             'phone': request.POST['phone'],
             'total_price' : total_price,
         }
-      
+        
 
         payload =   {
             "return_url": request.build_absolute_uri('khalti-success/'),
@@ -248,9 +209,8 @@ def my_cart(request):
                 error_message = response_data.get('detail', 'An unknown error occurred.')
                 return render(request, 'merchSite/cart.html', {"error_message": error_message})
         except requests.exceptions.RequestException as e:
-             return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
-
+            return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+    return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
 
 def khalti_success(request):
     cartitem = Cart.objects.filter(user = request.user)
@@ -306,75 +266,6 @@ def khalti_success(request):
 def khalti_failure(request):
     return render(request, 'merchSite/khalti/khalti-failure.html')
 
-# def my_cart(request):
-    
-#     cartitem = Cart.objects.filter(user = request.user)
-#     total_price = 0
-#     delivery_cost = 50
-#     item_costs = 0
-#     for cart in cartitem:
-#         if cart.product.discount:
-#             total_price += cart.product.discount_price * cart.quantity
-#             item_costs = total_price
-#         else:
-#             total_price +=cart.product.price * cart.quantity
-#             item_costs = total_price
-
-#     total_price += delivery_cost   
-#     if cartitem:
-#         order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
-#         secret_key = b"8gBm/:&EnhH.1/q"  # Encode the key to bytes
-#         message = f'total_amount={total_price},transaction_uuid={order_id},product_code=EPAYTEST'.encode('utf-8') # Encode the message to bytes
-#         hmac_sha256 = hmac.new(secret_key, message, hashlib.sha256)
-#         digest = hmac_sha256.digest()
-#         signature = base64.b64encode(digest).decode('utf-8')
-#         esewa_data = {
-#             'amount': total_price,
-#             'tax_amount': 0,
-#             'service_charge': 0,
-#             'delivery_charge': delivery_cost,
-#             'total_amount': total_price,
-#             'transaction_uuid': order_id,
-#             'product_code': 'EPAYTEST',
-#             'signature': signature,
-            
-#             'success_url': request.build_absolute_uri('payment-success/'), 
-#             'failure_url': request.build_absolute_uri('payment-failure/'), 
-#         }
-#         print(esewa_data)
-#     else:
-#         esewa_data = {} 
-     
-#     if request.method == 'POST':
-       
-#         name = request.POST['name']
-#         email = request.POST['email']
-#         location = request.POST['location']
-#         phone = request.POST['phone']
-#         order = Order.objects.create(
-#             name = name,
-#             email = email, 
-#             location = location,
-#             phone = phone,
-#             user = request.user,
-#             price = total_price,
-#             date = datetime.datetime.now()
-#         )
-#         for cart in cartitem:
-#             if cart.product.discount:
-#                 price = cart.product.discount_price * cart.quantity
-#             else:
-#                 price = cart.product.price * cart.quantity
-#             order.add_product(cart.product, cart.size, cart.quantity, price)
-#             cart.product.size_options[cart.size] -= cart.quantity
-#             cart.product.save()
-       
-#         Cart.objects.filter(user = request.user).delete()
-#         order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
-#         # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
-#         return redirect('checkout')
-#     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "esewa_data": esewa_data})
-
 
 def delete_cart_item(request, id):
     try:
@@ -398,7 +289,3 @@ def clear_cart(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
 
 
-
-def checkout(request):
-    cart = Cart.objects.filter(user = request.user)
-    return render(request, 'merchSite/checkout.html')

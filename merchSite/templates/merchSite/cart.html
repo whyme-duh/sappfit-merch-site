@@ -10,65 +10,75 @@
     <div class="whole-container " style="height: 100%;">
         <div class="row d-flex justify-content-between ">
 
-          <div class="col-md-7 mt-5 me-3">
-            <div class="d-flex justify-content-between align-items-start mb-4">
+          <div class="col-md-8 mt-5 me-3">
+            <div class="d-flex justify-content-between align-items-center mb-4">
               <h5 class="mb-0 text-black text-center "><i class="fa fa-shopping-bag"></i> My Bag</h5>
               <a href="{% url 'clear-cart'%}" class="btn btn-danger">Clear Cart</a>
             </div>
             {% for value in cartitem %}
             <hr>
-              <div class=" mb-4">
-                <div class="card-body p-4">
-                  <div class="row d-flex justify-content-between align-items-center">
-                    <div class="col-md-3 col-lg-2 col-xl-3" >
-                      <img
-                        src="{{value.product.image.url}}"
-                        class="img-product-cart " alt="#">
-                    </div>
-                    <div class="col-md-4 col-lg-5 col-xl-5">
-                      <a href="{% url 'detail-page' value.product.slug %}" >
-                      <p class="lead fw-normal mb-2 text-black">{{value.product.name}} </p>
-                      </a>
-                      <p class="m-0"><strong>Size</strong>: {{value.size}}</p>
-                      <p><strong>Quanity</strong>: {{value.quantity}}</p>
-                      
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 ">
-                        {% if value.product.discount %}
-                        <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.discount_price}}</h5>
-                        {% else %}
-                        <h5 class="mb-0" style="font-size: 0.95em;font-weight: 800;">Rs. {{value.product.price}}</h5>
-                        {% endif%}
-                    </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="{% url 'delete-cart-item' value.id %}"><i class="fa fa-trash-o" style="font-size:20px;color:red;" ></i></a>
-                    </div>
-                  </div>
+            <div class="card-body p-md-1 mb-4 row d-flex justify-content-between align-items-center">
+              <div class="cart-image-discount-rate col-md-3 col-lg-2 col-xl-3" >
+                <img src="{{value.product.image.url}}" class="img-product-cart " alt="#">
+                {% if value.product.discount %}
+                <p class="cart-discount-rate">{{value.product.discount_rate}}</p>
+                {% endif %}
+
+              </div>
+              <div class="col-md-4 col-lg-6 col-xl-5">
+                <a href="{% url 'detail-page' value.product.slug %}" class="cart-product-name">
+                <h3 class="lead mb-2 text-black">{{value.product.name}} </h3>
+                </a>
+                <p class="m-0"><strong>Size</strong>: {{value.size}}</p>
+                {% if value.quantity > 1 %}
+                <p class="mb-0"><strong>Quanities</strong>: {{value.quantity}}</p>
+                {% else %}
+                <p class="mb-0"><strong>Quanity</strong>: {{value.quantity}}</p>
+                {% endif %}
+                {% if value.product.discount %}
+
+                <p class="mb-0"><strong>Original Price (Each item)</strong>: Rs. {{value.product.price}}</p>
+                <p class="mb-0"><strong>Discounted Price (Each item)</strong>: Rs. {{value.product.discount_price}}</p>
+                {% else %}
+                <p class="mb-0"><strong>Price (Each item)</strong>:Rs. {{value.product.price}}</p>
+                {% endif%}
+              </div>
+              
+              <div class="total-cart-delete col-md-3 col-xl-3 offset-lg-1 ">
+                {% if value.product.discount %}
+                <h5 class="mb-0" ><strong>Total</strong>: Rs. {{value.get_total_cost}}</h5>
+                {% else %}
+                <h5 class="mb-0"><strong>Total</strong>: Rs. {{value.product.price}}</h5>
+                {% endif%}
+                <div class="delete-item">
+                  <a href="{% url 'delete-cart-item' value.id %}" class="cart-delete-item">Delete Item</a>
                 </div>
               </div>
+            </div>
             {% endfor %}
           </div>
-          <div class=" col-md-4 d-flex justify-content-between mt-5 ">
+          <div class="summary-cart col-md-3 d-flex justify-content-between mt-5 ">
             <div class="col-md-12 order-view">
-                <h3 class="text-left">Your Order</h3>
-                <hr style="color: rgb(233, 228, 228);">
+                <h3 class="summary-cart-title text-center" >Summary</h3>
+                <hr style="color: rgb(0, 0, 0);">
                 <div class="payout-order-view p-3">
                     <div class="delivery d-flex justify-content-between">
                         <p>Items cost : </p> <p>{{item_costs}} </p>
                     </div>
                     <div class="delivery d-flex justify-content-between">
-                        <p>Delivery : </p> <p>{{delivery_cost}} </p>
+                        <p>Delivery Charge: </p> <p>{{delivery_cost}} </p>
                     </div>
                     <!-- <div class="discount d-flex justify-content-between">
                         <p>Discount : </p> <p>{{discount}} </p>
                     </div> -->
                     <div class="total">
                         <strong class="d-flex justify-content-between">
-                        <p>Total : </p><p>Rs. {{total_price}}</p>
+                        <h5>Total : </h5><h5>Rs. {{total_price}}</h5>
                         </strong>
                     </div>
                 </div>
-                <button type = "submit" class="btn  btn-lg mt-3 w-100" style="background-color: #5E338D;color: white;" > Proceed To Checkout</button>
+
+                <a href="{% url 'checkout' %}" class="btn  btn-lg mt-3 w-100" style="background-color: rgb(0, 0, 0);color: white;" > Proceed To Checkout</a>
             </div>
     {% else %}
     <div class="containear-fluid mt-5 pt-5 d-flex justify-content-center flex-column align-items-center">
@@ -77,7 +87,7 @@
           <h2>Your Cart Is <span style="color:red;">Empty</span></h2>
                 {{error_message}}
 
-          <p>Looks like you haven't made your choice yet ... </p>
+          <p class="text-center">Looks like you haven't made your choice yet ... </p>
           <a href="{% url 'products' %}" class="start-shopping mt-3 ">Start Shopping</a>
         </div>
       </div>

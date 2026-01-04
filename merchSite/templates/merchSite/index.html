@@ -30,10 +30,6 @@
                     {% endif %} 
                 </a>
 
-                    
-               
-                
-
                 {% if user.is_authenticated %}
                 <a href="{% url 'profile'%}" class="nav-items">Profile</a>
                 {% else %}
@@ -48,17 +44,17 @@
     </nav>
     <main>
             
-        
+       
         {% if messages %}
         {% for msg in messages %}
         {% if msg.tags == "cart success" %}
         
         <a class="alert-{{msg.tags}} " id="alert-msg" href="{% url 'my-cart' %}">
-            <h5>{{msg}}</h5>
+            <h5 class="text-center">{{msg}}</h5>
         </a>
         {% else %}
         <div class="alert-{{msg.tags}}" id="alert-msg">
-            <h5>{{msg}}</h5>
+            <h5 class="text-center">{{msg}}</h5>
         </div>
         {% endif %}
         {% endfor %}
