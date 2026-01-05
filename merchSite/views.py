@@ -174,43 +174,48 @@ def my_cart(request):
 @login_required
 def checkout(request):
     cartitem = get_cart_items(request)
-    delivery_cost = 50
-    item_costs = sum(item.get_total_cost for item in cartitem)
-    total_price = item_costs + delivery_cost
-    if request.method == 'POST':
-        order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
+    if cartitem:
+        delivery_cost = 50
+        item_costs = sum(item.get_total_cost for item in cartitem)
+        total_price = item_costs + delivery_cost
+        if request.method == 'POST':
+            order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
 
-        request.session['order_data']={
-            'name': request.POST['name'],
-            'email' : request.POST['email'],
-            'location': request.POST['location'],
-            'phone': request.POST['phone'],
-            'total_price' : total_price,
-        }
+            request.session['order_data']={
+                'name': request.POST['name'],
+                'email' : request.POST['email'],
+                'location': request.POST['location'],
+                'phone': request.POST['phone'],
+                'total_price' : total_price,
+            }
+            
+
+            payload =   {
+                "return_url": request.build_absolute_uri('khalti-success/'),
+                "website_url": request.build_absolute_uri('/'),
+                "amount": int(total_price * 100),
+                "purchase_order_id": order_id,
+                "purchase_order_name": f'Order by {request.user.username}'
+            }
+            headers = {
+                "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+                "Content-Type": "application/json"
+            }
+            try:
+                response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
+                response_data = response.json()
+                if response.status_code == 200:
+                    return redirect(response_data['payment_url'])
+                else:
+                    error_message = response_data.get('detail', 'An unknown error occurred.')
+                    return render(request, 'merchSite/cart.html', {"error_message": error_message})
+            except requests.exceptions.RequestException as e:
+                return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+        return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+    else:
+        messages.success(request, "Redirected to Products page since your bag is empty.")
+        return redirect('products')
         
-
-        payload =   {
-            "return_url": request.build_absolute_uri('khalti-success/'),
-            "website_url": request.build_absolute_uri('/'),
-            "amount": int(total_price * 100),
-            "purchase_order_id": order_id,
-            "purchase_order_name": f'Order by {request.user.username}'
-        }
-        headers = {
-            "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
-            "Content-Type": "application/json"
-        }
-        try:
-            response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
-            response_data = response.json()
-            if response.status_code == 200:
-                return redirect(response_data['payment_url'])
-            else:
-                error_message = response_data.get('detail', 'An unknown error occurred.')
-                return render(request, 'merchSite/cart.html', {"error_message": error_message})
-        except requests.exceptions.RequestException as e:
-            return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-    return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
 
 def khalti_success(request):
     cartitem = Cart.objects.filter(user = request.user)

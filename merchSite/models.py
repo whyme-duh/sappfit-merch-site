@@ -117,12 +117,7 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart for {self.user}"
     
-    def get_cart_length(self, request):
-        if request.user.is_authenticated:
-            cart_item = Cart.objects.filter(user = request.user)
-        else:
-            cart_item = Cart.objects.filter(session_id = request.user.session_key)
-        return len(cart_item)
+
 
 
     
