@@ -1,110 +1,277 @@
 {% extends 'merchSite/index.html' %}
-{% block title %}Profile - {{user}}{% endblock %}
+{% block title %}Profile - {{ user.username }}{% endblock %}
+
 {% block content %}
-<div class="profile">
-   
-    <div class="profile-container mt-5">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            
-            <div class="profile-info">
-                <h1>{{ user.username }}</h1>
-                <p>Email: {{ user.email }}</p>
-                <p>Joined: {{ user.date_joined|date:"D d M Y"  }}</p>
+<div class="profile-wrapper">
+    <div class="container">
+        
+        <div class="profile-header-card">
+            <div class="header-content">
+                <div class="avatar-circle">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="user-details">
+                    <h1 class="username">{{ user.username }}</h1>
+                    <p class="email">{{ user.email }}</p>
+                    <p class="join-date">Member since {{ user.date_joined|date:"M Y" }}</p>
+                </div>
             </div>
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="logout-btn"><i class="fa fa-sign-out"></i></button>
-            </form>
+            <div class="header-actions">
+                <form action="{% url 'logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-logout">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="orders-section">
-            <h2>Your Orders</h2>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Order #</th>
-                        <th>Date</th>
-                        <th>Products</th>
-                        <th>Delivered</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in order_products %}
-                        <tr>
-                            <td>{{ order.order.id }}</td>
-                            <td>{{ order.order.date }}</td>
-                             <td>
-                                <ol>
-                                    {% for item in order.products %}
-                                        <li>
-                                            <strong>{{ item.product }}</strong> (Size: <strong>{{ item.size }}</strong>, Quantity: <strong>{{ item.quantity }}</strong>)
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            </td>
-                            {% if order.order.delivered %}
-                            <td>Delivered</td>
-                            {% else %}
-                            <td>Not Delivered</td>
-                            {% endif %}
-                            <td>Rs. {{ order.order.price }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="4">You have no orders yet.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="orders-section">
-            <h2>Your Reviews</h2>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Products</th>
-                        <th>Review Star</th>
-                        <th>Review Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for review in reviews %}
 
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2>Order History</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="sleek-table">
+                    <thead>
                         <tr>
-                            <td><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></td>
-                            <td>{{review.review_star}}</td>
-                            <td>{{review.review}}</td>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Total</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+                    </thead>
+                    <tbody>
+                        {% for order in order_products %}
+                            <tr>
+                                <td class="order-id">#{{ order.order.id }}</td>
+                                <td class="order-date">{{ order.order.date|date:"M d, Y" }}</td>
+                                <td class="order-items">
+                                    <ul class="item-list">
+                                        {% for item in order.products %}
+                                            <li>
+                                                <span class="item-name">{{ item.product }}</span>
+                                                <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td>
+                                    {% if order.order.delivered %}
+                                        <span class="badge badge-success">Delivered</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Processing</span>
+                                    {% endif %}
+                                </td>
+                                <td class="order-price">Rs. {{ order.order.price }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="empty-state">No orders found. Time to shop!</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="orders-section">
-            <h2>Review Other Products</h2>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Products</th>
-                        <th>Review Star</th>
-                        <th>Review Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for review in reviews %}
 
-                        <tr>
-                            <td><a href="{% url 'detail-page' review.product.slug%}">{{review.product}}</a></td>
-                            <td>{{review.review_star}}</td>
-                            <td>{{review.review}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="reviews-section">
             
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Your Reviews</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="sleek-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in reviews %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'detail-page' review.product.slug %}" class="product-link">
+                                            {{ review.product }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="star-rating">
+                                            <i class="fa fa-star"></i> {{ review.review_star }}
+                                        </div>
+                                    </td>
+                                    <td class="review-text">{{ review.review|truncatechars:50 }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="empty-state">You haven't written any reviews yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-card action-card">
+                <div class="card-body text-center">
+                    <div class="icon-circle">
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                    <h3>Give Feedback</h3>
+                    <p>Help other fitness enthusiasts by reviewing products you own.</p>
+                    <a href="{% url 'review' %}" class="btn-primary-action">Write a Review</a>
+                </div>
+            </div>
+
         </div>
-        <a href="{% url 'review' %}"><h5 class="p-3">Review Other Products</h5></a>
-    
+    </div>
 </div>
+
+<style>
+    /* --- CSS Variables for Easy Customization --- */
+    :root {
+        --primary-color: #1a1a1a; /* Dark sleek black/grey */
+        --accent-color: #3b82f6; /* Modern blue */
+        --bg-color: #f3f4f6; /* Light grey background */
+        --card-bg: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+    }
+
+    /* --- Layout Structure --- */
+    .profile-wrapper {
+        background-color: var(--bg-color);
+        min-height: 100vh;
+        padding: 3rem 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    /* --- Header Card --- */
+    .profile-header-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .user-details h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--text-main);
+        font-weight: 700;
+    }
+
+    .user-details p {
+        margin: 0.25rem 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .btn-logout {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-logout:hover {
+        background: #fee2e2;
+        color: #ef4444;
+        border-color: #ef4444;
+    }
+
+    /* --- General Dashboard Card --- */
+    .dashboard-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        background-color: #f9fafb;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* --- Sleek Table --- */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .sleek-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 650px; /* Forces scroll on small mobile */
+    }
+
+    .sleek-table th {
+        text-align: left;
+        padding: 1rem 1.5rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        background-color: #fff;
+    }
+
+    .sleek-table td {
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+</style>
 {% endblock %}

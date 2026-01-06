@@ -1,18 +1,227 @@
 {% extends 'merchSite/index.html' %}
-{% block title %}Profile - {{user}}{% endblock %}
-{% block content %}
-<div class="main">
-    <h1>Review Products you have purchased.</h1>
-    <ol>
-    {% for product in delivered_products %}
-        <li>
-            {{product.product}}
-            <a href="{% url 'add-review' product.id %}">Review It</a>
-        </li>
-          
+{% block title %}Review Purchases{% endblock %}
 
-    {% endfor %}
-    </ol>
+{% block content %}
+<div class="review-wrapper">
+    <div class="container">
+        
+        <div class="page-header">
+            <h1>Rate Your Gear</h1>
+            <p>Your feedback helps others choose the right equipment.</p>
+        </div>
+
+        <div class="review-grid">
+            {% for item in delivered_products %}
+                <div class="product-card">
+                    <div class="card-image">
+                        {% if item.product.image.url %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        {% else %}
+                            <div class="icon-placeholder">
+                                <i class="fa fa-shopping-bag"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="product-title">{{ item.product }}</h3>
+                        {{item.product.image.url}}
+                        
+                        {% if item.size %}
+                            <p class="product-meta">Size: {{ item.size }}</p>
+                        {% endif %}
+
+                        <div class="card-actions">
+                            <a href="{% url 'add-review' item.id %}" class="btn-review">
+                                <i class="fa fa-star"></i> Write Review
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state-card">
+                    <div class="icon-circle">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h3>All Caught Up!</h3>
+                    <p>You have reviewed all your purchased items (or haven't bought anything yet).</p>
+                    <a href="/" class="btn-link">Continue Shopping</a>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </div>
 
-{%endblock %}
+<style>
+    /* --- Shared Variables (Matches Profile Page) --- */
+    :root {
+        --primary-color: #1a1a1a;
+        --accent-color: #3b82f6;
+        --bg-color: #f3f4f6;
+        --card-bg: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+    }
+
+    /* --- Layout --- */
+    .review-wrapper {
+        background-color: var(--bg-color);
+        min-height: 100vh;
+        padding: 3rem 0;
+        width: 100%; /* <--- ADD THIS to prevent collapsing */
+        box-sizing: border-box; /* Ensures padding doesn't break width */
+    }
+
+    /* Update the grid to be more robust */
+    
+
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        color: var(--text-main);
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
+
+    /* --- Grid System --- */
+    .review-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .product-card {
+        /* Grow: 1, Shrink: 1, Basis: 280px */
+        flex: 1 1 280px; 
+        
+        /* Optional: Stop them from getting too wide on huge screens */
+        max-width: 400px; 
+        
+        background: var(--card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-image {
+        height: 200px;
+        background-color: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .icon-placeholder {
+        font-size: 3rem;
+        color: #d1d5db;
+    }
+
+    .card-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .product-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin: 0 0 0.5rem 0;
+    }
+
+    .product-meta {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-review {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+
+    .btn-review:hover {
+        background-color: black;
+        text-decoration: none;
+        color: white;
+    }
+
+    /* --- Empty State --- */
+    .empty-state-card {
+        grid-column: 1 / -1; /* Span full width */
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 4rem 2rem;
+        text-align: center;
+        border: 1px solid var(--border-color);
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: #e0f2fe; /* Light blue bg */
+        color: #0284c7;      /* Blue icon */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem auto;
+        font-size: 1.75rem;
+    }
+
+    .btn-link {
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 1rem;
+        display: inline-block;
+    }
+    
+    .btn-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
