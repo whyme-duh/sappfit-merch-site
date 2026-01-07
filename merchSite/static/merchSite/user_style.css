@@ -263,7 +263,7 @@
         width: 100%;
     }
 
-    .product-card {
+    .product-card-review {
         /* Grow: 1, Shrink: 1, Basis: 280px */
         flex: 1 1 280px; 
         
@@ -279,7 +279,7 @@
         flex-direction: column;
     }
 
-    .product-card:hover {
+    .product-card-review:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }

@@ -17,7 +17,7 @@
               <label class="form-label" for="username">Username</label>
                 {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
             </div>
-           <div class="form-outline mb-4">
+           <div class="form-outline mb-3">
               <label class="form-label" for="password">Password</label>
               <div class="password-div">
                 {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
@@ -25,17 +25,19 @@
                 <i class="fa fa-eye-slash" id="eye-slash" onclick="showPassword('eye', 'eye-slash','id_password')"></i>
 
               </div>
-
             </div>
-
+            <div class="form-outline mb-4">
+              <a href="{% url 'password-reset'%}" class="text-decoration-none">Forgot Your Password?</a>
+            </div>
+            
             {% if form.errors %}
-        <div class="alert alert-danger">
-          {% for key, val in form.errors.items %}
-            <p class="error-message">{{val}}</p>
-          {% endfor %}
-        </div>
-        {% else %}
-        {% endif %}
+            <div class="alert alert-danger">
+              {% for key, val in form.errors.items %}
+                <p class="error-message">{{val}}</p>
+              {% endfor %}
+            </div>
+            {% else %}
+            {% endif %}
              
   
             <!-- Submit button -->
