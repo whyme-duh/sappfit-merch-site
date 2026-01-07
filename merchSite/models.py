@@ -47,6 +47,7 @@ class Product(models.Model):
         if self.discount:
             return f'-{int((self.discount_price/self.price) * 100)}%'
     
+    
         
     
 # class ProductVarient(models.Model):
@@ -116,6 +117,10 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart for {self.user}"
+    
+
+    def get_discounted_price(self):
+        return self.product.price - self.product.discount_price
     
 
 

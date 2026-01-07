@@ -60,14 +60,24 @@
             {% endfor %}
             <div class="payout-order-view p-3">
                 <div class="delivery d-flex justify-content-between">
-                    <p class="mb-0">Items cost : </p> <p>{{item_costs}} </p>
+                    <div class="delivery d-flex justify-content-between">
+                    {% if total_quantities > 1 %}
+                    <p>Total Quantities : </p> <p>{{total_quantities}} </p>
+                    {% else %}
+                    <p>Total Quantity : </p> <p>{{total_quantities}} </p>
+                    {% endif %}
                 </div>
                 <div class="delivery d-flex justify-content-between">
-                    <p class="mb-0">Delivery Charge: </p> <p>{{delivery_cost}} </p>
+                    <p>Total Items' cost : </p> <p>Rs. {{item_costs}} </p>
                 </div>
-                <!-- <div class="discount d-flex justify-content-between">
-                    <p>Discount : </p> <p>{{discount}} </p>
-                </div> -->
+                <div class="delivery d-flex justify-content-between">
+                    {% if total_discounted_price > 0 %}
+                    <p>You've saved : </p> <p>Rs. {{total_discounted_price}} </p>
+                    {% endif %}
+                </div>
+                <div class="delivery d-flex justify-content-between">
+                    <p>Delivery Charge: </p> <p>Rs. {{delivery_cost}} </p>
+                </div>
                 <hr>
                 <div class="total">
                     <strong class="d-flex justify-content-between">

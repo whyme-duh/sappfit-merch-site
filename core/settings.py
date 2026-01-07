@@ -34,6 +34,8 @@ ALLOWED_HOSTS = ["*",  " 192.168.101.13:8000"]
 # Application definition
 
 INSTALLED_APPS = [
+    'constance',
+    'constance.backends.database',
     'merchSite',
     'users',
     'widget_tweaks',
@@ -98,6 +100,13 @@ DATABASES = {
 
 }
 
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+CONSTANCE_CONFIG = {
+    'DELIVERY_CHARGE': (150, "Standard delivery cost in Nepali Rupees."),
+    'FREE_DELIVERY_THRESHOLD': (5000, "Minimum amount for free delivery."),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

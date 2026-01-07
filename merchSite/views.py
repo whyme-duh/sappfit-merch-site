@@ -13,6 +13,7 @@ import datetime
 from users.models import Review
 import requests
 from django.contrib.auth.decorators import login_required
+from constance import config
 
 def error_404_view(request, exception):
     return render(request, 'error/404.html')
@@ -165,18 +166,37 @@ def add_to_cart(request, id):
 
 def my_cart(request):
     cartitem = get_cart_items(request)
-    delivery_cost = 50
+    total_discounted_price = 0
+    total_quantities = 0
+    for item in cartitem:
+        if item.product.discount:
+            total_discounted_price += item.get_discounted_price() * item.quantity
+        total_quantities += item.quantity
     item_costs = sum(item.get_total_cost for item in cartitem)
+    if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+        delivery_cost = 0
+    else:
+        delivery_cost = config.DELIVERY_CHARGE
     total_price = item_costs + delivery_cost
-    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+    return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
 
 
 @login_required
 def checkout(request):
     cartitem = get_cart_items(request)
+    total_discounted_price = 0
+    total_quantities = 0
+    for item in cartitem:
+        if item.product.discount:
+            total_discounted_price += item.get_discounted_price() * item.quantity
+
+        total_quantities += item.quantity
     if cartitem:
-        delivery_cost = 50
         item_costs = sum(item.get_total_cost for item in cartitem)
+        if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+            delivery_cost = 0
+        else:
+            delivery_cost = config.DELIVERY_CHARGE
         total_price = item_costs + delivery_cost
         if request.method == 'POST':
             order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
@@ -211,7 +231,7 @@ def checkout(request):
                     return render(request, 'merchSite/cart.html', {"error_message": error_message})
             except requests.exceptions.RequestException as e:
                 return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-        return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs})
+        return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
     else:
         messages.success(request, "Redirected to Products page since your bag is empty.")
         return redirect('products')
