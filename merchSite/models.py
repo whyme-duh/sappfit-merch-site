@@ -63,7 +63,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.TextField(blank = True, null = True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     price = models.IntegerField(default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
     delivered = models.BooleanField(default=False)

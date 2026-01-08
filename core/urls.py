@@ -30,7 +30,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('login/',CustomLoginView.as_view(template_name = 'users/login.html', redirect_authenticated_user= True), name = 'login'),
     path('logout/',auth_views.LogoutView.as_view(template_name = 'users/login.html'), name = 'logout'),
-
+    path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name= 'users/passwordReset/password_reset_confirm.html'), name='password-reset-confirm'),
+    path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/passwordReset/password_reset_complete.html'), name='password_reset_complete'),
 ] 
 
 if settings.DEBUG:

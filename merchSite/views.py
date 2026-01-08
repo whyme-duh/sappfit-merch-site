@@ -14,6 +14,7 @@ from users.models import Review
 import requests
 from django.contrib.auth.decorators import login_required
 from constance import config
+from . forms import TrackOrderForm
 
 def error_404_view(request, exception):
     return render(request, 'error/404.html')
@@ -181,64 +182,161 @@ def my_cart(request):
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
 
 
-@login_required
 def checkout(request):
+    # 1. Reuse your helper to get items for User OR Guest
     cartitem = get_cart_items(request)
+    
+    # --- Standard Total Calculation Logic ---
     total_discounted_price = 0
     total_quantities = 0
     for item in cartitem:
         if item.product.discount:
             total_discounted_price += item.get_discounted_price() * item.quantity
-
         total_quantities += item.quantity
-    if cartitem:
-        item_costs = sum(item.get_total_cost for item in cartitem)
-        if item_costs >= config.FREE_DELIVERY_THRESHOLD:
-            delivery_cost = 0
-        else:
-            delivery_cost = config.DELIVERY_CHARGE
-        total_price = item_costs + delivery_cost
-        if request.method == 'POST':
-            order_id = f'ORDER-{request.user.id}-{datetime.datetime.now().timestamp()}'
-
-            request.session['order_data']={
-                'name': request.POST['name'],
-                'email' : request.POST['email'],
-                'location': request.POST['location'],
-                'phone': request.POST['phone'],
-                'total_price' : total_price,
-            }
-            
-
-            payload =   {
-                "return_url": request.build_absolute_uri('khalti-success/'),
-                "website_url": request.build_absolute_uri('/'),
-                "amount": int(total_price * 100),
-                "purchase_order_id": order_id,
-                "purchase_order_name": f'Order by {request.user.username}'
-            }
-            headers = {
-                "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
-                "Content-Type": "application/json"
-            }
-            try:
-                response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
-                response_data = response.json()
-                if response.status_code == 200:
-                    return redirect(response_data['payment_url'])
-                else:
-                    error_message = response_data.get('detail', 'An unknown error occurred.')
-                    return render(request, 'merchSite/cart.html', {"error_message": error_message})
-            except requests.exceptions.RequestException as e:
-                return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
-        return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
-    else:
+    
+    if not cartitem:
         messages.success(request, "Redirected to Products page since your bag is empty.")
         return redirect('products')
+
+    item_costs = sum(item.get_total_cost for item in cartitem)
+    
+    # Delivery Logic
+    if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+        delivery_cost = 0
+    else:
+        delivery_cost = config.DELIVERY_CHARGE
+        
+    total_price = item_costs + delivery_cost
+
+    # --- PROCESS ORDER (No Payment Gateway) ---
+    if request.method == 'POST':
+        
+        # A. Determine User Identity
+        if request.user.is_authenticated:
+            user_identifier = request.user.id
+            user_instance = request.user
+        else:
+            user_identifier = "GUEST"
+            user_instance = None # <--- This is what we are testing
+        
+        order_id = f'TEST-ORDER-{user_identifier}-{datetime.datetime.now().timestamp()}'
+
+        # B. Create the Order Immediately
+        try:
+            order = Order.objects.create(
+                name=request.POST['name'],
+                email=request.POST['email'],
+                location=request.POST['location'],
+                phone=request.POST['phone'],
+                user=user_instance, # Will be None for guests
+                price=total_price,
+                order_id=order_id,
+                transaction_id="MANUAL-TEST-MODE" # Placeholder
+            )
+
+            # C. Move Cart Items to Order Items
+            for cart in cartitem:
+                if cart.product.discount:
+                    price = cart.product.discount_price * cart.quantity
+                else:
+                    price = cart.product.price * cart.quantity
+                
+                # Create OrderItem (Assuming you have this helper method on Order model)
+                order.add_product(cart.product, cart.size, cart.quantity, price)
+                
+                # Optional: Update Stock here
+                # cart.product.save()
+
+            # D. Clear the Cart
+            cartitem.delete()
+
+            # E. Finish
+            send_mail("Order Placed", "Your order has been placed.", settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
+
+            messages.success(request, f"Order placed successfully! (ID: {order.id})")
+            # Redirect to a simple success page or back home
+            return render(request, 'merchSite/khalti/khalti-success.html') 
+
+        except Exception as e:
+            print(f"Error creating order: {e}")
+            messages.error(request, "Something went wrong creating the order.")
+            return redirect('checkout')
+
+    # GET Request: Render Form
+    return render(request, 'merchSite/checkoutPage.html', {
+        "cartitem": cartitem, 
+        "total_price": total_price, 
+        "delivery_cost": delivery_cost, 
+        "item_costs": item_costs, 
+        "total_quantities": total_quantities, 
+        "total_discounted_price": total_discounted_price
+    })
+    
+    
+        
+
+# def checkout(request):
+#     cartitem = get_cart_items(request)
+#     total_discounted_price = 0
+#     total_quantities = 0
+#     for item in cartitem:
+#         if item.product.discount:
+#             total_discounted_price += item.get_discounted_price() * item.quantity
+
+#         total_quantities += item.quantity
+#     if cartitem:
+#         item_costs = sum(item.get_total_cost for item in cartitem)
+#         if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+#             delivery_cost = 0
+#         else:
+#             delivery_cost = config.DELIVERY_CHARGE
+#         total_price = item_costs + delivery_cost
+#         if request.method == 'POST':
+#             if request.user.is_authenticated:
+#                 user_identifier = request.user.id
+#             else:
+#                 user_identifier = f'{request.POST['name']} + GUEST'
+#             order_id = f'ORDER-{user_identifier}-{datetime.datetime.now().timestamp()}'
+
+#             request.session['order_data']={
+#                 'name': request.POST['name'],
+#                 'email' : request.POST['email'],
+#                 'location': request.POST['location'],
+#                 'phone': request.POST['phone'],
+#                 'total_price' : total_price,
+#             }
+#             purchase_name = request.POST['name']
+            
+
+#             payload =   {
+#                 "return_url": request.build_absolute_uri('khalti-success/'),
+#                 "website_url": request.build_absolute_uri('/'),
+#                 "amount": int(total_price * 100),
+#                 "purchase_order_id": order_id,
+#                 "purchase_order_name": f'Order by {purchase_name}'
+#             }
+#             headers = {
+#                 "Authorization": f"Key {settings.KHALTI_SECRET_KEY}",
+#                 "Content-Type": "application/json"
+#             }
+#             try:
+#                 response = requests.post(settings.KHALTI_INITIATE_URL, json=payload, headers = headers)
+#                 response_data = response.json()
+#                 if response.status_code == 200:
+#                     return redirect(response_data['payment_url'])
+#                 else:
+#                     error_message = response_data.get('detail', 'An unknown error occurred.')
+#                     return render(request, 'merchSite/cart.html', {"error_message": error_message})
+#             except requests.exceptions.RequestException as e:
+#                 return render(request, 'merchSite/cart.html', {"error_message": "Network error, please try again."})
+#         return render(request, 'merchSite/checkoutPage.html',  {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
+#     else:
+#         messages.success(request, "Redirected to Products page since your bag is empty.")
+#         return redirect('products')
         
 
 def khalti_success(request):
-    cartitem = Cart.objects.filter(user = request.user)
+    cartitem = get_cart_items(request)
     if request.method == 'GET':
         pidx = request.GET.get('pidx') 
         purchase_order_id = request.GET.get('purchase_order_id')
@@ -257,16 +355,18 @@ def khalti_success(request):
             response_data = response.json()
             if response.status_code == 200 and response_data.get('status') == 'Completed':
                 order_data = request.session.get('order_data')
+                user_instance = request.user if request.user.is_authenticated else None
                 order = Order.objects.create(
                     name= order_data['name'],
                     email = order_data['email'],
                     location = order_data['location'],
                     phone = order_data['phone'],
-                    user = request.user,
+                    user = user_instance,
                     price = order_data['total_price'],
                     order_id = purchase_order_id,
                     transaction_id = response_data.get('transaction_id')
                 )
+                final_price = 0
                 for cart in cartitem:
                     if cart.product.discount:
                         price = cart.product.discount_price * cart.quantity
@@ -275,8 +375,9 @@ def khalti_success(request):
                     order.add_product(cart.product, cart.size, cart.quantity, price)
                     # cart.product.size_options[cart.size] -= cart.quantity
                     cart.product.save()
+                    final_price += price
             
-                Cart.objects.filter(user = request.user).delete()
+                cartitem.delete()
                 order_message = f'New order has been placed by {request.user}, a total of Rs. {price}'
                 # send_mail("Order Placed", order_message, settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
                 return render(request, 'merchSite/khalti/khalti-success.html')
@@ -314,3 +415,19 @@ def clear_cart(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
 
 
+def track_order(request):
+    track_order_form = TrackOrderForm()
+    if request.method == 'POST':
+        track_order_form = TrackOrderForm(request.POST)
+        if track_order_form.is_valid():
+            name = request.POST['name']
+            email = request.POST['email']
+            order_id = request.POST['order_id']
+            order_items = Order.objects.filter(name = name, email = email, order_id = order_id)
+            if order_items:
+                print(order_items)
+            else:
+                print("incorrect provided details.")
+        else:
+            track_order_form = TrackOrderForm()
+    return render(request, 'merchSite/track_order.html', {'form': track_order_form})
