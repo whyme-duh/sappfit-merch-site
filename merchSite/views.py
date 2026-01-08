@@ -425,9 +425,10 @@ def track_order(request):
             order_id = request.POST['order_id']
             order_items = Order.objects.filter(name = name, email = email, order_id = order_id)
             if order_items:
-                print(order_items)
+                return render(request, 'merchSite/track_order_success.html',{ 'order_items': order_items})
             else:
                 print("incorrect provided details.")
+                messages.error(request, f'The provided detail are incorrect!')
         else:
             track_order_form = TrackOrderForm()
-    return render(request, 'merchSite/track_order.html', {'form': track_order_form})
+    return render(request, 'merchSite/track_order.html', {'form': track_order_form,})

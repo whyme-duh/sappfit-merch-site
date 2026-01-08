@@ -1,13 +1,33 @@
 {% extends 'merchSite/index.html' %}
+{% load widget_tweaks %}
+
 {% block title%} Track Your Order{% endblock %}
 
 {%block content %}
-<div class="container">
-    <h5 class="header">Track Your Order</h5>
-    <form method="POST">
-        {% csrf_token %}
-        {{form}}
-        <button type="Submit">Submit</button>
-    </form>
+<div class="container mt-5">
+   <div class="row">
+    <div class="col-md-5">
+        <h5 class="header">Track Your Order</h5>
+        <small>In order to track your order, we need your name, email, and order_id related to that particular order.</small>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-outline mb-4">
+                <label class="form-label" for="username">Name</label>
+                {% render_field form.name class="form-control" placeholder="Enter Your Name" type="text" %}
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="email">Enail</label>
+                {% render_field form.email class="form-control" placeholder="Enter Your Email" type="text" %}
+            </div>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="order_id">Order Id</label>
+                {% render_field form.order_id class="form-control" placeholder="Enter OrderId" type="text" %}
+            </div>
+            <button type="Submit" class="btn btn-success p-3">Submit</button>
+        </form>
+        {{order_items}}
+    </div>
+   </div>
 </div>
 {% endblock %}
