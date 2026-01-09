@@ -13,8 +13,21 @@ function navbarFunction() {
   } else {
     x.className = "nav-links";
   }
+  
 }
 
+
+// backdrop effect when seeing the result of tracked orders
+
+const trackResult = document.getElementById('track-result');
+const trackResultBackground = document.getElementById('track-order-container');
+function closeThis(){
+    trackResult.style.display = "hide";
+}
+if (trackResult){
+    console.log(trackResult, trackResultBackground);
+    trackResultBackground.style.display = "fle";
+}
 
 // eye sight for password
 
@@ -223,4 +236,7 @@ else{
     relatedProd.style.marginTop = "20em";
 
 }
+
+
+
 

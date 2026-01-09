@@ -881,6 +881,41 @@ a{
 .cart-summary-info p{
     margin-bottom:0;
 }
+/* track order  */
+.track-order-container{
+    position: relative;
+}
+.track-order-header{
+    font-size: 2.5em;
+    font-family: var(--header-font-family);
+}
+.track-order-paragraph{
+    font-family: var(--nav-font-family);
+}
+
+.track-order-image{
+    width: 100%;
+}
+.track-order-btn{
+    border: none;
+    font-size: 1.25em;
+    padding: 0.5em;
+    width: 100%;
+    font-weight: 600;
+    color: white;
+    background-color: rgb(159, 113, 53);
+    margin-top: 1em;
+}
+.track-result{
+    /* position: absolute; */
+    top: 0;
+    background-color: white;
+    border: 1px solid grey;
+    left: 0;
+    /* transform: translate(50%, 50%); */
+    backdrop-filter: blur(5px);
+
+}
 @media screen and (max-width:400px){
     /* home page and nav section  */
     .nav-section{

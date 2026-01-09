@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import json
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from core import settings
@@ -417,18 +418,31 @@ def clear_cart(request):
 
 def track_order(request):
     track_order_form = TrackOrderForm()
+    order_products = []
+    product_id = None
+    product_info = None
+    
     if request.method == 'POST':
         track_order_form = TrackOrderForm(request.POST)
         if track_order_form.is_valid():
-            name = request.POST['name']
-            email = request.POST['email']
-            order_id = request.POST['order_id']
-            order_items = Order.objects.filter(name = name, email = email, order_id = order_id)
-            if order_items:
-                return render(request, 'merchSite/track_order_success.html',{ 'order_items': order_items})
-            else:
-                print("incorrect provided details.")
+            email = request.POST.get('email', '').strip()
+            order_id = request.POST.get('order_id', '').strip()
+            order_items = Order.objects.filter( email = email, order_id = order_id)
+            if not order_items:
                 messages.error(request, f'The provided detail are incorrect!')
+            else:
+                for order in order_items:
+                    if order.product: 
+                        products = json.loads(order.product) 
+                        product_id = products[0]['id']
+                        order_products.append({
+                            'order': order,
+                            'products': products
+                        })
+                if product_id:
+                    product_info = Product.objects.get(id = product_id)
+                
+                
         else:
             track_order_form = TrackOrderForm()
-    return render(request, 'merchSite/track_order.html', {'form': track_order_form,})
+    return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products, 'product_info':product_info})
