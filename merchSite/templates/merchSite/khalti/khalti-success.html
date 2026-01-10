@@ -62,9 +62,11 @@
         <h1>Payment Successful!</h1>
         <p>Thank you for your purchase. Your payment has been processed successfully.</p>
         
-        
-        
+        {% if user.is_authenticated %}
         <a href="{% url 'profile' %}" class="btn">View Your Order</a>
+        {% else %}
+        <a href="{% url 'track-order' %}" class="btn">Track Your Order</a>
+        {% endif %}
     </div>
 </body>
 </html>

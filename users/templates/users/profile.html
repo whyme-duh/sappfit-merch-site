@@ -39,6 +39,7 @@
                             <th>Items</th>
                             <th>Status</th>
                             <th>Total</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,10 @@
                                                 <span class="item-name">{{ item.product }}</span>
                                                 <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
                                             </li>
+                                            <td class="action-buttons">
+                                    <a href="{% url 'add-review' item.id %}" class="action review-btn">Review</a>
+                                    <a href="#" class="action review-btn">Cancel</a>
+                                </td>
                                         {% endfor %}
                                     </ul>
                                 </td>
@@ -64,6 +69,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="order-price">Rs. {{ order.order.price }}</td>
+                                
                             </tr>
                         {% empty %}
                             <tr>
@@ -115,16 +121,7 @@
                 </div>
             </div>
 
-            <div class="dashboard-card action-card">
-                <div class="card-body text-center">
-                    <div class="icon-circle">
-                        <i class="fa fa-pencil"></i>
-                    </div>
-                    <h3>Give Feedback</h3>
-                    <p>Help other fitness enthusiasts by reviewing products you own.</p>
-                    <a href="{% url 'review' %}" class="btn-primary-action">Write a Review</a>
-                </div>
-            </div>
+            
 
         </div>
     </div>

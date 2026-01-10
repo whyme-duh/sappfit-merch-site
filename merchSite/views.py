@@ -252,7 +252,7 @@ def checkout(request):
             cartitem.delete()
 
             # E. Finish
-            send_mail("Order Placed", "Your order has been placed.", settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
+            # send_mail("Order Placed", "Your order has been placed.", settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
 
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
             # Redirect to a simple success page or back home
@@ -441,8 +441,6 @@ def track_order(request):
                         })
                 if product_id:
                     product_info = Product.objects.get(id = product_id)
-                
-                
         else:
             track_order_form = TrackOrderForm()
     return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products, 'product_info':product_info})
