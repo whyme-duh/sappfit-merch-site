@@ -54,10 +54,6 @@
                                                 <span class="item-name">{{ item.product }}</span>
                                                 <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
                                             </li>
-                                            <td class="action-buttons">
-                                    <a href="{% url 'add-review' item.id %}" class="action review-btn">Review</a>
-                                    <a href="#" class="action review-btn">Cancel</a>
-                                </td>
                                         {% endfor %}
                                     </ul>
                                 </td>
@@ -69,7 +65,12 @@
                                     {% endif %}
                                 </td>
                                 <td class="order-price">Rs. {{ order.order.price }}</td>
-                                
+                                <td class="action-buttons">
+                                    <a href="#" class="action review-btn">Report</a>
+                                    {% if not order.order.delivered %}
+                                    <a href="#" class="action cancel-btn">Cancel</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% empty %}
                             <tr>
@@ -79,6 +80,52 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="dashboard-card action-card">
+             <div class="card-header">
+                <h2>Your Delivered Products</h2>
+            </div>
+             <div class="table-responsive">
+                <table class="sleek-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in order_products %}
+                            <tr>
+                                <td class="order-id">#{{ order.order.id }}</td>
+                                <td class="order-date">{{ order.order.date|date:"M d, Y" }}</td>
+                                <td class="order-items">
+                                    <ul class="item-list">
+                                        {% for item in order.products %}
+                                            <li>
+                                                <span class="item-name">{{ item.product }}</span>
+                                                <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                               
+                                <td class="order-price">Rs. {{ order.order.price }}</td>
+                                <td class="action-buttons">
+                                    <a href="#" class="action review-btn">Report</a>
+                                    {% if not order.order.delivered %}
+                                    <a href="#" class="action cancel-btn">Cancel</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="empty-state">No orders found. Time to shop!</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         </div>
 
         <div class="reviews-section">

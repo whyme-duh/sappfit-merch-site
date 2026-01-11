@@ -220,16 +220,19 @@
 .action{
     text-decoration: none;
     color: black;
-}
-.review-btn{
     border: 1px solid black;
     border-radius: 5px;
     padding-inline: 1em;
     padding-block: 0.5em;
 }
+
 .review-btn:hover{
     background-color: black;
     color: white;
+}
+.cancel-btn:hover{
+    border-color: red;
+    color: red;
 }
 
 /* review page */
