@@ -58,17 +58,17 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    {% if order.order.delivered %}
+                                    {% if order.order.status == "Delivered" %}
                                         <span class="badge-success">Delivered</span>
                                     {% else %}
-                                        <span class="badge-warning">Processing</span>
+                                        <span class="badge-warning">{{order.order.status}}</span>
                                     {% endif %}
                                 </td>
                                 <td class="order-price">Rs. {{ order.order.price }}</td>
                                 <td class="action-buttons">
                                     <a href="#" class="action review-btn">Report</a>
-                                    {% if not order.order.delivered %}
-                                    <a href="#" class="action cancel-btn">Cancel</a>
+                                    {% if not order.order.status == "Delivered" and not order.order.status == "Shipped" %}
+                                    <a href="{% url 'cancel-order' order.order.id %}" class="action cancel-btn">Cancel</a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -115,8 +115,8 @@
                                
                                 <td class="order-price">Rs. {{ product.price }}</td>
                                 <td class="action-buttons">
+                                    {{product.id}}
                                     <a href="{% url 'add-review' product.id %}" class="action review-btn">Review</a>
-                                    
                                 </td>
                             </tr>
                         {% empty %}

@@ -394,6 +394,8 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     display: flex;
     width: 80%;
+    height: 70vh;
+    max-height: 80vh;
     justify-content: space-between;
     align-items: center;
 }
@@ -484,9 +486,13 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: start;
+    height: 80vh;
+    object-fit: cover;
 }
+
 .review-page-product-card-detail img{
     width: 100%;
+    object-fit: cover;
 }
 @media screen and (max-width: 768px) {
     .profile-container {

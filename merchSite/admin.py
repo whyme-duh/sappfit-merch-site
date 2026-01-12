@@ -18,5 +18,5 @@ class CartAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['product', 'user', 'date', 'delivered', 'is_paid', 'price']
-    list_filter = ['user', 'is_paid', 'delivered']
+    list_display = ['product', 'user', 'date', 'status', 'is_paid', 'price']
+    list_filter = ['user', 'is_paid', 'status']

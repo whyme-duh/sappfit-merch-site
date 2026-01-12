@@ -101,7 +101,7 @@
             <div class="review-carousel-container">
 
                 {% for review in reviews %}
-                <div class="review-card" data-review-id="{{review.id}}">
+                <div class="product-review-card" data-review-id="{{review.id}}">
                     <div class="user-review">
                         <div class="review-user-section">
                             <h5 class="name-initial">{{review.user.username.0}}</h5>
@@ -111,7 +111,7 @@
                             {% if review.review_star == 1 %}
                             <img src="{% static 'merchSite/onestar.png' %} alt="star" width="100" height="20">
                             {% elif review.review_star == 2 %}
-                            <img src="{% static 'merchSite/twpstar.png' %}" alt="star" width="100" height="20">
+                            <img src="{% static 'merchSite/twostar.png' %}" alt="star" width="100" height="20">
                             {% elif review.review_star == 3 %}
                             <img src="{% static 'merchSite/threestar.png' %}" alt="star" width="100" height="20">
                             {% elif review.review_star == 4 %}

@@ -62,11 +62,26 @@ class Product(models.Model):
 #         return f"{self.product.name} - {self.size.option} (quantity = {self.quantity})"
 
 class Order(models.Model):
+
+    STATUS_CHOICES = (
+        ('Pending' , 'Pending'),
+        ('Processing' , 'Processing'),
+        ('Shipped' , 'Shipped'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled' , 'Cancelled')
+    )
+
+    CANELLATION_REASONS = (
+        ('I selected wrong product.' , 'I selected wrong product.'),
+        ('I forgot to add other products.' , 'I forgot to add other products.'),
+        ("I don't plan to buy this product right now! " , "I don't plan to buy this product right now!"),
+        ('Other' , 'Other')
+    )
     product = models.TextField(blank = True, null = True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     price = models.IntegerField(default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
-    delivered = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices= STATUS_CHOICES, default='Pending')
     name = models.CharField(max_length = 80, blank = True, null = True)
     location = models.CharField(max_length = 80, blank = True, null = True)
     email = models.EmailField(max_length = 80, blank = True, null = True)
@@ -74,6 +89,9 @@ class Order(models.Model):
     is_paid = models.BooleanField(default=False, null = True, blank = True)
     order_id = models.CharField(max_length = 1000, blank = True, null = True)
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
+    cancellation_reasons = models.CharField(max_length=100, blank = True, null= True)
+    cancellation_other_reason = models.TextField(max_length=50, blank = True, null = True)
+
 
     def __str__(self):
         return f"Order from {self.name} ({self.user}) - {self.product} "

@@ -68,7 +68,6 @@
             5: "Excellent"
         };
 
-        // Function to color stars up to a certain index
         function fillStars(count) {
             stars.forEach(star => {
                 if (parseInt(star.dataset.value) <= count) {
@@ -77,24 +76,20 @@
                     star.classList.remove('active');
                 }
             });
-            // Update text label
             if (labels[count]) {
                 ratingText.textContent = labels[count];
             }
         }
 
-        // Initialize with default value (usually 5 or empty)
         fillStars(hiddenInput.value || 0);
 
         stars.forEach(star => {
-            // 1. Click Handler
             star.addEventListener('click', function() {
                 const value = this.dataset.value;
-                hiddenInput.value = value; // Update Django Form
-                fillStars(value); // Visual Update
+                hiddenInput.value = value; 
+                fillStars(value); 
             });
 
-            // 2. Hover Handler (Optional visual flair)
             star.addEventListener('mouseover', function() {
                 const hoverValue = this.dataset.value;
                 stars.forEach(s => {
@@ -106,9 +101,7 @@
                 });
             });
 
-            // 3. Mouse Leave (Reset to saved value)
             star.addEventListener('mouseleave', function() {
-                // Reset styles to class-based logic
                 stars.forEach(s => s.style.color = ""); 
                 fillStars(hiddenInput.value);
             });

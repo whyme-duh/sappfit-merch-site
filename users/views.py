@@ -38,7 +38,6 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 def profile(request):
     reviews = Review.objects.filter(user = request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
-    delivered_order = Order.objects.filter(user = request.user, delivered=True)
     order_products = []
     delivered_products = []
 
@@ -50,11 +49,9 @@ def profile(request):
                 'products': products
             })
             for item in products:
-                if item not in delivered_products:
+                if item not in delivered_products and order.status == "Delivered":
+                    print(item)
                     delivered_products.append(item)
-   
-    print(delivered_products)
-        
     return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products})
 
 def sign_up(request):
@@ -70,7 +67,7 @@ def sign_up(request):
 @login_required
 def review_page(request):
     reviews = Review.objects.filter(user = request.user)
-    orders = Order.objects.filter(user = request.user, delivered=True)
+    orders = Order.objects.filter(user = request.user, status ="Delivered")
     delivered_products_list = []
     for order in orders:
         if order.product: 
@@ -80,8 +77,19 @@ def review_page(request):
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
 
 @login_required
+def cancel_order(request, id):
+    order = Order.objects.get(id = id, user = request.user)
+    if order.status == "Delivered" or order.status == "Shipped":
+        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+    else:
+        order.status = "Cancelled"
+        order.save()
+        messages.success(request, f'You have cancelled it.')
+    return redirect('profile')
+
+@login_required
 def add_review(request, id):
-    orders = Order.objects.filter(user = request.user, delivered=True)
+    orders = Order.objects.filter(user = request.user, status ="Delivered")
     product = Product.objects.get(id = id)
     existing_review = Review.objects.filter(user = request.user, product = product).first()
     if existing_review:
