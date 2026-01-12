@@ -1,13 +1,118 @@
 {% extends 'merchSite/index.html' %}
-{% block title %}Profile - {{user}}{% endblock %}
-{% block content %}
-<div class="main">
-    <h1>Add Review</h1>
-    <form method = "POST">
-        {% csrf_token %}
-        {{form}}
-        <button type="Submit">Submit</button>
-    </form>
-</div>
+{% load widget_tweaks %}
 
-{%endblock %}
+{% block title %}Write a Review{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="review-page-wrapper">
+        <div class="review-card">
+            <div class="text-center mb-4">
+                <h2 class="review-header">Rate Your Fit</h2>
+                <p class="text-muted">How did you like this product? Your feedback helps others.</p>
+            </div>
+
+            <form method="POST" id="reviewForm">
+                {% csrf_token %}
+                
+                <div class="form-group mb-4 text-center">
+                    <label class="d-block mb-2 fw-bold">Overall Rating</label>
+                    
+                    {% render_field form.review_star type="hidden" id="ratingInput" value="5" %}
+                    
+                    <div class="star-widget">
+                        <i class="fa fa-star star-icon" data-value="1"></i>
+                        <i class="fa fa-star star-icon" data-value="2"></i>
+                        <i class="fa fa-star star-icon" data-value="3"></i>
+                        <i class="fa fa-star star-icon" data-value="4"></i>
+                        <i class="fa fa-star star-icon active" data-value="5"></i> 
+                    </div>
+                    <div id="rating-text" class="small text-muted mt-2">Excellent</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label fw-bold">Your Review</label>
+                    {% render_field form.review class="form-control review-textarea" placeholder="Tell us about the fit, comfort, and quality..." rows="5" %}
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Post Review
+                </button>
+                
+                <a href="{% url 'profile' %}" class="cancel-link">Cancel</a>
+            </form>
+        </div>
+        <div class="review-page-product-card">
+            <div class="review-page-product-card-detail">
+                
+               <a href="{% url 'detail-page' product.slug %}"><img src="{{product.image.url}}" alt="product-image" ></a> 
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+    
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-icon');
+        const hiddenInput = document.getElementById('ratingInput');
+        const ratingText = document.getElementById('rating-text');
+        
+        const labels = {
+            1: "Poor",
+            2: "Fair",
+            3: "Average",
+            4: "Good",
+            5: "Excellent"
+        };
+
+        // Function to color stars up to a certain index
+        function fillStars(count) {
+            stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= count) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            // Update text label
+            if (labels[count]) {
+                ratingText.textContent = labels[count];
+            }
+        }
+
+        // Initialize with default value (usually 5 or empty)
+        fillStars(hiddenInput.value || 0);
+
+        stars.forEach(star => {
+            // 1. Click Handler
+            star.addEventListener('click', function() {
+                const value = this.dataset.value;
+                hiddenInput.value = value; // Update Django Form
+                fillStars(value); // Visual Update
+            });
+
+            // 2. Hover Handler (Optional visual flair)
+            star.addEventListener('mouseover', function() {
+                const hoverValue = this.dataset.value;
+                stars.forEach(s => {
+                    if (s.dataset.value <= hoverValue) {
+                        s.style.color = "#ffc107";
+                    } else {
+                        s.style.color = "#e4e5e9";
+                    }
+                });
+            });
+
+            // 3. Mouse Leave (Reset to saved value)
+            star.addEventListener('mouseleave', function() {
+                // Reset styles to class-based logic
+                stars.forEach(s => s.style.color = ""); 
+                fillStars(hiddenInput.value);
+            });
+        });
+    });
+</script>
+{% endblock %}

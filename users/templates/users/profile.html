@@ -90,33 +90,33 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Items</th>
+                            <th>Products</th>
+                            <th>Size x Quantity</th>
+                            <th>Bought At (Rs.)</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for order in order_products %}
+                        {% for product in delivered_products %}
                             <tr>
-                                <td class="order-id">#{{ order.order.id }}</td>
-                                <td class="order-date">{{ order.order.date|date:"M d, Y" }}</td>
-                                <td class="order-items">
-                                    <ul class="item-list">
-                                        {% for item in order.products %}
-                                            <li>
-                                                <span class="item-name">{{ item.product }}</span>
-                                                <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </td>
+                                <td class="order-id">#{{ product.id }}</td>
+                                <td class="order-date">{{ product.product }} </td>
+                                {% if product.size == "L" %}
+                                <td class="order-price">Large x {{product.quantity}} unit</td>
+                                {% elif product.size == "S" %}
+                                <td class="order-price">Small x {{product.quantity}} unit</td>
+                                {% elif product.size == "M" %}
+                                <td class="order-price">Medium x {{product.quantity}} unit</td>
+                                {% elif product.size == "XS" %}
+                                <td class="order-price">Extra Small x {{product.quantity}} unit</td>
+                                {% elif product.size == "XL" %}
+                                <td class="order-price">Extra Large x {{product.quantity}} unit</td>
+                                {% endif %}
                                
-                                <td class="order-price">Rs. {{ order.order.price }}</td>
+                                <td class="order-price">Rs. {{ product.price }}</td>
                                 <td class="action-buttons">
-                                    <a href="#" class="action review-btn">Report</a>
-                                    {% if not order.order.delivered %}
-                                    <a href="#" class="action cancel-btn">Cancel</a>
-                                    {% endif %}
+                                    <a href="{% url 'add-review' product.id %}" class="action review-btn">Review</a>
+                                    
                                 </td>
                             </tr>
                         {% empty %}

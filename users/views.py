@@ -38,7 +38,9 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 def profile(request):
     reviews = Review.objects.filter(user = request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
+    delivered_order = Order.objects.filter(user = request.user, delivered=True)
     order_products = []
+    delivered_products = []
 
     for order in orders:
         if order.product: 
@@ -47,7 +49,13 @@ def profile(request):
                 'order': order,
                 'products': products
             })
-    return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews})
+            for item in products:
+                if item not in delivered_products:
+                    delivered_products.append(item)
+   
+    print(delivered_products)
+        
+    return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products})
 
 def sign_up(request):
     if request.method == 'POST':
