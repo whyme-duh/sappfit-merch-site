@@ -386,73 +386,95 @@
 .btn-link:hover {
     text-decoration: underline;
 }
-/* add review page */
+/* --- Review Page Wrapper --- */
 .review-page-wrapper {
     background: white;
-    margin-top: 5em;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     display: flex;
-    width: 80%;
-    height: 70vh;
-    max-height: 80vh;
-    justify-content: space-between;
-    align-items: center;
+    align-items: stretch; 
+    width: 90%;
+    max-width: 1000px;
+    min-height: 600px;
+    overflow: hidden; 
+    margin: 2rem 0;
 }
 
+/* --- Left Side: Form --- */
 .review-card {
-    background: rgb(255, 255, 255);
-    padding-left: 3em;
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
 }
 
 .review-header {
-    font-family: var(--header-font-family, sans-serif); /* Fallback */
+    font-family: var(--header-font-family, sans-serif);
     font-weight: 700;
     color: #1a1a1a;
+    margin-bottom: 0.5rem;
 }
 
-/* Star Widget Styles */
+/* --- Right Side: Image --- */
+.review-page-product-card {
+    flex: 1; 
+    background-color: #f8f9fa;
+    position: relative;
+}
+.review-page-product-card img {
+    position: absolute; 
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+    object-position: center; 
+    transition: transform 0.5s ease;
+}
+
+.review-page-product-card:hover img {
+    transform: scale(1.05);
+}
+
 .star-widget {
-    font-size: 2.5rem;
-    color: #e4e5e9; /* Inactive grey */
+    font-size: 2.2rem;
+    color: #e4e5e9;
     cursor: pointer;
     display: inline-block;
+    margin-top: 5px;
 }
 
 .star-icon {
-    transition: color 0.2s;
-    margin: 0 2px;
+    transition: color 0.2s, transform 0.1s;
+    margin: 0 3px;
 }
 
-/* Hover effect: Highlights current and previous stars */
-.star-icon:hover,
-.star-icon.hovered {
-    color: #ffc107; /* Gold */
+.star-icon:hover {
+    color: #ffc107;
+    transform: scale(1.1); 
 }
-
-/* Active State (Selected) */
 .star-icon.active {
     color: #ffc107;
 }
 
-/* Textarea Styling */
 .review-textarea {
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 8px;
-    resize: none; /* Prevent ugly resizing */
+    resize: none;
     padding: 15px;
+    font-size: 0.95rem;
 }
 .review-textarea:focus {
     background-color: #fff;
     border-color: #333;
-    box-shadow: none;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
 }
 
-/* Button Styling */
 .submit-btn {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background-color: #1a1a1a;
     color: white;
     border: none;
@@ -460,39 +482,47 @@
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s;
+    margin-top: 10px;
 }
-
 .submit-btn:hover {
     background-color: #333;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .cancel-link {
     display: block;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
     color: #6c757d;
     text-decoration: none;
     font-size: 0.9rem;
+    transition: color 0.2s;
 }
 .cancel-link:hover {
-    color: #ff0000;
+    color: #dc3545; /* Red on hover */
 }
 
-.review-page-product-card-detail{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
-    height: 80vh;
-    object-fit: cover;
-}
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .review-page-wrapper {
+        flex-direction: column-reverse; /* Image on top */
+        height: auto;
+        min-height: auto;
+    }
 
-.review-page-product-card-detail img{
-    width: 100%;
-    object-fit: cover;
+    .review-page-product-card {
+        /* On mobile, we need a fixed height because 'stretch' doesn't apply in column mode */
+        width: 100%;
+        height: 250px; 
+        flex: none;
+    }
+    
+    .review-card {
+        padding: 2rem;
+    }
+
 }
 @media screen and (max-width: 768px) {
     .profile-container {

@@ -77,9 +77,15 @@
                         <p>You've saved : </p> <p>Rs. {{total_discounted_price}} </p>
                         {% endif %}
                     </div>
-                    <div class="delivery d-flex justify-content-between">
+                    {% if item_costs > 5000 %}
+                     <div class="delivery d-flex justify-content-between">
+                        <p>Delivery Charge: </p> <p><strike>Rs. 150 </strike>Rs. {{delivery_cost}} </p>
+                    </div>
+                    {% else %}
+                     <div class="delivery d-flex justify-content-between">
                         <p>Delivery Charge: </p> <p>Rs. {{delivery_cost}} </p>
                     </div>
+                   {% endif %}
                     <!-- <div class="discount d-flex justify-content-between">
                         <p>Discount : </p> <p>{{discount}} </p>
                     </div> -->
