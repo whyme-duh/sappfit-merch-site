@@ -184,10 +184,7 @@ def my_cart(request):
 
 
 def checkout(request):
-    # 1. Reuse your helper to get items for User OR Guest
     cartitem = get_cart_items(request)
-    
-    # --- Standard Total Calculation Logic ---
     total_discounted_price = 0
     total_quantities = 0
     for item in cartitem:
@@ -201,7 +198,6 @@ def checkout(request):
 
     item_costs = sum(item.get_total_cost for item in cartitem)
     
-    # Delivery Logic
     if item_costs >= config.FREE_DELIVERY_THRESHOLD:
         delivery_cost = 0
     else:
@@ -209,61 +205,48 @@ def checkout(request):
         
     total_price = item_costs + delivery_cost
 
-    # --- PROCESS ORDER (No Payment Gateway) ---
     if request.method == 'POST':
         
-        # A. Determine User Identity
         if request.user.is_authenticated:
             user_identifier = request.user.id
             user_instance = request.user
         else:
             user_identifier = "GUEST"
-            user_instance = None # <--- This is what we are testing
+            user_instance = None
         
         order_id = f'TEST-ORDER-{user_identifier}-{datetime.datetime.now().timestamp()}'
 
-        # B. Create the Order Immediately
         try:
             order = Order.objects.create(
                 name=request.POST['name'],
                 email=request.POST['email'],
                 location=request.POST['location'],
                 phone=request.POST['phone'],
-                user=user_instance, # Will be None for guests
+                user=user_instance, 
                 price=total_price,
                 order_id=order_id,
-                transaction_id="MANUAL-TEST-MODE" # Placeholder
+                transaction_id="MANUAL-TEST-MODE" 
             )
 
-            # C. Move Cart Items to Order Items
             for cart in cartitem:
                 if cart.product.discount:
                     price = cart.product.discount_price * cart.quantity
                 else:
                     price = cart.product.price * cart.quantity
-                
-                # Create OrderItem (Assuming you have this helper method on Order model)
                 order.add_product(cart.product, cart.size, cart.quantity, price)
                 
-                # Optional: Update Stock here
-                # cart.product.save()
-
-            # D. Clear the Cart
             cartitem.delete()
 
-            # E. Finish
             # send_mail("Order Placed", "Your order has been placed.", settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
 
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
-            # Redirect to a simple success page or back home
-            return render(request, 'merchSite/khalti/khalti-success.html') 
+            return render(request, 'merchSite/khalti/khalti-success.html', {'order_id' : order_id}) 
 
         except Exception as e:
             print(f"Error creating order: {e}")
             messages.error(request, "Something went wrong creating the order.")
             return redirect('checkout')
 
-    # GET Request: Render Form
     return render(request, 'merchSite/checkoutPage.html', {
         "cartitem": cartitem, 
         "total_price": total_price, 

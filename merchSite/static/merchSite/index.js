@@ -1,3 +1,4 @@
+const { act } = require("react");
 
 setTimeout(function(){
     const alert = document.getElementById('alert-msg');
@@ -16,7 +17,37 @@ function navbarFunction() {
   
 }
 
+function openCancelModal(actionUrl, orderId) {
+    const cancelForm = document.getElementById('cancelForm');
+    const modalOverlay = document.getElementById('cancelModalOverlay');
+    const modalOrderIdSpan = document.getElementById('modalOrderId');
 
+    cancelForm.action = actionUrl;
+    modalOrderIdSpan.innerText = "#" + orderId;
+    modalOverlay.classList.add('active');
+}
+
+function closeCancelModal() {
+    const modalOverlay = document.getElementById('cancelModalOverlay');
+    
+    modalOverlay.classList.remove('active');
+}
+
+function toggleOtherReason(selectElement) {
+    const otherReasonGroup = document.getElementById('otherReasonGroup');
+
+    if (selectElement.value === 'Other') {
+        otherReasonGroup.style.display = 'block';
+    } else {
+        otherReasonGroup.style.display = 'none';
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target === modalOverlay) {
+        closeCancelModal();
+    }
+}
 // backdrop effect when seeing the result of tracked orders
 
 const trackResult = document.getElementById('track-result');

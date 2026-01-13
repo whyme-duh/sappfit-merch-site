@@ -15,6 +15,7 @@
             {% endif %}
             {% endfor %}
         </div>
+        {% if products %}
         <div class="filters">
             <select name="filter" id="filters" onchange="window.location.href = this.value">
                 <option value="lowtohighprice">Filters</option>
@@ -22,8 +23,10 @@
                 <option value="{% url 'products-filter-category' id 'hightolow' %}">High to Low (Price)</option>
             </select>
         </div>
+        {% endif %}
     </div>
     <div class="product-list mt-5">
+        {% if products %}
         {% for product in products%}
         <div class="product-card mt-4">
 
@@ -46,7 +49,10 @@
             </div> -->
         </div> 
         {% endfor%}
-        
+        {% else %}
+        <h5 class="text-center">No products listed for this category.</h5>
+
+        {% endif %}
 
     </div>
 </div>

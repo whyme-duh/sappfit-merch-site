@@ -225,18 +225,22 @@
     padding-inline: 1em;
     padding-block: 0.5em;
 }
-
+.report-btn:hover{
+    color: white;
+    background-color: black;
+}
 .review-btn:hover{
     background-color: rgb(153, 242, 147);
     color: black;
     border: none;
 }
+.cancel-btn{
+    background-color: white;
+}
 .cancel-btn:hover{
     border-color: red;
     color: red;
 }
-
-
 
 
 
@@ -272,10 +276,8 @@
 }
 
 .product-card-review {
-    /* Grow: 1, Shrink: 1, Basis: 280px */
     flex: 1 1 280px; 
     
-    /* Optional: Stop them from getting too wide on huge screens */
     max-width: 400px; 
     
     background: var(--card-bg);
@@ -558,3 +560,122 @@
         display: none;
     }
 }
+
+/* cancellong modal style */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stays in place when scrolling */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    backdrop-filter: blur(5px); /* The nice blur effect */
+    z-index: 1000; /* Sit on top of everything */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Class to activate the modal */
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* --- The Modal Box --- */
+.modal-box {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    padding: 0; /* Content handles padding */
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.modal-overlay.active .modal-box {
+    transform: translateY(0);
+}
+
+/* --- Header --- */
+.modal-header {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.close-icon {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #999;
+}
+.close-icon:hover { color: #dc3545; }
+
+/* --- Body --- */
+.modal-body {
+    padding: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-select, .form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* --- Footer --- */
+.modal-footer {
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background: #e9ecef;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-danger:hover { background: #c82333; }

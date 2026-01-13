@@ -52,6 +52,9 @@ def profile(request):
                 if item not in delivered_products and order.status == "Delivered":
                     print(item)
                     delivered_products.append(item)
+
+  
+
     return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products})
 
 def sign_up(request):
@@ -82,9 +85,14 @@ def cancel_order(request, id):
     if order.status == "Delivered" or order.status == "Shipped":
         messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
     else:
-        order.status = "Cancelled"
-        order.save()
-        messages.success(request, f'You have cancelled it.')
+        if request.method == "POST":
+            cancellation_reason_choice = request.POST.get('cancel-options')
+            canellation_other_reason = request.POST.get('reason')
+            order.status = "Cancelled"
+            order.cancellation_reasons = cancellation_reason_choice
+            order.cancellation_other_reason = canellation_other_reason
+            order.save()
+            messages.success(request, f'Your Order has been cancelled succesfully!')
     return redirect('profile')
 
 @login_required

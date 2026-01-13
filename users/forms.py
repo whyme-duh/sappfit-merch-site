@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+
+from merchSite.models import Order
 from . models import Profile, Review
 
 class UserRegistrationForm(UserCreationForm):
