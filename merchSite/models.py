@@ -142,6 +142,25 @@ class Cart(models.Model):
     
 
 
+class ReturnProduct(models.Model):
+    RETURN_STATUS = (
+        ("None" , "None"),
+        ("Pending" , "Pending"),
+        ("Returning" , "Returning"),
+        ("Returned" , "Returned"),
+
+    )
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete = models.PROTECT)
+    order = models.ForeignKey(Order, on_delete= models.PROTECT, null= True, blank = True)
+    return_status = models.CharField(max_length=100, choices=RETURN_STATUS, default="None")
+    return_request_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} requested return on {self.product}'
+
+
+
 
     
 

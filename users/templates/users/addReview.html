@@ -4,7 +4,8 @@
 {% block title %}Write a Review{% endblock %}
 
 {% block content %}
-<div class="container d-flex align-items-center justify-content-center">
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    
     <div class="review-page-wrapper">
         <div class="review-card">
             <div class="text-center mb-4">
@@ -42,17 +43,21 @@
                 <a href="{% url 'profile' %}" class="cancel-link">Cancel</a>
             </form>
         </div>
+
         <div class="review-page-product-card">
-            <div class="review-page-product-card-detail">
-                
-               <a href="{% url 'detail-page' product.slug %}"><img src="{{product.image.url}}" alt="product-image" ></a> 
-                
-            </div>
+            <a href="{% url 'detail-page' product.slug %}" class="h-100 w-100 d-block">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="product-image">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                        <i class="fa fa-shopping-bag fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+            </a> 
         </div>
     </div>
 
 </div>
-    
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -60,13 +65,7 @@
         const hiddenInput = document.getElementById('ratingInput');
         const ratingText = document.getElementById('rating-text');
         
-        const labels = {
-            1: "Poor",
-            2: "Fair",
-            3: "Average",
-            4: "Good",
-            5: "Excellent"
-        };
+        const labels = { 1: "Poor", 2: "Fair", 3: "Average", 4: "Good", 5: "Excellent" };
 
         function fillStars(count) {
             stars.forEach(star => {
@@ -76,9 +75,7 @@
                     star.classList.remove('active');
                 }
             });
-            if (labels[count]) {
-                ratingText.textContent = labels[count];
-            }
+            if (labels[count]) ratingText.textContent = labels[count];
         }
 
         fillStars(hiddenInput.value || 0);
@@ -89,18 +86,12 @@
                 hiddenInput.value = value; 
                 fillStars(value); 
             });
-
             star.addEventListener('mouseover', function() {
                 const hoverValue = this.dataset.value;
                 stars.forEach(s => {
-                    if (s.dataset.value <= hoverValue) {
-                        s.style.color = "#ffc107";
-                    } else {
-                        s.style.color = "#e4e5e9";
-                    }
+                    s.style.color = (s.dataset.value <= hoverValue) ? "#ffc107" : "#e4e5e9";
                 });
             });
-
             star.addEventListener('mouseleave', function() {
                 stars.forEach(s => s.style.color = ""); 
                 fillStars(hiddenInput.value);

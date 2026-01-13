@@ -29,7 +29,6 @@ function openCancelModal(actionUrl, orderId) {
 
 function closeCancelModal() {
     const modalOverlay = document.getElementById('cancelModalOverlay');
-    
     modalOverlay.classList.remove('active');
 }
 
@@ -42,6 +41,24 @@ function toggleOtherReason(selectElement) {
         otherReasonGroup.style.display = 'none';
     }
 }
+
+function openReturnModal(actionUrl, productName) {
+    const returnForm = document.getElementById('returnForm');
+    const modalOverlay = document.getElementById('returnModalOverlay');
+    const modalReturnProduct = document.getElementById('modalReturnProduct');
+    console.log(actionUrl, productName);
+    returnForm.action = actionUrl;
+    modalReturnProduct.innerText = "#" + productName;
+    modalOverlay.classList.add('active');
+}
+
+function closeReturnModal() {
+    const modalOverlay = document.getElementById('returnModalOverlay');
+    modalOverlay.classList.remove('active');
+}
+
+
+
 
 window.onclick = function(event) {
     if (event.target === modalOverlay) {

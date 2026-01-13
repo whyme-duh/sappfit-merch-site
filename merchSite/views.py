@@ -427,3 +427,9 @@ def track_order(request):
         else:
             track_order_form = TrackOrderForm()
     return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products, 'product_info':product_info})
+
+
+
+def return_request(request, product_id, order_id):
+    product = Product.objects.get(id = product_id)
+    

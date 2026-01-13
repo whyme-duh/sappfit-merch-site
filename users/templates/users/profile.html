@@ -159,6 +159,10 @@
                                 <td class="order-price">Rs. {{ product.price }}</td>
                                 <td class="action-buttons">
                                     <a href="{% url 'add-review' product.id %}" class="action review-btn">Review</a>
+                                    <button class="action return-btn"
+                                        data-url="#"
+                                        data-id="{{ product.id }}"
+                                        onclick="openReturnModal(this.dataset.url, this.dataset.id)">Return</button>
                                 </td>
                             </tr>
                         {% empty %}
@@ -168,6 +172,40 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div id="returnModalOverlay" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h3>Retun Product <span id="modalReturnProduct">#</span></h3>
+                    <button class="close-icon" onclick="closeReturnModal()">&times;</button>
+                </div>
+                
+                <form id="returnForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p class="text-muted">Are you sure? This action cannot be undone.</p>
+                        
+                        <div class="form-group">
+                            <label for="return-options">Reason for Returning</label>
+                            <select name="return-options" id="return-options" class="form-select" onchange="toggleOtherReason(this)">
+                                <option value="Damage Product">The product came with damage.</option>
+                                <option value="Different Product">Different Product was sent.</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3" id="otherReasonGroup" style="display:none;">
+                            <label>Please specify details</label>
+                            <textarea name="reason" class="form-input" rows="2" placeholder="Tell us why..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeReturnModal()">Cancel</button>
+                        <button type="submit" class="btn-danger">Return Product</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="dashboard-card">
@@ -190,6 +228,7 @@
                                     <a href="{% url 'detail-page' review.product.slug %}" class="product-link">
                                         {{ review.product }}
                                     </a>
+                                    
                                 </td>
                                 <td>
                                     <div class="star-rating">
