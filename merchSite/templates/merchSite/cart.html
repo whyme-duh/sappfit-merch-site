@@ -77,9 +77,9 @@
                         <p>You've saved : </p> <p>Rs. {{total_discounted_price}} </p>
                         {% endif %}
                     </div>
-                    {% if item_costs > 5000 %}
+                    {% if item_costs >= 5000 %}
                      <div class="delivery d-flex justify-content-between">
-                        <p>Delivery Charge: </p> <p><strike>Rs. 150 </strike>Rs. {{delivery_cost}} </p>
+                        <p>Delivery Charge: </p> <p>Rs. {{delivery_cost}} <strike style="color: red;">Rs. 150 </strike> </p>
                     </div>
                     {% else %}
                      <div class="delivery d-flex justify-content-between">
@@ -97,6 +97,9 @@
                 </div>
 
                 <a href="{% url 'checkout' %}" class="btn  btn-lg mt-3 w-100" style="background-color: rgb(0, 0, 0);color: white;" > Proceed To Checkout</a>
+                {% if delivery_cost == 0 %}
+                <small>Free Delivery in order with Rs. 5000 or more.</small>
+                {% endif %}
             </div>
     {% else %}
     <div class="containear-fluid mt-5 pt-5 d-flex justify-content-center flex-column align-items-center">

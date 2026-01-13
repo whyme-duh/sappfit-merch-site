@@ -881,6 +881,121 @@ a{
 .cart-summary-info p{
     margin-bottom:0;
 }
+/* --- Billing Card Wrapper --- */
+.billing-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Soft modern shadow */
+    border: 1px solid #f0f0f0;
+    height: 100%; /* Matches height if you have a summary card next to it */
+}
+
+/* --- Header --- */
+.billing-header {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 1rem;
+}
+
+.billing-header h3 {
+    font-weight: 700;
+    color: #1a1a1a;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.billing-header p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* --- Inputs & Labels --- */
+.form-group label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+/* Wrapper to hold the icon and input together */
+.input-wrapper {
+    position: relative;
+}
+
+/* The Icon inside the input */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #adb5bd;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+    z-index: 2;
+}
+
+/* The Input Field */
+.custom-input {
+    padding-left: 45px; /* Make room for the icon */
+    padding-right: 15px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    font-size: 1rem;
+    color: #495057;
+    transition: all 0.3s ease;
+}
+
+/* Focus State */
+.custom-input:focus {
+    background-color: #fff;
+    border-color: #5E338D; /* Your purple brand color */
+    box-shadow: 0 0 0 4px rgba(94, 51, 141, 0.1); /* Soft purple glow */
+}
+
+.custom-input:focus + .input-icon,
+.input-wrapper:focus-within .input-icon {
+    color: #5E338D; /* Icon turns purple on focus */
+}
+
+/* --- Button --- */
+.checkout-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 15px;
+    background-color: #5E338D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkout-btn:hover {
+    background-color: #4a2770; /* Slightly darker purple */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(94, 51, 141, 0.3);
+}
+
+/* Mobile Tweak */
+@media (max-width: 768px) {
+    .billing-card {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
 /* track order  */
 .track-order-container{
     position: relative;
