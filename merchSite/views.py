@@ -2,7 +2,7 @@ import base64
 import hashlib
 import hmac
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from core import settings
 from . models import Product, Cart,  Order, Categorie, ReturnProduct
@@ -12,10 +12,12 @@ from django.core.mail import send_mail
 import random
 import datetime
 from users.models import Review
+from django.db.models import Sum, IntegerField
 import requests
 from django.contrib.auth.decorators import login_required
 from constance import config
 from . forms import TrackOrderForm
+from django.db.models.functions import Cast
 
 def error_404_view(request, exception):
     return render(request, 'error/404.html')
@@ -431,22 +433,68 @@ def track_order(request):
 
 
 def return_request(request, order_id):
-    sizes = ['L', 'XL', 'S', 'M', 'XS']
-    order = Order.objects.get(id = order_id)
+    order = get_object_or_404(Order, id = order_id)
     if request.user.is_authenticated and request.method == "POST":
         product_name = request.POST.get('product-name')
-        product = Product.objects.get(name = product_name )
         size = request.POST.get('product-size')
-        quantity = request.POST.get('product-quantity')
-        if size in sizes:
-            try:
-                returnproduct = ReturnProduct.objects.create(user = request.user, product = product, size = size, quantity = quantity, order = order, return_request_date= datetime.datetime.now())
-                returnproduct.save()
-                messages.success(request, f'Your return request has been submitted!')
-            except:
-                messages.error(request, f'There was an error!')
+
+        try:
+            
+            requested_quantity = int(request.POST.get('product-quantity', 0))
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid quantity provided.")
+            return redirect('prpfile')
+        
+        original_qty_bought = 0
+        item_found = False
+
+        try:
+            order_items = json.loads(order.product)
+
+            for item in order_items:
+                if item.get('product') == product_name  and item.get('size') == size:
+                    original_qty_bought = int(item.get('quantity', 0))
+                    item_found = True
+                    break
+            
+        except json.JSONDecodeError:
+            messages.error(request, "System error!")
+            return redirect('profile')
+        
+        if not item_found:
+            messages.error(request, "The item was not found in your order")
+            return redirect('profile')
+
+
+        previous_returns_sum = ReturnProduct.objects.filter(
+                    order=order,
+                    product__name=product_name, 
+                    size=size
+                ).aggregate(total=Sum(Cast('quantity', output_field = IntegerField())))['total'] or 0
+        max_returnable = original_qty_bought - previous_returns_sum
+        if requested_quantity <= 0:
+            messages.error(request, "Return quantity should be greater than 0")
+            return redirect('profile')
+        elif requested_quantity > max_returnable:
+            messages.error(request, f"Error! You've bought {original_qty_bought} units of this item.")
+            return redirect('profile')
         else:
-            messages.error(request, f'There was an error!')
+            try:
+                product_instance = Product.objects.get(name = product_name)
+
+                ReturnProduct.objects.create(
+                    user = request.user, 
+                    product = product_instance, 
+                    size = size, 
+                    quantity = requested_quantity, 
+                    order = order, 
+                )
+                
+                messages.success(request, f'Your return request has been submitted!')
+            except Product.DoesNotExist:
+                messages.error(request, 'Product details mismatch!')
+            except Exception as e:
+                messages.error(request, f'There was an error! {e}')
 
 
         return redirect('profile')

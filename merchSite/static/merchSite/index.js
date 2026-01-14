@@ -52,12 +52,7 @@ function openReturnModal(actionUrl, productName ,productId, productSize, product
     inputProductName.value = productName;
     inputProductSize.value = productSize;
     inputProductQuantity.value = productQuantity;
-    if (productQuantity > 1){
-        inputProductQuantity.disabled = false;
-    }
-    else{
-        inputProductQuantity.disabled = true;
-    }
+    
     returnForm.action = actionUrl;
     modalReturnProduct.innerText = "#" + productId;
     modalOverlay.classList.add('active');

@@ -1,3 +1,5 @@
+from collections import defaultdict
+import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from . forms import UserRegistrationForm, ReviewForm
@@ -37,24 +39,66 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 def profile(request):
     reviews = Review.objects.filter(user = request.user)
-    return_products = ReturnProduct.objects.filter(user = request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
+    returned_products = ReturnProduct.objects.filter(user = request.user)
+
+    # creating a dictionary that stores the product name and size
+    returns_map = defaultdict(int)
+
+    returned_products_list = []
+
+    for return_prod in returned_products:
+        key = (return_prod.product.name, return_prod.size)
+        returns_map[key] += int(return_prod.quantity)
+        returned_products_list.append(return_prod)
+
     order_products = []
     delivered_products = []
 
+
     for order in orders:
-        if order.product: 
-            products = json.loads(order.product) 
+        if not order.product:
+            continue
+        try:
+            products_list = json.loads(order.product) 
             order_products.append({
                 'order': order,
-                'products': products
+                'products': products_list
             })
-            for item in products:
-                if order.status == "Delivered":
-                    delivered_products.append(item)
+            if order.status == "Delivered":
+                for item in products_list:
+                    product_name = item.get('product')
+                    product_size = item.get('size')
+                    product_quantity = int(item.get('quantity', 0))
+                    
+                    item_key = (product_name, product_size)
+
+                    quantity_returned = returns_map.get(item_key, 0)
+
+                    if quantity_returned > 0:
+                        remaining_qty = product_quantity - quantity_returned
+
+                        if remaining_qty > 0:
+                            item_copy = item.copy()
+                            item_copy['quantity'] = remaining_qty
+                            delivered_products.append(item_copy)
+
+                            returns_map[item_key] = 0
+                        else:
+                            returns_map[item_key] -= product_quantity
+                    else:
+                        delivered_products.append(item)
+
+                   
+        except json.JSONDecodeError:
+            continue
+    context = {"order_products": order_products, 
+            'reviews' : reviews, 
+            'delivered_products' : delivered_products, 
+            'returned_products' : returned_products_list}
 
   
-    return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products, 'returned_products' : return_products})
+    return render(request, 'users/profile.html', context)
 
 def sign_up(request):
     if request.method == 'POST':
@@ -94,8 +138,7 @@ def cancel_order(request, id):
             messages.success(request, f'Your Order has been cancelled succesfully!')
     return redirect('profile')
 
-def return_product(request, id):
-    return
+
 
 @login_required
 def add_review(request, id):

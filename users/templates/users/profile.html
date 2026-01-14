@@ -286,7 +286,7 @@
                                 <td>
                                     {{product.size}} x {{product.quantity}}
                                 </td>
-                                <td class="review-text">{{ review.review|truncatechars:50 }}</td>
+                                <td class="review-text">{{ product.return_request_date|date:"M d, Y" }}</td>
                                 <td class="review-text">{{ product.return_status }}</td>
                             </tr>
                             
