@@ -232,13 +232,13 @@
 .review-btn:hover{
     background-color: rgb(153, 242, 147);
     color: black;
-    border: none;
+    border: rgb(153, 242, 147);;
+}
+.return-btn{
+    background-color: white;
 }
 .return-btn:hover{
-    background-color: rgb(244, 244, 38);
     color: black;
-    border: none;
-
 }
 .cancel-btn{
     background-color: white;

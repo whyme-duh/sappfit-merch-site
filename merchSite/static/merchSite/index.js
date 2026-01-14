@@ -1,4 +1,3 @@
-const { act } = require("react");
 
 setTimeout(function(){
     const alert = document.getElementById('alert-msg');
@@ -42,13 +41,25 @@ function toggleOtherReason(selectElement) {
     }
 }
 
-function openReturnModal(actionUrl, productName) {
+function openReturnModal(actionUrl, productName ,productId, productSize, productQuantity) {
+    const inputProductName = document.getElementById('product-name');
+    const inputProductSize = document.getElementById('product-size');
+    const inputProductQuantity = document.getElementById('product-quantity');
     const returnForm = document.getElementById('returnForm');
     const modalOverlay = document.getElementById('returnModalOverlay');
     const modalReturnProduct = document.getElementById('modalReturnProduct');
-    console.log(actionUrl, productName);
+
+    inputProductName.value = productName;
+    inputProductSize.value = productSize;
+    inputProductQuantity.value = productQuantity;
+    if (productQuantity > 1){
+        inputProductQuantity.disabled = false;
+    }
+    else{
+        inputProductQuantity.disabled = true;
+    }
     returnForm.action = actionUrl;
-    modalReturnProduct.innerText = "#" + productName;
+    modalReturnProduct.innerText = "#" + productId;
     modalOverlay.classList.add('active');
 }
 

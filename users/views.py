@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from . forms import UserRegistrationForm, ReviewForm
-from merchSite.models import Order, Product
+from merchSite.models import Order, Product, ReturnProduct
 from django.contrib.auth.models import User
 from . models import Review
 from django.contrib import messages
@@ -37,6 +37,7 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 def profile(request):
     reviews = Review.objects.filter(user = request.user)
+    return_products = ReturnProduct.objects.filter(user = request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
     order_products = []
     delivered_products = []
@@ -49,13 +50,11 @@ def profile(request):
                 'products': products
             })
             for item in products:
-                if item not in delivered_products and order.status == "Delivered":
-                    print(item)
+                if order.status == "Delivered":
                     delivered_products.append(item)
 
   
-
-    return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products})
+    return render(request, 'users/profile.html', {"order_products": order_products, 'reviews' : reviews, 'delivered_products' : delivered_products, 'returned_products' : return_products})
 
 def sign_up(request):
     if request.method == 'POST':
@@ -94,6 +93,9 @@ def cancel_order(request, id):
             order.save()
             messages.success(request, f'Your Order has been cancelled succesfully!')
     return redirect('profile')
+
+def return_product(request, id):
+    return
 
 @login_required
 def add_review(request, id):

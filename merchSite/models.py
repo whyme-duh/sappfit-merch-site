@@ -94,10 +94,11 @@ class Order(models.Model):
 
 
     def __str__(self):
-        return f"Order from {self.name} ({self.user}) - {self.product} "
+        return f"{self.id} Order from {self.name} ({self.user}) - {self.product} "
 
     def add_product(self, product, size, quantity, price):
         product_data = {
+            'order_id' : self.id,
             'id': product.id,
             'product': product.name, 
             'size': size,
@@ -152,8 +153,10 @@ class ReturnProduct(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete = models.PROTECT)
+    size = models.CharField(max_length=10, null = True, blank = True)
+    quantity = models.CharField(max_length=10, null = True, blank = True)
     order = models.ForeignKey(Order, on_delete= models.PROTECT, null= True, blank = True)
-    return_status = models.CharField(max_length=100, choices=RETURN_STATUS, default="None")
+    return_status = models.CharField(max_length=100, choices=RETURN_STATUS, default="Pending")
     return_request_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -141,6 +141,7 @@
                     </thead>
                     <tbody>
                         {% for product in delivered_products %}
+                        
                             <tr>
                                 <td class="order-id">#{{ product.id }}</td>
                                 <td class="order-date">{{ product.product }} </td>
@@ -160,9 +161,12 @@
                                 <td class="action-buttons">
                                     <a href="{% url 'add-review' product.id %}" class="action review-btn">Review</a>
                                     <button class="action return-btn"
-                                        data-url="#"
-                                        data-id="{{ product.id }}"
-                                        onclick="openReturnModal(this.dataset.url, this.dataset.id)">Return</button>
+                                        data-url="{% url 'return-product' product.order_id %}"
+                                        data-name="{{product.product}}"
+                                        data-id="{{product.id}}"
+                                        data-size="{{product.size}}"
+                                        data-quantity = "{{product.quantity}}"
+                                        onclick="openReturnModal(this.dataset.url,this.dataset.name, this.dataset.id, this.dataset.size, this.dataset.quantity)">Return</button>
                                 </td>
                             </tr>
                         {% empty %}
@@ -185,13 +189,24 @@
                     {% csrf_token %}
                     <div class="modal-body">
                         <p class="text-muted">Are you sure? This action cannot be undone.</p>
+                        <div class="form-group">
+                            <label for="Product">Product</label>
+                            <input type="text" name="product-name" value="" id="product-name" >
+                        </div>
+                        <div class="form-group">
+                            <label for="size">Size</label>
+                            <input type="text" name="product-size" value="" id="product-size" >
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" name="product-quantity" value="" id="product-quantity" >
+                        </div>
                         
                         <div class="form-group">
                             <label for="return-options">Reason for Returning</label>
                             <select name="return-options" id="return-options" class="form-select" onchange="toggleOtherReason(this)">
                                 <option value="Damage Product">The product came with damage.</option>
-                                <option value="Different Product">Different Product was sent.</option>
-                                <option value="Other">Other</option>
+                                <option value="Got Different Product">Got different product.</option>
                             </select>
                         </div>
 
@@ -246,6 +261,41 @@
                 </table>
             </div>
         </div>
+        {% if returned_products %}
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2>Your Return Products</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="sleek-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Size x Quantity</th>
+                            <th>Returned Request At</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in returned_products %}
+                            <tr>
+                                <td>
+                                        {{ product.product }}
+                                    
+                                </td>
+                                <td>
+                                    {{product.size}} x {{product.quantity}}
+                                </td>
+                                <td class="review-text">{{ review.review|truncatechars:50 }}</td>
+                                <td class="review-text">{{ product.return_status }}</td>
+                            </tr>
+                            
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
     </div>
     
 </div>

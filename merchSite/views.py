@@ -5,7 +5,7 @@ import json
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from core import settings
-from . models import Product, Cart,  Order, Categorie
+from . models import Product, Cart,  Order, Categorie, ReturnProduct
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
@@ -430,6 +430,26 @@ def track_order(request):
 
 
 
-def return_request(request, product_id, order_id):
-    product = Product.objects.get(id = product_id)
+def return_request(request, order_id):
+    sizes = ['L', 'XL', 'S', 'M', 'XS']
+    order = Order.objects.get(id = order_id)
+    if request.user.is_authenticated and request.method == "POST":
+        product_name = request.POST.get('product-name')
+        product = Product.objects.get(name = product_name )
+        size = request.POST.get('product-size')
+        quantity = request.POST.get('product-quantity')
+        if size in sizes:
+            try:
+                returnproduct = ReturnProduct.objects.create(user = request.user, product = product, size = size, quantity = quantity, order = order, return_request_date= datetime.datetime.now())
+                returnproduct.save()
+                messages.success(request, f'Your return request has been submitted!')
+            except:
+                messages.error(request, f'There was an error!')
+        else:
+            messages.error(request, f'There was an error!')
+
+
+        return redirect('profile')
+    
+
     
