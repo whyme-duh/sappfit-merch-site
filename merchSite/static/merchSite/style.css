@@ -287,7 +287,7 @@ nav{
     height:45vh;
     border-radius: 5px;
     max-height: 70vh;
-    padding-block: 0.5em;
+    padding-bottom:0.5em;
 }
 .size-info{
     color: grey;

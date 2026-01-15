@@ -45,7 +45,7 @@ class Product(models.Model):
     
     def discount_rate(self):
         if self.discount:
-            return f'-{int((self.discount_price/self.price) * 100)}%'
+            return f'-{int(((self.price-self.discount_price)/self.price) * 100)}%'
     
     
         
