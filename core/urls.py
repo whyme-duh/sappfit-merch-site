@@ -22,6 +22,10 @@ from django.contrib.auth import views as auth_views
 from users.views import CustomLoginView
 import django_browser_reload
 
+admin.site.site_header = "Sappfit Merch Site"
+admin.site.site_title = "Admin Site | Sappfit Merch"
+admin.site.index_title = "Welcome"
+
 
 urlpatterns = [
     path('__reload__/', include("django_browser_reload.urls")),

@@ -26,14 +26,18 @@ import dj_database_url
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*",  " 192.168.101.13:8000"]
 
-
+UNFOLD = {
+    "SITE_TITLE": "Custom suffix in <title> tag",
+}
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
+    "unfold.contrib.filters",
     'constance',
     'constance.backends.database',
     'merchSite',

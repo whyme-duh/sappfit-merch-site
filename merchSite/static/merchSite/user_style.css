@@ -10,7 +10,11 @@
     --success-color: #10b981;
     --warning-color: #f59e0b;
 }
-
+.forget-passwd{
+    border: 1px solid;
+    display: flex;
+    align-items: end;
+}
 /* --- Layout Structure --- */
 .profile-wrapper {
     background-color: var(--bg-color);

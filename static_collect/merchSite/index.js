@@ -1,6 +1,7 @@
 
 setTimeout(function(){
     const alert = document.getElementById('alert-msg');
+
     alert.style.display = "none";
 }, 4000)
 
@@ -12,8 +13,75 @@ function navbarFunction() {
   } else {
     x.className = "nav-links";
   }
+  
 }
 
+function openCancelModal(actionUrl, orderId) {
+    const cancelForm = document.getElementById('cancelForm');
+    const modalOverlay = document.getElementById('cancelModalOverlay');
+    const modalOrderIdSpan = document.getElementById('modalOrderId');
+
+    cancelForm.action = actionUrl;
+    modalOrderIdSpan.innerText = "#" + orderId;
+    modalOverlay.classList.add('active');
+}
+
+function closeCancelModal() {
+    const modalOverlay = document.getElementById('cancelModalOverlay');
+    modalOverlay.classList.remove('active');
+}
+
+function toggleOtherReason(selectElement) {
+    const otherReasonGroup = document.getElementById('otherReasonGroup');
+
+    if (selectElement.value === 'Other') {
+        otherReasonGroup.style.display = 'block';
+    } else {
+        otherReasonGroup.style.display = 'none';
+    }
+}
+
+function openReturnModal(actionUrl, productName ,productId, productSize, productQuantity) {
+    const inputProductName = document.getElementById('product-name');
+    const inputProductSize = document.getElementById('product-size');
+    const inputProductQuantity = document.getElementById('product-quantity');
+    const returnForm = document.getElementById('returnForm');
+    const modalOverlay = document.getElementById('returnModalOverlay');
+    const modalReturnProduct = document.getElementById('modalReturnProduct');
+
+    inputProductName.value = productName;
+    inputProductSize.value = productSize;
+    inputProductQuantity.value = productQuantity;
+    
+    returnForm.action = actionUrl;
+    modalReturnProduct.innerText = "#" + productId;
+    modalOverlay.classList.add('active');
+}
+
+function closeReturnModal() {
+    const modalOverlay = document.getElementById('returnModalOverlay');
+    modalOverlay.classList.remove('active');
+}
+
+
+
+
+window.onclick = function(event) {
+    if (event.target === modalOverlay) {
+        closeCancelModal();
+    }
+}
+// backdrop effect when seeing the result of tracked orders
+
+const trackResult = document.getElementById('track-result');
+const trackResultBackground = document.getElementById('track-order-container');
+function closeThis(){
+    trackResult.style.display = "hide";
+}
+if (trackResult){
+    console.log(trackResult, trackResultBackground);
+    trackResultBackground.style.display = "fle";
+}
 
 // eye sight for password
 
@@ -24,19 +92,23 @@ const eye = document.getElementById("eye");
 const eyepassword1 = document.getElementById("eye-password1");
 const eyepassword2 = document.getElementById("eye-password2");
 
-
-eyeSlashPassword1.addEventListener("click", function(){
+if (eyeSlashPassword1){
+    eyeSlashPassword1.addEventListener("click", function(){
     const passwordField1 = document.getElementById("id_password1");
     passwordField1.type = "text";
     eyeSlashPassword1.style.display = "none";
     eyepassword1.style.display = "block";
 })
-eye.addEventListener("click", function(){
+}
+if(eye){
+    eye.addEventListener("click", function(){
     const passwordField = document.getElementById("id_password");
     passwordField.type = "password";
     eyeSlash.style.display = "block";
     eye.style.display = "none";
 })
+}
+
 
 function showPassword(hiddenId, iId, passwordField){
     const eyeIcon = document.getElementById(hiddenId);
@@ -151,59 +223,60 @@ indicatorsNav.addEventListener('click', e => {
     updateIndicators(currentIndi, targetIndi);
     showHideArrows(targetIndex, prevButton, nextButton, slides);
 })
-document.addEventListener("DOMContentLoaded", () => {
-    // Select all review cards and the arrows
-    const reviewCards = document.querySelectorAll(".review-card");
-    const leftArrow = document.getElementById("left-arrow");
-    const rightArrow = document.getElementById("right-arrow");
-    
-    // Initialize the current review index
-    let currentReviewIndex = 0;
-    
-    // Function to show a specific review and hide others
-    const showReview = (index) => {
-        // Loop through all review cards
-        reviewCards.forEach((card, i) => {
-            // If the current card's index matches the desired index, show it
-            if (i === index) {
-                card.style.display = "block";
-            } else {
-                // Otherwise, hide the card
-                card.style.display = "none";
-            }
-        });
-    };
-    
-    // Initial call to show the first review
-    showReview(currentReviewIndex);
-    
-    // Event listener for the left arrow
-    leftArrow.addEventListener("click", () => {
-        // Decrement the index. If it goes below zero, wrap around to the last review.
-        currentReviewIndex = (currentReviewIndex - 1 + reviewCards.length) % reviewCards.length;
-        showReview(currentReviewIndex);
-    });
-    
-    // Event listener for the right arrow
-    rightArrow.addEventListener("click", () => {
-        // Increment the index. If it goes past the last review, wrap around to the first.
-        currentReviewIndex = (currentReviewIndex + 1) % reviewCards.length;
-        showReview(currentReviewIndex);
-    });
 
-    // Optional: Add hover functionality to show/hide arrows
-    const reviewsContainer = document.querySelector(".reviews");
-    const arrowsContainer = document.getElementById("arrows");
+// document.addEventListener("DOMContentLoaded", () => {
+//     // Select all review cards and the arrows
+//     const reviewCards = document.querySelectorAll(".review-card");
+//     const leftArrow = document.getElementById("left-arrow");
+//     const rightArrow = document.getElementById("right-arrow");
+    
+//     // Initialize the current review index
+//     let currentReviewIndex = 0;
+    
+//     // Function to show a specific review and hide others
+//     const showReview = (index) => {
+//         // Loop through all review cards
+//         reviewCards.forEach((card, i) => {
+//             // If the current card's index matches the desired index, show it
+//             if (i === index) {
+//                 card.style.display = "block";
+//             } else {
+//                 // Otherwise, hide the card
+//                 card.style.display = "none";
+//             }
+//         });
+//     };
+    
+//     // Initial call to show the first review
+//     showReview(currentReviewIndex);
+    
+//     // Event listener for the left arrow
+//     leftArrow.addEventListener("click", () => {
+//         // Decrement the index. If it goes below zero, wrap around to the last review.
+//         currentReviewIndex = (currentReviewIndex - 1 + reviewCards.length) % reviewCards.length;
+//         showReview(currentReviewIndex);
+//     });
+    
+//     // Event listener for the right arrow
+//     rightArrow.addEventListener("click", () => {
+//         // Increment the index. If it goes past the last review, wrap around to the first.
+//         currentReviewIndex = (currentReviewIndex + 1) % reviewCards.length;
+//         showReview(currentReviewIndex);
+//     });
 
-    if (arrowsContainer) {
-        reviewsContainer.addEventListener("mouseenter", () => {
-            arrowsContainer.style.display = "flex";
-        });
-        reviewsContainer.addEventListener("mouseleave", () => {
-            arrowsContainer.style.display = "none";
-        });
-    }
-});
+//     // Optional: Add hover functionality to show/hide arrows
+//     const reviewsContainer = document.querySelector(".reviews");
+//     const arrowsContainer = document.getElementById("arrows");
+
+//     if (arrowsContainer) {
+//         reviewsContainer.addEventListener("mouseenter", () => {
+//             arrowsContainer.style.display = "flex";
+//         });
+//         reviewsContainer.addEventListener("mouseleave", () => {
+//             arrowsContainer.style.display = "none";
+//         });
+//     }
+// });
 
 
 
@@ -217,4 +290,7 @@ else{
     relatedProd.style.marginTop = "20em";
 
 }
+
+
+
 
