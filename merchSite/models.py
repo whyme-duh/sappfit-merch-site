@@ -55,7 +55,6 @@ class Product(models.Model):
     
    
 class Order(models.Model):
-
     STATUS_CHOICES = (
         ('Pending' , 'Pending'),
         ('Processing' , 'Processing'),
@@ -63,7 +62,6 @@ class Order(models.Model):
         ('Delivered', 'Delivered'),
         ('Cancelled' , 'Cancelled')
     )
-
     CANELLATION_REASONS = (
         ('I selected wrong product.' , 'I selected wrong product.'),
         ('I forgot to add other products.' , 'I forgot to add other products.'),
