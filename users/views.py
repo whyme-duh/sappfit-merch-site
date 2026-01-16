@@ -28,10 +28,8 @@ class CustomLoginView(LoginView):
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/passwordReset/password_reset.html'
     email_template_name = 'users/passwordReset/password_reset_email.html'
-    subject_template_name = 'users/passwordReset/password_rest_subject.txt'
-    success_message =  "We've emailed you instructions for setting your password, " \
-                      "if an account exists with the email you entered. You should receive them shortly." \
-                      " If you don't receive an email, " \
+    subject_template_name = 'users/passwordReset/password_reset_subject.txt'
+    success_message =  "We've emailed you instructions for setting your password, "\
                       "please make sure you've entered the address you registered with, and check your spam folder."
     success_url = reverse_lazy('home')
 
@@ -171,12 +169,3 @@ def add_review(request, id):
     return render(request, 'users/addReview.html', {'form': form, 'product' : product})
 
 
-# class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-#     template_name = "users/password_reset.html"
-#     email_template_name = "users/password_email_reset.html"
-#     subject_template_name = "users/password_reset_subject"
-#     success_message = "We've emailed you instructions for setting your password, " \
-#                       "if an account exists with the email you entered. You should receive them shortly." \
-#                       " If you don't receive an email, " \
-#                       "please make sure you've entered the address you registered with, and check your spam folder."
-#     success_url = reverse_lazy()

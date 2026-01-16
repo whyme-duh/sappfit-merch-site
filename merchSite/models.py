@@ -48,19 +48,7 @@ class Product(models.Model):
             return f'-{int(((self.price-self.discount_price)/self.price) * 100)}%'
     
     
-        
-    
-# class ProductVarient(models.Model):
-#     product = models.ForeignKey(Product, on_delete = models.CASCADE, blank = True, null = True, related_name = 'product_varient')
-#     size = models.ForeignKey(Size, on_delete = models.CASCADE, blank = True, null = True)
-#     quantity = models.PositiveIntegerField(default = 0, blank = True, null = True)
-
-#     class Meta:
-#         unique_together = ('product', 'size')
-
-#     def __str__(self):
-#         return f"{self.product.name} - {self.size.option} (quantity = {self.quantity})"
-
+   
 class Order(models.Model):
 
     STATUS_CHOICES = (
@@ -85,7 +73,7 @@ class Order(models.Model):
     name = models.CharField(max_length = 80, blank = True, null = True)
     location = models.CharField(max_length = 80, blank = True, null = True)
     email = models.EmailField(max_length = 80, blank = True, null = True)
-    phone = models.CharField(max_length = 15, blank = True, null = True)
+    phone = models.CharField(max_length = 100, blank = True, null = True)
     is_paid = models.BooleanField(default=False, null = True, blank = True)
     order_id = models.CharField(max_length = 1000, blank = True, null = True)
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)

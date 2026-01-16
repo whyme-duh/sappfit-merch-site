@@ -5,6 +5,7 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from core import settings
+from merchSite.utils import send_confirmation_email
 from . models import Product, Cart,  Order, Categorie, ReturnProduct
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -238,8 +239,8 @@ def checkout(request):
                 order.add_product(cart.product, cart.size, cart.quantity, price)
                 
             cartitem.delete()
+            send_confirmation_email(order)
 
-            # send_mail("Order Placed", "Your order has been placed.", settings.EMAIL_HOST_USER, ["ritikshrestha94@gmail.com"], fail_silently=False)
 
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
             return render(request, 'merchSite/khalti/khalti-success.html', {'order_id' : order_id}) 
