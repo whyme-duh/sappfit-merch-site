@@ -11,9 +11,15 @@
     --warning-color: #f59e0b;
 }
 .forget-passwd{
-    border: 1px solid;
     display: flex;
+    justify-content: end;
     align-items: end;
+}
+.forget-passwd a{
+    color: rgb(59, 59, 59);
+}
+.forget-passwd a:hover{
+    color: black;
 }
 /* --- Layout Structure --- */
 .profile-wrapper {
