@@ -26,6 +26,11 @@ class Categorie(models.Model):
 
 
 class Product(models.Model):
+    dict = {
+        "L" : 1,
+        "S" : 1,
+        "M" : 1
+    }
     name = models.CharField(max_length=100, blank = False, null = False)
     price = models.IntegerField(blank = False, null = False)
     discount = models.BooleanField(default= False)

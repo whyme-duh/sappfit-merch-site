@@ -34,6 +34,7 @@ def index(request):
     for product in featured_products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+        product.save()
     return render(request, 'merchSite/home.html', {"products" : featured_products })
 
 def products_by_category(request, id):
