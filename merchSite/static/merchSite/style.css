@@ -27,6 +27,15 @@
     /* Font-side */
     --fs-p: 16px;
 }
+
+body{
+    height: 100vh;
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 .intro{
     width: 80%;
 }
@@ -38,7 +47,9 @@
     width:40%;
     height: 85vh;
 }
-
+main{
+    flex:1;
+}
 .main{
     display: flex;
     flex-direction: column;
@@ -1032,7 +1043,7 @@ a{
 
 }
 .footer{
-    margin-top: 2em;
+    margin-top: auto;
     text-align:center;
     padding-block: 1em;
     background-color: rgb(242, 242, 242);

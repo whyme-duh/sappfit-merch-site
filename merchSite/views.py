@@ -28,6 +28,8 @@ def error_500_view(request):
 
 
 def index(request):
+    date = datetime.datetime.now()
+    print(date)
     featured_products = Product.objects.filter(discount = True)
     
     
@@ -35,7 +37,7 @@ def index(request):
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
         product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
         product.save()
-    return render(request, 'merchSite/home.html', {"products" : featured_products })
+    return render(request, 'merchSite/home.html', {"products" : featured_products, "date":date })
 
 def products_by_category(request, id):
     display = ""

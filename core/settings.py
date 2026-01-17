@@ -81,6 +81,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'merchSite.context_processors.get_cart_count',
+                'merchSite.context_processors.return_date',
             ],
         },
     },

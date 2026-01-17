@@ -42,34 +42,36 @@
             </div>
         </div>
     </nav>
-    <main>
-      <!-- <a class="alert-cart " id="alert-msg" href="{% url 'my-cart' %}">
-            <h5 class="text-center">Added to your cart!</h5>
-        </a> -->
-       
-        {% if messages %}
-        {% for msg in messages %}
-        {% if msg.tags == "cart success" %}
+    <div class="wrapper">
+        <main>
         
-        <a class="alert-{{msg.tags}} " id="alert-msg" href="{% url 'my-cart' %}">
-            <h5 class="text-center">{{msg}}</h5>
-        </a>
-        {% else %}
-        <div class="alert-{{msg.tags}}" id="alert-msg">
-            <h5 class="text-center">{{msg}}</h5>
+            {% if messages %}
+            {% for msg in messages %}
+            {% if msg.tags == "cart success" %}
+            
+            <a class="alert-{{msg.tags}} " id="alert-msg" href="{% url 'my-cart' %}">
+                <h5 class="text-center">{{msg}}</h5>
+            </a>
+            {% else %}
+            <div class="alert-{{msg.tags}}" id="alert-msg">
+                <h5 class="text-center">{{msg}}</h5>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+
+
+        </main>
+        <footer
+            <div class="footer">
+            <p>&copy; {{date|date:"Y"}} SappFit Merch. All rights reserved.</p>
+            <p>Kathmandu, Nepal</p>
         </div>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-        {% block content %}{% endblock %}
-
-
-    </main>
+        </footer>
+    </div>
 
 </body>
-<div class="footer">
-    <p>&copy; 2026 SappFit Merch. All rights reserved.</p>
-    <p>Kathmandu, Nepal</p>
-</div>
+
 <script defer src="{% static 'merchSite/index.js' %}"></script>
 </html>

@@ -726,4 +726,18 @@
         flex-direction: column;
         gap: 1em;
     }
+    .btn-signup{
+        margin-top: 1em;
+    }
+    .btn-login, .btn-signup{
+        width: 100%;
+    }
+    .sign-in-container{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+    .sign-in-container form{
+        margin-top: 2em;
+    }
 }

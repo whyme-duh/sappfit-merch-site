@@ -1,3 +1,4 @@
+import datetime
 from . models import Cart
 
 
@@ -9,3 +10,8 @@ def get_cart_count(request):
             return {'cart_count' : 0}
         cart_items = Cart.objects.filter(session_id = request.session.session_key).count()
     return {'cart_count' : cart_items}
+
+
+def return_date(request):
+    date = datetime.datetime.now()
+    return {'date' : date}
