@@ -43,7 +43,9 @@
         </div>
     </nav>
     <main>
-      
+      <!-- <a class="alert-cart " id="alert-msg" href="{% url 'my-cart' %}">
+            <h5 class="text-center">Added to your cart!</h5>
+        </a> -->
        
         {% if messages %}
         {% for msg in messages %}
@@ -65,5 +67,9 @@
     </main>
 
 </body>
+<div class="footer">
+    <p>&copy; 2026 SappFit Merch. All rights reserved.</p>
+    <p>Kathmandu, Nepal</p>
+</div>
 <script defer src="{% static 'merchSite/index.js' %}"></script>
 </html>

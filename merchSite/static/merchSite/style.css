@@ -1031,6 +1031,15 @@ a{
     backdrop-filter: blur(5px);
 
 }
+.footer{
+    margin-top: 2em;
+    text-align:center;
+    padding-block: 1em;
+    background-color: rgb(242, 242, 242);
+}
+.footer p{
+    margin: 0;
+}
 @media screen and (max-width:400px){
     /* home page and nav section  */
     .nav-section{
@@ -1228,6 +1237,20 @@ a{
         margin-top: 2em;
         width: 100%;
     }
+    .product-price{
+        font-size: 1.5em;
+    }
+    .details h5{
+        margin-top: 0.5em;
+        padding-bottom: 0.25em;
+        font-size: 1.6em;
+    }
+    .size-info{
+        font-size: 1em;
+    }
+    .d-product-list .original-price{
+        font-size: 1.25em;
+    }
     .quantity-size{
         width: 100%;
         display: block;
@@ -1241,11 +1264,24 @@ a{
     .review-card{
         margin-top: 1em;
     }
-    .alert-success, .alert-error, .alert-warning{
+    .alert-cart:visited, 
+    .alert-cart:link,
+    .alert-cart:active,
+    .alert-cart:hover,
+    .alert-card:focus{
+        color: white;
+        text-decoration: none;
+    }
+    .alert-cart{
+        text-decoration: none;
+        color: white;
+        background-color: green;
+    }
+    .alert-success, .alert-error, .alert-warning, .add-to-cart-btn{
         width: fit-content;
     }
     .alert-success h5, .alert-error h5, .alert-warning h5{
-        font-size: 0.5em;
+        font-size: 1em;
     }
     .order-view{
         justify-content: center;
@@ -1272,7 +1308,9 @@ a{
     .cart-product-name{
         padding-top: 1em;
     }
-   
+    .add-to-cart-btn{
+        width: 100%;
+    }
     .total-cart-delete{
         margin-top: 0;
         width: 100%;

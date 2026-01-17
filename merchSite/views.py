@@ -147,7 +147,7 @@ def add_to_cart(request, id):
                 if propsed_new_total <= max_stock:
                     cart_item.quantity = propsed_new_total
                     cart_item.save()
-                    messages.success(request, f'Updated the cart!')
+                    messages.success(request, f'Updated the cart!', extra_tags="cart")
                 else:
                     messages.error(request, f'Cannot add the item anymore in the cart.')
             else:

@@ -695,3 +695,35 @@
 }
 
 .btn-danger:hover { background: #c82333; }
+
+
+@media screen and (max-width:400px){
+    .profile-header-card{
+        flex-wrap: wrap;
+        
+
+    }
+    .header-actions{
+        display: flex;
+        margin-top: 2em;
+        width: 100%;
+    }
+    .header-actions form{
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .btn-logout{
+        background-color: red;
+        color: white;
+        width: 100%;
+        justify-content: center;
+
+    }
+    .action-buttons{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+}

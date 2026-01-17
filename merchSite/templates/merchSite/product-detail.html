@@ -81,7 +81,7 @@
                     <input type="number" name="quantity" value="1" min="1" required>
                 </div>
                 </div>
-                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                <button type="submit" class="add-to-cart-btn">Add to Bag</button>
             </form>
         </div>
          
@@ -166,7 +166,14 @@
                 <div class="details">
                     <small class="size-info">{{product.product_available_text}}</small>
                     <h5 class="mb-0">{{product.name}}</h5>
-                    <p>Rs. {{product.price }}</p>
+                    {% if product.discount %}
+                    <div class="price d-block">
+                        <small class="original-price">Rs. {{product.discount_price}}</small>
+                        <strike class="discount-price" style="color:red" >Rs. {{product.price}}</strike>
+                    </div>
+                    {% else %}
+                    <small class="original-price">Rs. {{product.price}}</small>
+                    {% endif %}
                 </div>
             </a>
             </div>
