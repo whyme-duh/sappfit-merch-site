@@ -65,12 +65,6 @@ function closeReturnModal() {
 
 
 
-
-window.onclick = function(event) {
-    if (event.target === modalOverlay) {
-        closeCancelModal();
-    }
-}
 // backdrop effect when seeing the result of tracked orders
 
 const trackResult = document.getElementById('track-result');
@@ -224,6 +218,13 @@ indicatorsNav.addEventListener('click', e => {
     showHideArrows(targetIndex, prevButton, nextButton, slides);
 })
 
+
+
+window.onclick = function(event) {
+    if (event.target === modalOverlay) {
+        closeCancelModal();
+    }
+}
 // document.addEventListener("DOMContentLoaded", () => {
 //     // Select all review cards and the arrows
 //     const reviewCards = document.querySelectorAll(".review-card");
