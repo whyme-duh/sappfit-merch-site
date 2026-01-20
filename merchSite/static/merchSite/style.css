@@ -273,8 +273,8 @@ nav{
     width: 85%;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5em;
-    justify-content:space-between;
+    gap: 3em;
+    justify-content: start;
 }
 
 .product-card-home{
@@ -286,6 +286,9 @@ nav{
     display: flex;
     flex-direction: column;
     width: 19%;
+}
+.product-card:hover .product-image{
+    scale: 105%;
 }
 .product-card:hover .product-name{
     text-decoration: underline;
@@ -741,7 +744,7 @@ a{
 }
 
 .carousel__button {
-    background: transparent;
+    background-color: transparent;
     position: relative;
     border: 0;
     display: flex;
@@ -808,7 +811,7 @@ a{
 }
 
 .carousel__button-container {
-    display: none;
+    display: flex;
 }
 .reviews {
     background-color: rgb(255, 255, 255);
@@ -1242,7 +1245,6 @@ a{
     }
 
     .carousel__button-container {
-        display: none;
     }
     .product-detail{
         margin-top: 2em;
