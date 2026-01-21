@@ -14,7 +14,6 @@
         <div class="filters">
             <select name="filter" id="filters" onchange="window.location.href = this.value">
                 <option value="lowtohighprice">Filters</option>
-                
                 <option value="{% url 'products-filter' 'lowtohigh'%}" {% if active_filter == 'lowtohigh' %}selected{% endif %}>Low to High (Price)</option>
                 <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>High to Low (Price)</option>
             </select>
@@ -25,8 +24,20 @@
         {% for product in products%}
         <div class="product-card mt-4">
             <a href="{% url 'detail-page' product.slug %}" class="text-decoration-none" >
-                <img src= "{{product.image.url}}" alt="img" class="product-image">
-                    <small class="size-info">{{product.product_available_text}}</small>
+                {% if product.discount%}
+                <div class="img-discount-over">
+                    <img src= "{{product.image.url}}" alt="img" class="product-image">
+                    <div class="discount-rate-home">
+                        <p>{{product.discount_rate}}</p>
+                    </div>
+                </div>
+                {% else %}
+                    <img src= "{{product.image.url}}" alt="img" class="product-image">
+                    <div class="discount-rate-home">
+                        <p>{{product.discount_rate}}</p>
+                    </div>
+                {% endif %}
+                <small class="size-info">{{product.product_available_text}}</small>
                 <h5 class="product-name">{{product.name}}</h5>
             </a>
             {% if product.discount %}

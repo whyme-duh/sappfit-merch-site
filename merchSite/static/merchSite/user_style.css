@@ -696,7 +696,12 @@
 
 .btn-danger:hover { background: #c82333; }
 
-
+.btn-decoration{
+    text-decoration: none;
+}
+.btn-decoration:hover{
+    text-decoration: underline;
+}
 @media screen and (max-width:400px){
     .profile-header-card{
         flex-wrap: wrap;

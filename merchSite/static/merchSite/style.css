@@ -282,6 +282,9 @@ nav{
     flex-direction: column;
     width: 20%;
 }
+.product-card-home:hover .product-image{
+    scale: 105%;
+}
 .product-card{
     display: flex;
     flex-direction: column;
