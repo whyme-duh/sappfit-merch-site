@@ -32,6 +32,12 @@ ALLOWED_HOSTS = ["*",  " 192.168.101.13:8000"]
 
 UNFOLD = {
     "SITE_TITLE": "Custom suffix in <title> tag",
+    "SITE_HEADER": "SappFit Dashboard",
+    "DASHBOARD_CALLBACK" : "core.dashboard.dashboard_callback",
+    "SIDEBAR": {
+        "show_search" : True,
+        "show_all_applications": True
+    }
 }
 # Application definition
 
@@ -72,7 +78,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
