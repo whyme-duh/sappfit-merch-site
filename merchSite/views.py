@@ -438,70 +438,84 @@ def track_order(request):
 
 def return_request(request, order_id):
     order = get_object_or_404(Order, id = order_id)
-    if request.user.is_authenticated and request.method == "POST":
-        product_name = request.POST.get('product-name')
-        size = request.POST.get('product-size')
-
-        try:
-            
-            requested_quantity = int(request.POST.get('product-quantity', 0))
-        except (ValueError, TypeError):
-            messages.error(request, "Invalid quantity provided.")
-            return redirect('prpfile')
-        
-        original_qty_bought = 0
-        item_found = False
-
-        try:
-            order_items = json.loads(order.product)
-
-            for item in order_items:
-                if item.get('product') == product_name  and item.get('size') == size:
-                    original_qty_bought = int(item.get('quantity', 0))
-                    item_found = True
-                    break
-            
-        except json.JSONDecodeError:
-            messages.error(request, "System error!")
-            return redirect('profile')
-        
-        if not item_found:
-            messages.error(request, "The item was not found in your order")
-            return redirect('profile')
-
-
-        previous_returns_sum = ReturnProduct.objects.filter(
-                    order=order,
-                    product__name=product_name, 
-                    size=size
-                ).aggregate(total=Sum(Cast('quantity', output_field = IntegerField())))['total'] or 0
-        max_returnable = original_qty_bought - previous_returns_sum
-        if requested_quantity <= 0:
-            messages.error(request, "Return quantity should be greater than 0")
-            return redirect('profile')
-        elif requested_quantity > max_returnable:
-            messages.error(request, f"Error! You've bought {original_qty_bought} units of this item.")
-            return redirect('profile')
+    return_elligible = None
+    now_date = datetime.datetime.now()
+    ordered_date = order.date
+    if ordered_date.year == now_date.year and ordered_date.month == now_date.month:
+        if ordered_date.day - now_date.day > 7:
+            return_elligible = False
         else:
+            return_elligible = False
+
+
+    print("ORDERDATE", ordered_date.day)
+    print("ORDERDATE", ordered_date.month)
+    print("ORDERDATE", ordered_date.year)
+    print("NOW DATE", now_date.date)
+    if return_elligible:
+        if request.user.is_authenticated and request.method == "POST":
+            product_name = request.POST.get('product-name')
+            size = request.POST.get('product-size')
             try:
-                product_instance = Product.objects.get(name = product_name)
-
-                ReturnProduct.objects.create(
-                    user = request.user, 
-                    product = product_instance, 
-                    size = size, 
-                    quantity = requested_quantity, 
-                    order = order, 
-                )
                 
-                messages.success(request, f'Your return request has been submitted!')
-            except Product.DoesNotExist:
-                messages.error(request, 'Product details mismatch!')
-            except Exception as e:
-                messages.error(request, f'There was an error! {e}')
+                requested_quantity = int(request.POST.get('product-quantity', 0))
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid quantity provided.")
+                return redirect('prpfile')
+            
+            original_qty_bought = 0
+            item_found = False
+
+            try:
+                order_items = json.loads(order.product)
+
+                for item in order_items:
+                    if item.get('product') == product_name  and item.get('size') == size:
+                        original_qty_bought = int(item.get('quantity', 0))
+                        item_found = True
+                        break
+                
+            except json.JSONDecodeError:
+                messages.error(request, "System error!")
+                return redirect('profile')
+            
+            if not item_found:
+                messages.error(request, "The item was not found in your order")
+                return redirect('profile')
 
 
-        return redirect('profile')
+            previous_returns_sum = ReturnProduct.objects.filter(
+                        order=order,
+                        product__name=product_name, 
+                        size=size
+                    ).aggregate(total=Sum(Cast('quantity', output_field = IntegerField())))['total'] or 0
+            max_returnable = original_qty_bought - previous_returns_sum
+            if requested_quantity <= 0:
+                messages.error(request, "Return quantity should be greater than 0")
+                return redirect('profile')
+            elif requested_quantity > max_returnable:
+                messages.error(request, f"Error! You've bought {original_qty_bought} units of this item.")
+                return redirect('profile')
+            else:
+                try:
+                    product_instance = Product.objects.get(name = product_name)
+
+                    # ReturnProduct.objects.create(
+                    #     user = request.user, 
+                    #     product = product_instance, 
+                    #     size = size, 
+                    #     quantity = requested_quantity, 
+                    #     order = order, 
+                    # )
+                    
+                    messages.success(request, f'Your return request has been submitted!')
+                except Product.DoesNotExist:
+                    messages.error(request, 'Product details mismatch!')
+                except Exception as e:
+                    messages.error(request, f'There was an error! {e}')
+    else:
+        messages.error(request, 'The delivererd product is already 7 days old!')
+    return redirect('profile')
     
 
     
