@@ -1,3 +1,4 @@
+import json
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 from . models import Product, Cart, Order, Categorie, ReturnProduct
@@ -41,5 +42,8 @@ class OrderAdmin(ModelAdmin):
         )
     status_badge.short_description = 'Status'
 
+@admin.register(ReturnProduct)
+class ReturnProductAdmin(ModelAdmin):
+    list_display = ['user', 'product', 'size', 'quantity', 'return_status', 'return_request_date']
+    list_filter = ['user', 'product', 'size', 'quantity', 'return_status', 'return_request_date']
 
-admin.site.register(ReturnProduct)

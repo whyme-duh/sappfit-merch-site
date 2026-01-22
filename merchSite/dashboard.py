@@ -1,15 +1,17 @@
 from django.db.models import Sum, Count
 from django.utils import timezone
+import datetime
 from merchSite.models import Order
 
 
 def dashboard_callback(request, context):
     total_income = Order.objects.filter(status="Delivered").aggregate(Sum('price'))['price__sum'] or 0
     total_order = Order.objects.filter(status = "Delivered").count()
-    print("🔥🔥🔥 DASHBOARD CALLBACK IS EXECUTING! 🔥🔥🔥")
     pending_order = Order.objects.filter(status = "Pending").count()
-
     current_month = timezone.now().month
+
+    current_month_name = datetime.datetime.now().strftime("%B")
+    
     monthly_sales = Order.objects.filter(date__month = current_month, status = "Delivered").aggregate(Sum('price'))['price__sum'] or 0
 
     context.update({
@@ -23,7 +25,7 @@ def dashboard_callback(request, context):
             {
                 "title": "Monthly Sales",
                 "metric": f"Rs. {monthly_sales}",
-                "footer" : "This month ",
+                "footer" : f"Of {current_month_name}",
                 "color": "success"
             },
             {
@@ -41,4 +43,5 @@ def dashboard_callback(request, context):
             
         ]
     })
+   
     return context
