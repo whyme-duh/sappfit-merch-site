@@ -394,7 +394,7 @@ a{
     color: red;
 }
 .content h2{
-    
+    font-size: 4em;
     color: black;
     font-family: var(--intro-heading-font);
 }
