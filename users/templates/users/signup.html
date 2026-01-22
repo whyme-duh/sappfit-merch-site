@@ -5,59 +5,63 @@
 {% block title%} Sign Up{% endblock %}
 {% block content %}
 <section class="vh-100" >
-  <div class="container py-5 col-md-12 ">
+  <div class="container-fluid  m-0 p-0">
       <div class="sign-in-container  ">
-        <img src="{% static 'merchSite/signin.png' %}" class="img-fluid" alt="Sign-in image">
-        <div class="sign-in-fields">
-          <p class=" h1 fw-bold mb-md-5 mx-1 mx-md-4 mt-4">Sign up</p>
-          <form class="mx-1 mx-md-4" method = "POST" novalidate>
-            {% csrf_token %}
-            <div class="d-flex flex-row align-items-center mb-4">
-              <div class="form-outline flex-fill mb-0">
-                <label class="form-label" for="form3Example1c">Username</label>
-                {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
+        <div class="img-container">
+          <img src="{% static 'merchSite/finalized.png' %}" class="sign-in-img " alt="Sign-in image">
+        </div>
+        <div class="sign-in-form">
+          <div class="sign-in-fields">
+            <h1 class=" h1 fw-bold mb-md-4 mx-1 mx-md-4 mt-4">HI NEW USER</h1>
+            <form class="mx-1 mx-md-4" method = "POST" novalidate>
+              {% csrf_token %}
+              <div class="d-flex flex-row align-items-center mb-4">
+                <div class="form-outline flex-fill mb-0">
+                  <label class="form-label" for="form3Example1c">Username</label>
+                  {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
+                </div>
               </div>
-            </div>
-            <div class="d-flex flex-row align-items-center mb-4">
-              <div class="form-outline flex-fill mb-0">
-                <label class="form-label" for="form3Example3c">Email</label>
-                {% render_field form.email class="form-control" placeholder="Enter Email" type="email" %}
+              <div class="d-flex flex-row align-items-center mb-4">
+                <div class="form-outline flex-fill mb-0">
+                  <label class="form-label" for="form3Example3c">Email</label>
+                  {% render_field form.email class="form-control" placeholder="Enter Email" type="email" %}
+                </div>
               </div>
-            </div>
-            <div class="d-flex flex-row align-items-center mb-4">
-              <div class="form-outline flex-fill mb-0">
-                <label class="form-label" for="form3Example4c">Password</label>
-                <div class="password-div">
-                    {% render_field form.password1 class="form-control" placeholder="Enter Password" type="password" %}
-                    <i class="fa fa-eye" id="eye-password1" onclick="hidePassword('eye-slash-password1', 'eye-password1','id_password1')"></i>
-                    <i class="fa fa-eye-slash" id="eye-slash-password1" onclick="showPassword('eye-password1', 'eye-slash-password1','id_password1')"></i>
-                  </div>
+              <div class="d-flex flex-row align-items-center mb-4">
+                <div class="form-outline flex-fill mb-0">
+                  <label class="form-label" for="form3Example4c">Password</label>
+                  <div class="password-div">
+                      {% render_field form.password1 class="form-control" placeholder="Enter Password" type="password" %}
+                      <i class="fa fa-eye" id="eye-password1" onclick="hidePassword('eye-slash-password1', 'eye-password1','id_password1')"></i>
+                      <i class="fa fa-eye-slash" id="eye-slash-password1" onclick="showPassword('eye-password1', 'eye-slash-password1','id_password1')"></i>
+                    </div>
+                </div>
               </div>
-            </div>
-            <div class="d-flex flex-row align-items-center mb-4">
-              <div class="form-outline flex-fill mb-0">
-                <label class="form-label" for="form3Example4cd">Repeat your password</label>
-                <div class="password-div">
-                    {% render_field form.password2 class="form-control" placeholder="Enter Password" type="password" %}
-                    <i class="fa fa-eye" id="eye-password2" onclick="hidePassword('eye-slash-password2', 'eye-password2','id_password2')"></i>
-                    <i class="fa fa-eye-slash" id="eye-slash-password2" onclick="showPassword('eye-password2', 'eye-slash-password2','id_password2')"></i>
-                  </div>
+              <div class="d-flex flex-row align-items-center mb-4">
+                <div class="form-outline flex-fill mb-0">
+                  <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                  <div class="password-div">
+                      {% render_field form.password2 class="form-control" placeholder="Enter Password" type="password" %}
+                      <i class="fa fa-eye" id="eye-password2" onclick="hidePassword('eye-slash-password2', 'eye-password2','id_password2')"></i>
+                      <i class="fa fa-eye-slash" id="eye-slash-password2" onclick="showPassword('eye-password2', 'eye-slash-password2','id_password2')"></i>
+                    </div>
+                </div>
+                
               </div>
-              
-            </div>
-            {% if form.errors %}
-            <div class="alert alert-danger">
-              {% for key, val in form.errors.items %}
-                <p>{{val}}</p>
-              {% endfor %}
-            </div>
-            {% else %}
-            {% endif %}
-            <div class="mb-3 mb-lg-2 d-flex w-100">
-                <button type="submit" class="btn-signup btn btn-lg btn-block w-100 mt-xl-3" style="background-color:rgb(255, 206, 154); color:black;font-size: clamp(1em, 1vh, 1.55em);font-weight: 700;">Register</button>
-            </div> 
-            <p class="pt-xl-3">Already have an account? <a href="{% url 'login' %}" class="btn-decoration text-black"><b>Sign In!</b></a></p>
-          </form>
+              {% if form.errors %}
+              <div class="alert alert-danger">
+                {% for key, val in form.errors.items %}
+                  <p>{{val}}</p>
+                {% endfor %}
+              </div>
+              {% else %}
+              {% endif %}
+              <div class="mb-3 mb-lg-2 d-flex w-100">
+                  <button type="submit" class="btn-signup btn btn-lg btn-block w-100 mt-xl-3" style="background-color:rgb(255, 206, 154); color:black;font-size: clamp(1em, 1vh, 1.55em);font-weight: 700;">Register</button>
+              </div> 
+              <p class="pt-xl-3">Already have an account? <a href="{% url 'login' %}" class="btn-decoration text-black"><b>Sign In!</b></a></p>
+            </form>
+          </div>
         </div>
       </div>
     </div>

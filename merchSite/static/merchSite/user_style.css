@@ -1,4 +1,8 @@
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Special+Gothic+Expanded+One&display=swap');
+
+
+
 :root {
     --primary-color: #1a1a1a; /* Dark sleek black/grey */
     --accent-color: #3b82f6; /* Modern blue */
@@ -9,6 +13,36 @@
     --border-color: #e5e7eb;
     --success-color: #10b981;
     --warning-color: #f59e0b;
+    --sign-in-font: "Special Gothic Expanded One", sans-serif;
+}
+.sign-in-container{
+    width: 100%;
+    display: flex;
+    max-height: 100vh;
+    justify-content: space-between;
+}
+.img-container{
+    width: 70%;
+}
+.sign-in-img{
+    width: 100%;
+    height: 120vh;
+    object-fit: cover;
+}
+.sign-in-form{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding:3em;
+    width: 50%;
+}
+.sign-in-fields{
+    width: 70%;
+
+}
+.sign-in-fields h1{
+    text-align: center;
+    font-family: var(--sign-in-font);
 }
 .forget-passwd{
     display: flex;

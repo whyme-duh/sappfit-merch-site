@@ -6,46 +6,50 @@
 {% block content%}
 
 <section class="vh-100">
-    <div class="container py-5 h-100">
+    <div class="container-fluid m-0 p-0">
       <div class="sign-in-container  ">
-        <img src="{% static 'merchSite/signin.png' %}" class="img-fluid" alt="Sign-in image">
-        <div class="sign-in-fields">
-          <p class=" h1 fw-bold mb-md-5 mt-4">Sign In</p>
-          <form method = "POST">
-            {% csrf_token %}
-            <div class="form-outline mb-4">
-              <label class="form-label" for="username">Username</label>
-                {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
-            </div>
-           <div class="form-outline mb-3">
-              <label class="form-label" for="password">Password</label>
-              <div class="password-div">
-                {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
-                <i class="fa fa-eye" id="eye" onclick="hidePassword('eye-slash', 'eye','id_password')"></i>
-                <i class="fa fa-eye-slash" id="eye-slash" onclick="showPassword('eye', 'eye-slash','id_password')"></i>
-
+        <div class="img-container">
+          <img src="{% static 'merchSite/signinpic.png' %}" class="sign-in-img " alt="Sign-in image">
+        </div>
+        <div class="sign-in-form">
+          <div class="sign-in-fields">
+            <h1 class=" h1 fw-bold mb-md-4 mt-4">WELCOME BACK</h1>
+            <form method = "POST">
+              {% csrf_token %}
+              <div class="form-outline mb-4">
+                <label class="form-label" for="username">Username</label>
+                  {% render_field form.username class="form-control" placeholder="Enter Username" type="text" %}
               </div>
-            </div>
-            <div class="forget-passwd form-outline mb-4 ">
-              <a href="{% url 'password-reset'%}" class="text-decoration-none">Forgot Your Password?</a>
-            </div>
-            
-            {% if form.errors %}
-            <div class="alert alert-danger">
-              {% for key, val in form.errors.items %}
-                <p class="error-message">{{val}}</p>
-              {% endfor %}
-            </div>
-            {% else %}
-            {% endif %}
-             
-  
-            <!-- Submit button -->
-            <button type="submit" class="btn-login btn btn-lg btn-block w-100" style="background-color:rgb(255, 206, 154); color:black;font-size: clamp(1em, 1vh, 1.55em);font-weight: 700;">Login</button>
-            
-            <p class="pt-md-5 pt-3">Does not have an account? <a href="{% url 'sign-up' %}" class="btn-decoration text-black"><b>Sign Up Now!</b></a></p>
-  
-          </form>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-div">
+                  {% render_field form.password class="form-control" placeholder="Enter Password" type="password" %}
+                  <i class="fa fa-eye" id="eye" onclick="hidePassword('eye-slash', 'eye','id_password')"></i>
+                  <i class="fa fa-eye-slash" id="eye-slash" onclick="showPassword('eye', 'eye-slash','id_password')"></i>
+
+                </div>
+              </div>
+              <div class="forget-passwd form-outline mb-4 ">
+                <a href="{% url 'password-reset'%}" class="text-decoration-none">Forgot Your Password?</a>
+              </div>
+              
+              {% if form.errors %}
+              <div class="alert alert-danger">
+                {% for key, val in form.errors.items %}
+                  <p class="error-message">{{val}}</p>
+                {% endfor %}
+              </div>
+              {% else %}
+              {% endif %}
+              
+    
+              <!-- Submit button -->
+              <button type="submit" class="btn-login btn btn-lg btn-block w-100" style="background-color:rgb(255, 206, 154); color:black;font-size: clamp(1em, 1vh, 1.55em);font-weight: 700;">Login</button>
+              
+              <p class="pt-md-3 pt-3">Does not have an account? <a href="{% url 'sign-up' %}" class="btn-decoration text-black"><b>Sign Up Now!</b></a></p>
+    
+            </form>
+          </div>
         </div>
       </div>
     </div>
