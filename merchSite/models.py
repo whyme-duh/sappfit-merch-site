@@ -97,6 +97,7 @@ class Order(models.Model):
             'quantity': quantity,
             'price': price,
             'reviewed': False,
+            'returning_eligible': False
         }
         if self.product:
             product_list = json.loads(self.product)

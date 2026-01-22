@@ -495,13 +495,13 @@ def return_request(request, order_id):
                 try:
                     product_instance = Product.objects.get(name = product_name)
 
-                    # ReturnProduct.objects.create(
-                    #     user = request.user, 
-                    #     product = product_instance, 
-                    #     size = size, 
-                    #     quantity = requested_quantity, 
-                    #     order = order, 
-                    # )
+                    ReturnProduct.objects.create(
+                        user = request.user, 
+                        product = product_instance, 
+                        size = size, 
+                        quantity = requested_quantity, 
+                        order = order, 
+                    )
                     
                     messages.success(request, f'Your return request has been submitted!')
                 except Product.DoesNotExist:

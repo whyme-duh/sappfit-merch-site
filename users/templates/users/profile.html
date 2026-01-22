@@ -129,7 +129,8 @@
         </div>
         <div class="dashboard-card action-card">
             <div class="card-header">
-                <h2>Your Delivered Products</h2>
+                <h2 class="mb-2">Your Delivered Products</h2>
+                <small style="color:grey">Note: You can't return product after 7 days of delivery date.</small>
             </div>
             <div class="table-responsive">
                 <table class="sleek-table">
@@ -146,7 +147,7 @@
                         {% for product in delivered_products %}
                         
                             <tr>
-                                <td class="order-id">#{{ product.id }}</td>
+                                <td class="order-id">#{{ product.order_id }}</td>
                                 <td class="order-date">{{ product.product }} </td>
                                 {% if product.size == "L" %}
                                 <td class="order-price">Large x {{product.quantity}} unit</td>
@@ -166,13 +167,21 @@
                                         <button class="action review-btn">Review</button>
 
                                     </form>
+                                    {% if product.returning_eligible %}
                                     <button class="action return-btn"
                                         data-url="{% url 'return-product' product.order_id %}"
                                         data-name="{{product.product}}"
                                         data-id="{{product.id}}"
                                         data-size="{{product.size}}"
                                         data-quantity = "{{product.quantity}}"
-                                        onclick="openReturnModal(this.dataset.url,this.dataset.name, this.dataset.id, this.dataset.size, this.dataset.quantity)">Return</button>
+                                        onclick="openReturnModal(this.dataset.url,
+                                        this.dataset.name, 
+                                        this.dataset.id, 
+                                        this.dataset.size, 
+                                        this.dataset.quantity)">
+                                    Return</button>
+
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% empty %}

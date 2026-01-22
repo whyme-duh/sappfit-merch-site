@@ -39,6 +39,7 @@ def profile(request):
     reviews = Review.objects.filter(user = request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
     returned_products = ReturnProduct.objects.filter(user = request.user)
+    now_date = datetime.datetime.now()
 
     # creating a dictionary that stores the product name and size
     returns_map = defaultdict(int)
@@ -55,6 +56,7 @@ def profile(request):
 
 
     for order in orders:
+        ordered_date = order.date
         if not order.product:
             continue
         try:
@@ -71,8 +73,18 @@ def profile(request):
                     
                     item_key = (product_name, product_size)
 
-                    quantity_returned = returns_map.get(item_key, 0)
+                    # this code below helps to check whether the delivered product
+                    # is eligible for returning or not
 
+                    if not item.get('returning_eligible'):
+                        if ordered_date.year == now_date.year and ordered_date.month == now_date.month:
+                            if ordered_date.day - now_date.day > 7:
+                                item['returning_eligible'] = False
+                            else:
+                                item['returning_eligible'] = True
+
+                    quantity_returned = returns_map.get(item_key, 0)
+                    
                     if quantity_returned > 0:
                         remaining_qty = product_quantity - quantity_returned
 
