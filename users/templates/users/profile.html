@@ -35,9 +35,10 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Date</th>
+                            <th>Ordered Date</th>
                             <th>Items</th>
                             <th>Status</th>
+                            <th>Delivered On</th>
                             <th>Total</th>
                             <th>Actions</th>
                         </tr>
@@ -64,9 +65,11 @@
                                         <span class="badge-warning">{{order.order.status}}</span>
                                     {% endif %}
                                 </td>
+                                <td class="order-price">{{ order.order.delivered_date|date:"d M, Y "  }}</td>
+
                                 <td class="order-price">Rs. {{ order.order.price }}</td>
                                 <td class="action-buttons">
-                                    <a href="#" class="action report-btn">Report</a>
+                                    <button href="#" class="action report-btn">Report</button>
                                     
                                     {% if order.order.status != "Delivered" and order.order.status != "Shipped"  and order.order.status != "Cancelled"%}
                                         <button class="action cancel-btn" 
@@ -158,8 +161,11 @@
                                 {% endif %}
                                
                                 <td class="order-price">Rs. {{ product.price }}</td>
-                                <td class="action-buttons">
-                                    <a href="{% url 'add-review' product.id %}" class="action review-btn">Review</a>
+                                <td class="action-buttons d-flex gap-2">
+                                    <form action="{% url 'add-review' product.id %}">
+                                        <button class="action review-btn">Review</button>
+
+                                    </form>
                                     <button class="action return-btn"
                                         data-url="{% url 'return-product' product.order_id %}"
                                         data-name="{{product.product}}"

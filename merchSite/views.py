@@ -445,13 +445,8 @@ def return_request(request, order_id):
         if ordered_date.day - now_date.day > 7:
             return_elligible = False
         else:
-            return_elligible = False
+            return_elligible = True
 
-
-    print("ORDERDATE", ordered_date.day)
-    print("ORDERDATE", ordered_date.month)
-    print("ORDERDATE", ordered_date.year)
-    print("NOW DATE", now_date.date)
     if return_elligible:
         if request.user.is_authenticated and request.method == "POST":
             product_name = request.POST.get('product-name')

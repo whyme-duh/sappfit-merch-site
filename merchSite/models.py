@@ -72,6 +72,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     price = models.IntegerField(default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
+    delivered_date = models.DateTimeField('delivered_date', null = True, blank = True)
     status = models.CharField(max_length=20, choices= STATUS_CHOICES, default='Pending')
     name = models.CharField(max_length = 80, blank = True, null = True)
     location = models.CharField(max_length = 80, blank = True, null = True)
@@ -95,7 +96,7 @@ class Order(models.Model):
             'size': size,
             'quantity': quantity,
             'price': price,
-            'reviewed': False
+            'reviewed': False,
         }
         if self.product:
             product_list = json.loads(self.product)
@@ -109,6 +110,13 @@ class Order(models.Model):
     def get_orders_by_user(user_id):
         return Order.objects.filter(user = user_id).order_by('-date')
     
+    def save(self, *args, **kwargs):
+        if self.status == "Delivered":
+            self.delivered_date = datetime.datetime.now()
+        else:
+            self.delivered_date = None
+        super(Order, self).save(*args, **kwargs)
+
    
     
 

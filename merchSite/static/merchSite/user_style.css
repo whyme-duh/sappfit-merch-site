@@ -237,18 +237,20 @@
 }
 .report-btn:hover{
     color: white;
-    background-color: black;
+    background-color: red;
+}
+.review-btn{
+    background-color: white;
 }
 .review-btn:hover{
-    background-color: rgb(153, 242, 147);
-    color: black;
-    border: rgb(153, 242, 147);;
+    background-color: #caf1b3;
 }
 .return-btn{
     background-color: white;
 }
 .return-btn:hover{
-    color: black;
+    background-color: rgb(126, 126, 126);
+    color: white;
 }
 .cancel-btn{
     background-color: white;
