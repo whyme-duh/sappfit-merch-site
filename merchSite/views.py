@@ -191,15 +191,15 @@ def my_cart(request):
 
 def checkout(request):
     cartitem = get_cart_items(request)
+    if not cartitem:
+        messages.success("Redirected to products page with empty cart!")
+        return redirect('products')
     total_discounted_price = 0
     total_quantities = 0
     for item in cartitem:
         if item.product.discount:
             total_discounted_price += item.get_discounted_price() * item.quantity
         total_quantities += item.quantity
-    
-    
-
     item_costs = sum(item.get_total_cost for item in cartitem)
     
     if item_costs >= config.FREE_DELIVERY_THRESHOLD:
@@ -238,12 +238,9 @@ def checkout(request):
                 else:
                     price = cart.product.price * cart.quantity
                 order.add_product(cart.product, cart.size, cart.quantity, price)
-                
-            cartitem.delete()
             # send_confirmation_email(order)
-
-
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
+            cartitem.delete()
             return render(request, 'merchSite/khalti/khalti-success.html', {'order_id' : order_id}) 
 
         except Exception as e:

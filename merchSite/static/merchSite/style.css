@@ -1104,6 +1104,30 @@ a{
     padding-inline:1em;
     padding-block:0.5em;
 }
+
+@media screen and (max-width:400px){
+    .tracker-form{
+        flex-direction: column-reverse;
+    }
+    .track-order-container{
+        padding: 1em;
+        margin: 0;
+    }
+    .trackOrderOverlay{
+        font-size: 0.75em;
+
+        padding: 1em;
+    }
+    .track-result{
+        width: 100%;
+        transform: translateY(-200px);
+    }
+    .cancel-and-total h5{
+        font-size: 1em;
+        font-weight: 900;
+    }
+}
+
 .footer{
     margin-top: auto;
     text-align:center;
