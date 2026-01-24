@@ -16,6 +16,12 @@ function navbarFunction() {
   
 }
 
+
+function closeTrackModal() {
+    const modalOverlay = document.getElementById('trackOrderOverlay');
+    modalOverlay.style.display = "none";
+}
+
 function openCancelModal(actionUrl, orderId) {
     const cancelForm = document.getElementById('cancelForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');
@@ -223,6 +229,7 @@ indicatorsNav.addEventListener('click', e => {
 window.onclick = function(event) {
     if (event.target === modalOverlay) {
         closeCancelModal();
+        closeTrackModal();
     }
 }
 // document.addEventListener("DOMContentLoaded", () => {
