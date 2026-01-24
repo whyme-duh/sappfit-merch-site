@@ -1027,7 +1027,6 @@ a{
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding-inline: 10em;
 }
@@ -1094,6 +1093,16 @@ a{
     border:none;
     font-size:0.5em;
     padding-inline:1em;
+}
+
+.cancel-btn-track-order{
+    background-color: red;
+    color: white;
+    border:none;
+    font-size: 1em;
+    border-radius: 5px;
+    padding-inline:1em;
+    padding-block:0.5em;
 }
 .footer{
     margin-top: auto;

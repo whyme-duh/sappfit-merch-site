@@ -198,9 +198,7 @@ def checkout(request):
             total_discounted_price += item.get_discounted_price() * item.quantity
         total_quantities += item.quantity
     
-    if not cartitem:
-        messages.success(request, "Redirected to Products page since your bag is empty.")
-        return redirect('products')
+    
 
     item_costs = sum(item.get_total_cost for item in cartitem)
     
@@ -242,7 +240,7 @@ def checkout(request):
                 order.add_product(cart.product, cart.size, cart.quantity, price)
                 
             cartitem.delete()
-            send_confirmation_email(order)
+            # send_confirmation_email(order)
 
 
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
@@ -430,8 +428,8 @@ def track_order(request):
                         })
                 if product_id:
                     product_info = Product.objects.get(id = product_id)
-        else:
-            track_order_form = TrackOrderForm()
+    else:
+        track_order_form = TrackOrderForm()
     return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products, 'product_info':product_info})
 
 
