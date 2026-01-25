@@ -61,12 +61,12 @@ main{
 }
 
 .home-heading{
-    font-size: 2.5em;
+    font-size: 3em;
     font-family: var(--intro-paragraph-font);
 
 }
 .home-paragraph{
-    font-size:1.5em;
+    font-size:1.85em;
     font-family: var(--intro-paragraph-font);
 }
 
@@ -78,6 +78,7 @@ main{
     background-color: antiquewhite;
     border-radius: 0.5em;
     color: product;
+    font-size: 1.25em;
     font-family: var(--intro-heading-font);
 }
 .view-btn:hover{

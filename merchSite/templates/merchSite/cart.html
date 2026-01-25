@@ -70,7 +70,13 @@
                         {% endif %}
                     </div>
                     <div class="delivery d-flex justify-content-between">
+                        {% if total_quantities > 1 %}
+
                         <p>Total Items' cost : </p> <p>Rs. {{item_costs}} </p>
+                        {% else %}
+                        <p>Total Item's cost : </p> <p>Rs. {{item_costs}} </p>
+                        {% endif %}
+
                     </div>
                     <div class="delivery d-flex justify-content-between">
                         {% if total_discounted_price > 0 %}
