@@ -182,8 +182,8 @@ nav{
     font-family: var(--nav-font-family)
 }
 .nav-items:hover{
-    color: rgb(137,136,112);
-    border-bottom: 1px solid rgb(137,136,112);
+    color: rgb(51, 51, 51);
+    text-decoration: underline;
 }
 
 #my-bag{
@@ -1127,6 +1127,54 @@ a{
         font-size: 1em;
         font-weight: 900;
     }
+}
+/* order success page */
+.success-container{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+}
+.khalti-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.khalti-container h1 {
+    color: #28a745;
+    margin-bottom: 10px;
+}
+.khalti-container p {
+    color: #666;
+    line-height: 1.6;
+}
+.khalti-container .details {
+    margin-top: 20px;
+    text-align: left;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+.khalti-container .details p {
+    margin: 5px 0;
+}
+.khalti-container .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
 .footer{

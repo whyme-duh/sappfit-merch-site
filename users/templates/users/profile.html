@@ -249,6 +249,7 @@
                             <th>Product</th>
                             <th>Rating</th>
                             <th>Comment</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -266,6 +267,11 @@
                                     </div>
                                 </td>
                                 <td class="review-text">{{ review.review|truncatechars:50 }}</td>
+                                 <td class="action-buttons">
+                                    <button href="#" class="action edit-btn">Edit</button>
+                                    <button href="#" class="action cancel-btn">Delete</button>
+
+                                </td>
                             </tr>
                         {% empty %}
                             <tr>

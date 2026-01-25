@@ -133,7 +133,6 @@
     {% endif %}
     <div class="related-prod d-flex flex-column" id="related-prod">
         <h4 class="home-heading mb-5">Similar Products</h4>
-
         <div class="d-product-list">
             {% for product in related_products|slice:5 %}
                     <a href="{% url 'detail-page' product.slug%}" class="text-decoration-none text-black">
