@@ -279,19 +279,21 @@
 .review-btn:hover{
     background-color: #caf1b3;
 }
-.return-btn{
+.return-btn, .edit-btn, .cancel-btn{
     background-color: white;
 }
 .return-btn:hover{
     background-color: rgb(126, 126, 126);
     color: white;
 }
-.cancel-btn{
-    background-color: white;
-}
+
 .cancel-btn:hover{
     border-color: red;
     color: red;
+}
+.edit-btn:hover{
+    border-color: orange;
+    color: orange;
 }
 
 
@@ -326,7 +328,14 @@
     gap: 2rem;
     width: 100%;
 }
-
+.product-link{
+    text-decoration: none;
+    color: black;
+}
+.product-link:hover{
+    text-decoration: underline;
+    color: black;
+}
 .product-card-review {
     flex: 1 1 280px; 
     

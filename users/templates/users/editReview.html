@@ -1,0 +1,102 @@
+{% extends 'merchSite/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Write a Review{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    
+    <div class="review-page-wrapper">
+        <div class="review-card">
+            <div class="text-center mb-4">
+                <h2 class="review-header">Edit Rate Your Fit</h2>
+                <p class="text-muted">How did you like this product? Your feedback helps others.</p>
+            </div>
+
+            <form method="POST" id="reviewForm">
+                {% csrf_token %}
+                
+                <div class="form-group mb-4 text-center">
+                    <label class="d-block mb-2 fw-bold">Overall Rating</label>
+                    
+                    {% render_field form.review_star type="hidden" id="ratingInput" value="5" %}
+                    
+                    <div class="star-widget">
+                        <i class="fa fa-star star-icon" data-value="1"></i>
+                        <i class="fa fa-star star-icon" data-value="2"></i>
+                        <i class="fa fa-star star-icon" data-value="3"></i>
+                        <i class="fa fa-star star-icon" data-value="4"></i>
+                        <i class="fa fa-star star-icon active" data-value="5"></i> 
+                    </div>
+                    <div id="rating-text" class="small text-muted mt-2">Excellent</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label fw-bold">Your Review </label>
+                    {% render_field form.review value=old_review class="form-control review-textarea" placeholder="Add an updated review comment!" rows="5" %}
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Update Review
+                </button>
+                
+                <a href="{% url 'profile' %}" class="cancel-link">Cancel</a>
+            </form>
+        </div>
+
+        <div class="review-page-product-card">
+            <a href="{% url 'detail-page' product.slug %}" class="h-100 w-100 d-block">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="product-image">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                        <i class="fa fa-shopping-bag fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+            </a> 
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-icon');
+        const hiddenInput = document.getElementById('ratingInput');
+        const ratingText = document.getElementById('rating-text');
+        
+        const labels = { 1: "Poor", 2: "Fair", 3: "Average", 4: "Good", 5: "Excellent" };
+
+        function fillStars(count) {
+            stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= count) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            if (labels[count]) ratingText.textContent = labels[count];
+        }
+
+        fillStars(hiddenInput.value || 0);
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = this.dataset.value;
+                hiddenInput.value = value; 
+                fillStars(value); 
+            });
+            star.addEventListener('mouseover', function() {
+                const hoverValue = this.dataset.value;
+                stars.forEach(s => {
+                    s.style.color = (s.dataset.value <= hoverValue) ? "#ffc107" : "#e4e5e9";
+                });
+            });
+            star.addEventListener('mouseleave', function() {
+                stars.forEach(s => s.style.color = ""); 
+                fillStars(hiddenInput.value);
+            });
+        });
+    });
+</script>
+{% endblock %}

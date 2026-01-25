@@ -246,15 +246,19 @@
                 <table class="sleek-table">
                     <thead>
                         <tr>
+                            <th># Review</th>
                             <th>Product</th>
                             <th>Rating</th>
                             <th>Comment</th>
+                            {% if reviews %}
                             <th>Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for review in reviews %}
                             <tr>
+                                <td>{{review.id}}</td>
                                 <td>
                                     <a href="{% url 'detail-page' review.product.slug %}" class="product-link">
                                         {{ review.product }}
@@ -263,13 +267,13 @@
                                 </td>
                                 <td>
                                     <div class="star-rating">
-                                        <i class="fa fa-star"></i> {{ review.review_star }}
+                                        <i class="fa fa-star" style="color:orange;"></i> {{ review.review_star }}
                                     </div>
                                 </td>
                                 <td class="review-text">{{ review.review|truncatechars:50 }}</td>
                                  <td class="action-buttons">
-                                    <button href="#" class="action edit-btn">Edit</button>
-                                    <button href="#" class="action cancel-btn">Delete</button>
+                                    <a href= "{% url 'edit-review' review.id %}" class="action edit-btn">Edit</a>
+                                    <a href="{% url 'delete-review' review.id %}" class="action cancel-btn">Delete</a>
 
                                 </td>
                             </tr>

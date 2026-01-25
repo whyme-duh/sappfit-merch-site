@@ -1,6 +1,6 @@
 from collections import defaultdict
 import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from . forms import UserRegistrationForm, ReviewForm
 from merchSite.models import Order, Product, ReturnProduct
@@ -181,3 +181,40 @@ def add_review(request, id):
     return render(request, 'users/addReview.html', {'form': form, 'product' : product})
 
 
+def delete_review(request, id):
+    review = get_object_or_404(Review, id = id, user= request.user)
+    if review:
+        review.delete()
+        messages.success(request, "Deleted your review!")
+        return redirect('profile')
+    else:
+        messages.error(request, "Something went wrong. Try Again!")
+        return redirect('profile')
+    
+
+def edit_review(request, id):
+    review = get_object_or_404(Review, id = id, user= request.user)
+    old_review_star = review.review_star
+    product = review.product
+    old_review = review.review
+    form = ReviewForm(request.POST)
+
+    if review:
+        if request.method == 'POST':
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                review_star_update = form.cleaned_data['review_star']
+                review_update = form.cleaned_data['review']
+                
+                review.review = review_update
+                review.review_star = review_star_update
+                review.save()
+                messages.success(request, f'Updated your review!')
+                return redirect('profile')
+            else:
+                form = ReviewForm()
+        return render(request, 'users/editReview.html', {'form': form, 'old_review': old_review, 'old_review_star' : old_review_star, 'product': product})
+        
+    else:
+        messages.error(request, "Something went wrong. Try Again!")
+        return redirect('profile')
