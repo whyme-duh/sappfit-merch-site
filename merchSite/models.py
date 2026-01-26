@@ -113,7 +113,8 @@ class Order(models.Model):
     
     def save(self, *args, **kwargs):
         if self.status == "Delivered":
-            self.delivered_date = datetime.datetime.now()
+            if self.delivered_date is None:
+                self.delivered_date = datetime.datetime.now()
         else:
             self.delivered_date = None
         super(Order, self).save(*args, **kwargs)
