@@ -842,7 +842,7 @@ a{
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: start;
     gap: 1em;
   
 }
@@ -863,7 +863,7 @@ a{
     color: black;
 }
 .product-review-card {
-    width: 45%;
+    width: 30%;
     padding: 1em;
     border-radius: 5px;
     background-color: rgb(247, 247, 247);

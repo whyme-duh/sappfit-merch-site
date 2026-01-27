@@ -56,6 +56,10 @@
         <div class="product-detail">
             <h5 class="product-category">{{product.category}}</h5>
             <h3 class="product-detail-name">{{product.name}}</h3>
+            {% if reviews %}
+            <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Reviews</p>
+
+            {%endif%}
             
             {% if product.discount %}
             <div class="product-price">

@@ -87,6 +87,9 @@ def product_filter(request, filter):
 def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
     reviews = Review.objects.filter(product = product)
+    total_stars_count = 0 
+    total_rating = len(reviews)
+    overall_rating = 0
     product_original_price = product.price
     product_price_with_discount = product.discount_price
     # this is to find the discount rate
@@ -94,6 +97,12 @@ def detail_page(request, slug):
         discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
     else:
         discount_rate = 0
+    
+    if reviews:
+        for review in reviews:
+            total_stars_count += review.review_star
+    
+        overall_rating = total_stars_count/total_rating
 
     sizes = product.size_options
     category = product.category
@@ -106,7 +115,15 @@ def detail_page(request, slug):
         available_sizes = [size for size, value in item.size_options.items() if value > 0]
         item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     
-    return render(request, 'merchSite/product-detail.html', {"product": product, "related_products" : similar_products, 'other_products':other_products, "sizes" : sizes, "reviews": reviews, "discount_rate" : discount_rate})
+    return render(request, 'merchSite/product-detail.html', {"product": product, 
+        "related_products" : similar_products, 
+        'other_products':other_products, 
+        "sizes" : sizes, 
+        "reviews": reviews, 
+        "discount_rate" : discount_rate,
+        "overall_rating" : overall_rating,
+        "total_rating": total_rating
+    })
 
 def get_cart_items(request):
     if request.user.is_authenticated:
@@ -192,7 +209,7 @@ def my_cart(request):
 def checkout(request):
     cartitem = get_cart_items(request)
     if not cartitem:
-        messages.success("Redirected to products page with empty cart!")
+        messages.success(request, "Redirected to products page with empty cart!")
         return redirect('products')
     total_discounted_price = 0
     total_quantities = 0
@@ -238,9 +255,11 @@ def checkout(request):
                 else:
                     price = cart.product.price * cart.quantity
                 order.add_product(cart.product, cart.size, cart.quantity, price)
+
             # send_confirmation_email(order)
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
             cartitem.delete()
+
             return render(request, 'merchSite/khalti/khalti-success.html', {'order_id' : order_id}) 
 
         except Exception as e:

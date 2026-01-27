@@ -69,7 +69,6 @@
 
                                 <td class="order-price">Rs. {{ order.order.price }}</td>
                                 <td class="action-buttons">
-                                    <button href="#" class="action report-btn">Report</button>
                                     
                                     {% if order.order.status != "Delivered" and order.order.status != "Shipped"  and order.order.status != "Cancelled"%}
                                         <button class="action cancel-btn" 
