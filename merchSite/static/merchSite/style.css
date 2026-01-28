@@ -332,6 +332,10 @@ nav{
     display: flex;
     width: 100%;
 }
+.btns-group{
+    display: flex;
+    justify-content: space-between;
+}
 .add-to-cart-btn{
     background-color: black;
     border-radius: 5px;
@@ -339,9 +343,30 @@ nav{
     padding: 1em;
     text-decoration: none;
     color: white;
-    width: 100%;
+    width: 40%;
     margin-top: 2em;
     text-align: center;
+}
+.add-to-cart-btn:hover{
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+}
+.direct-checout-btn{
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 1em;
+    text-decoration: none;
+    color: black;
+    width: 55%;
+    margin-top: 2em;
+    text-align: center;
+}
+.direct-checout-btn:hover{
+    color: white;
+    background-color: black;
+
 }
 /* cart page */
 .cart-image-discount-rate{

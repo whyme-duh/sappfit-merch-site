@@ -72,7 +72,7 @@
             {% endif %}
         
             <p class="product-description">{{product.description|safe}}</p>
-            <form method="POST" action="{% url 'add_to_cart' product.id %}" >
+            <form method="POST" action="" id="productDetailForm">
                 {% csrf_token %}
                 <div class="quantity-size">
                     <div class="form-group">
@@ -88,7 +88,12 @@
                     <input type="number" name="quantity" value="1" min="1" required>
                 </div>
                 </div>
-                <button type="submit" class="add-to-cart-btn">Add to Bag</button>
+                <div class="btns-group">
+                    <button type="submit" class="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)">Add to Bag</button>
+                    <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
+                </div>
+               
+
             </form>
         </div>
          

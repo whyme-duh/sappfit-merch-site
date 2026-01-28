@@ -190,6 +190,67 @@ def add_to_cart(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+
+def direct_checkout_page(request, id):
+    
+    product = Product.objects.get(id = id)
+    selected_size = request.POST.get('size')
+    quantity = int(request.POST.get('quantity',1))
+
+    user = None
+    session_id = None
+
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        if not request.session.session_key:
+            request.session.create()
+        session_id = request.session.session_key
+    
+   
+    if selected_size in product.size_options:
+        max_stock = int(product.size_options[selected_size])
+        if max_stock > 0:
+            cart_item = None
+                
+            if user:
+                cart_item = Cart.objects.filter(user=user, product=product, size=selected_size).first()
+            else:
+                cart_item = Cart.objects.filter(session_id=session_id, product=product, size=selected_size).first()
+            
+            if cart_item:
+                current_qty_in_cart = cart_item.quantity
+                propsed_new_total = current_qty_in_cart + quantity
+
+                if propsed_new_total <= max_stock:
+                    cart_item.quantity = propsed_new_total
+                    cart_item.save()
+                    messages.success(request, f'Updated the cart!', extra_tags="cart")
+                else:
+                    messages.error(request, f'Cannot add the item anymore in the cart.')
+            else:
+                if quantity <= max_stock:
+                    Cart.objects.create(
+                        user=user, 
+                        session_id=session_id, 
+                        product=product, 
+                        size=selected_size, 
+                        quantity=quantity
+                    )
+                    messages.success(request, 'Added this item to your bag. View your bag. ', extra_tags="cart")
+                    return render(request, 'merchSite/checkoutPage.html', {
+                        "cartitem": cart_item, 
+                    })
+                else:   
+                    messages.error(request, f'Only {max_stock} items available.')
+        else:
+            messages.error(request, f'{selected_size} is out of stock')
+    else:
+        messages.error(request, 'Invalid size selected')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def my_cart(request):
     cartitem = get_cart_items(request)
     total_discounted_price = 0

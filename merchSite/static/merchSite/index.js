@@ -22,6 +22,20 @@ function closeTrackModal() {
     modalOverlay.style.display = "none";
 }
 
+function addToCart(actionUrl){
+    const productDetailForm = document.getElementById('productDetailForm');
+    console.log(productDetailForm);
+
+    productDetailForm.action = actionUrl;
+}
+
+function directCartToCheckout(actionUrl){
+    
+    const productDetailForm = document.getElementById('productDetailForm');
+    console.log(productDetailForm);
+    productDetailForm.action = actionUrl;
+}
+
 function openCancelModal(actionUrl, orderId) {
     const cancelForm = document.getElementById('cancelForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');
