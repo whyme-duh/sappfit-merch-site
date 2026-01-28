@@ -11,7 +11,6 @@
                 
                 <form method="POST">
                     {% csrf_token %}
-                    
                     <div class="form-group mb-4">
                         <label for="name">Full Name</label>
                         <div class="input-wrapper">
@@ -54,6 +53,21 @@
                                 required>
                         </div>
                     </div>
+                    <div class="form-group mb-4">
+                        <label for="payment">Payment Option</label>
+                        <div class="input-wrapper payment-options">
+                            <div class="payment-form">
+                                <input type="radio" name="payment" value = "Online Payment">
+                                <label for="online-payment">Online Payment</label>
+                            </div>
+                            <div class="payment-form">
+                                <input type="radio" name="payment" value = "Cash On Delivery">
+                                <label for="cash-on-delivery">Cash On Delivery</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    
                     
                     <button type="submit" class="checkout-btn">
                         Place Order <i class="fa fa-arrow-right"></i>

@@ -16,6 +16,7 @@ from users.models import Review
 from django.db.models import Sum, IntegerField
 import requests
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from constance import config
 from . forms import TrackOrderForm
 from django.db.models.functions import Cast
@@ -205,7 +206,7 @@ def my_cart(request):
     total_price = item_costs + delivery_cost
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
 
-
+@never_cache
 def checkout(request):
     cartitem = get_cart_items(request)
     if not cartitem:
@@ -238,6 +239,10 @@ def checkout(request):
         order_id = f'TEST-ORDER-{user_identifier}-{datetime.datetime.now().timestamp()}'
 
         try:
+            paid = None
+            payment_option = request.POST['payment']
+            if payment_option == "Cash On Delivery":
+                paid = False
             order = Order.objects.create(
                 name=request.POST['name'],
                 email=request.POST['email'],
@@ -246,7 +251,9 @@ def checkout(request):
                 user=user_instance, 
                 price=total_price,
                 order_id=order_id,
-                transaction_id="MANUAL-TEST-MODE" 
+                transaction_id="MANUAL-TEST-MODE",
+                is_paid = paid,
+                payment_option = payment_option
             )
 
             for cart in cartitem:

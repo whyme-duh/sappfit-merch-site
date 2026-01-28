@@ -952,6 +952,22 @@ a{
     position: relative;
 }
 
+.payment-options{
+    margin-top:0.25em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.payment-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+.payment-form label{
+    margin-bottom: 0 !important;
+}
 /* The Icon inside the input */
 .input-icon {
     position: absolute;

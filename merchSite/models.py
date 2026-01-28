@@ -68,6 +68,11 @@ class Order(models.Model):
         ("I don't plan to buy this product right now! " , "I don't plan to buy this product right now!"),
         ('Other' , 'Other')
     )
+
+    PAYMENT_OPTIONS =(
+        ("Online Payment", "Online Payment" ),
+        ("Cash On Delivery", "Cash On Delivery" )
+    )
     product = models.TextField(blank = True, null = True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     price = models.IntegerField(default = '', blank = True, null = True)
@@ -83,6 +88,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
     cancellation_reasons = models.CharField(max_length=100, blank = True, null= True)
     cancellation_other_reason = models.TextField(max_length=50, blank = True, null = True)
+    payment_option = models.CharField(choices=PAYMENT_OPTIONS, null= True, blank = True)
 
 
     def __str__(self):
