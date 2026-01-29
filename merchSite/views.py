@@ -190,66 +190,148 @@ def add_to_cart(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
+# this function is used for "checkout" button on the product page
 def direct_checkout_page(request, id):
-    
     product = Product.objects.get(id = id)
     selected_size = request.POST.get('size')
     quantity = int(request.POST.get('quantity',1))
-
     user = None
     session_id = None
-
     if request.user.is_authenticated:
         user = request.user
     else:
         if not request.session.session_key:
             request.session.create()
         session_id = request.session.session_key
-    
-   
     if selected_size in product.size_options:
         max_stock = int(product.size_options[selected_size])
-        if max_stock > 0:
-            cart_item = None
+        if max_stock >= quantity:
                 
             if user:
-                cart_item = Cart.objects.filter(user=user, product=product, size=selected_size).first()
+                cart_obj, created = Cart.objects.get_or_create(user=user, product=product, size=selected_size, defaults={'quantity' : 0})
             else:
-                cart_item = Cart.objects.filter(session_id=session_id, product=product, size=selected_size).first()
+                cart_obj, created = Cart.objects.get_or_create(session_id=session_id, product=product, size=selected_size, defaults={'quantity' : 0})
             
-            if cart_item:
-                current_qty_in_cart = cart_item.quantity
-                propsed_new_total = current_qty_in_cart + quantity
-
-                if propsed_new_total <= max_stock:
-                    cart_item.quantity = propsed_new_total
-                    cart_item.save()
-                    messages.success(request, f'Updated the cart!', extra_tags="cart")
-                else:
-                    messages.error(request, f'Cannot add the item anymore in the cart.')
+            if created:
+                cart_obj.quantity = quantity
             else:
-                if quantity <= max_stock:
-                    Cart.objects.create(
-                        user=user, 
-                        session_id=session_id, 
-                        product=product, 
-                        size=selected_size, 
-                        quantity=quantity
-                    )
-                    messages.success(request, 'Added this item to your bag. View your bag. ', extra_tags="cart")
-                    return render(request, 'merchSite/checkoutPage.html', {
-                        "cartitem": cart_item, 
-                    })
-                else:   
-                    messages.error(request, f'Only {max_stock} items available.')
+                # this updates the quantity of existing item
+                cart_obj.quantity += quantity
+            
+            cart_obj.save()
         else:
-            messages.error(request, f'{selected_size} is out of stock')
+            messages.error(request, f'Only {max_stock} items available.')
     else:
         messages.error(request, 'Invalid size selected')
+    
+    if user:
+        cart_items = Cart.objects.filter(user=user)
+    else:
+        cart_items = Cart.objects.filter(session_id=session_id)
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if not cart_items.exists():
+        messages.warning(request, "Your cart is empty.")
+        return redirect('product_detail', id=id)
+    
+    total_discounted_price = 0
+    total_quantities = 0
+    item_costs = 0
 
+    for item in cart_items:
+        total_quantities += item.quantity
+        
+        item_total = item.get_total_cost
+        item_costs += item_total
+        
+        if item.product.discount:
+            total_discounted_price += item.get_discounted_price() * item.quantity
+
+    if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+        delivery_cost = 0
+    else:
+        delivery_cost = config.DELIVERY_CHARGE
+
+    total_price = item_costs + delivery_cost
+        
+
+    return render(request, 'merchSite/directCheckout.html', {
+                        "cartitem": cart_items, 
+                        "total_price": total_price, 
+                        "delivery_cost": delivery_cost, 
+                        "item_costs": item_costs, 
+                        "total_quantities" : total_quantities, 
+                        "total_discounted_price" : total_discounted_price
+                    })
+                
+
+# this function is used by the direct_checkout_page function
+# it is the substitute of checkout function and in this we use action to get this function
+def place_order(request):
+    cartitem = get_cart_items(request)
+    if not cartitem:
+        messages.success(request, "Redirected to products page with empty cart!")
+        return redirect('products')
+    total_discounted_price = 0
+    total_quantities = 0
+    for item in cartitem:
+        if item.product.discount:
+            total_discounted_price += item.get_discounted_price() * item.quantity
+        total_quantities += item.quantity
+    item_costs = sum(item.get_total_cost for item in cartitem)
+    
+    if item_costs >= config.FREE_DELIVERY_THRESHOLD:
+        delivery_cost = 0
+    else:
+        delivery_cost = config.DELIVERY_CHARGE
+        
+    total_price = item_costs + delivery_cost
+
+    if request.method == 'POST':
+        
+        if request.user.is_authenticated:
+            user_identifier = request.user.id
+            user_instance = request.user
+        else:
+            user_identifier = "GUEST"
+            user_instance = None
+        
+        order_id = f'TEST-ORDER-{user_identifier}-{datetime.datetime.now().timestamp()}'
+
+        try:
+            paid = None
+            payment_option = request.POST['payment']
+            if payment_option == "Cash On Delivery":
+                paid = False
+            order = Order.objects.create(
+                name=request.POST['name'],
+                email=request.POST['email'],
+                location=request.POST['location'],
+                phone=request.POST['phone'],
+                user=user_instance, 
+                price=total_price,
+                order_id=order_id,
+                transaction_id="MANUAL-TEST-MODE",
+                is_paid = paid,
+                payment_option = payment_option
+            )
+
+            for cart in cartitem:
+                if cart.product.discount:
+                    price = cart.product.discount_price * cart.quantity
+                else:
+                    price = cart.product.price * cart.quantity
+                order.add_product(cart.product, cart.size, cart.quantity, price)
+
+            # send_confirmation_email(order)
+            messages.success(request, f"Order placed successfully! (ID: {order.id})")
+            cartitem.delete()
+
+            return render(request, 'merchSite/khalti/khalti-success.html', {'order_id' : order_id}) 
+
+        except Exception as e:
+            print(f"Error creating order: {e}")
+            messages.error(request, "Something went wrong creating the order.")
+            return redirect('checkout')
 
 def my_cart(request):
     cartitem = get_cart_items(request)
