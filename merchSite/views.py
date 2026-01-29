@@ -569,11 +569,10 @@ def clear_cart(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
 
 
+
 def track_order(request):
     track_order_form = TrackOrderForm()
     order_products = []
-    product_id = None
-    product_info = None
     
     if request.method == 'POST':
         track_order_form = TrackOrderForm(request.POST)
@@ -587,16 +586,18 @@ def track_order(request):
                 for order in order_items:
                     if order.product: 
                         products = json.loads(order.product) 
-                        product_id = products[0]['id']
+                        for i in range(len(products)):
+                            product_obj = Product.objects.get(id = products[i]['id'])
+                            products[i]['product_slug'] = product_obj.slug
+                            products[i]['product_img_url'] = product_obj.image.url
                         order_products.append({
                             'order': order,
                             'products': products
                         })
-                if product_id:
-                    product_info = Product.objects.get(id = product_id)
+              
     else:
         track_order_form = TrackOrderForm()
-    return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products, 'product_info':product_info})
+    return render(request, 'merchSite/track_order.html', {'form': track_order_form, 'order_products': order_products})
 
 
 

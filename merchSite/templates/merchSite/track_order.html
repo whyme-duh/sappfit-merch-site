@@ -59,9 +59,9 @@
                             <div class="cart-summary-info d-flex justify-content-between align-items-center">
                                 <div class="track-order-result-quantity-image d-flex justify-content-center align-items-center gap-1">
                                     <p>x{{item.quantity}}</p>
-                                    <img src="{{product_info.image.url}}" alt="" class="order-summary-image">
+                                    <img src="{{item.product_img_url}}" alt="" class="order-summary-image">
                                 </div>
-                                <a href="{% url 'detail-page' product_info.slug %}" style="
+                                <a href="{% url 'detail-page' item.product_slug %}" style="
                                 text-decoration: none; color: black;">
                                     <p> <strong>{{item.product}}</strong> ({{item.size}})</p>
                                 </a>
