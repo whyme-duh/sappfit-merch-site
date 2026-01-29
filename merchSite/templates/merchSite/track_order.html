@@ -41,9 +41,9 @@
                     <div class="col-6">
                         <strong>Status:</strong>
                         {% if order.order.delivered %}
-                            <span class="badge bg-success">Delivered</span>
+                            <span class="badge bg-success p-2">Delivered</span>
                         {% else %}
-                            <span class="badge bg-warning text-dark">Processing / On the way</span>
+                            <span class="badge bg-warning text-dark p-2">Processing / On the way</span>
                         {% endif %}
                     </div>
                     <div class="col-6 text-end">
@@ -53,31 +53,52 @@
                 
                 <div class="mt-3">
                     <strong>Items:</strong>
-                    <ul class="list-group mt-2">
-                        {% for item in order.products %}
-                        <li class="list-group-item">
-                            <div class="cart-summary-info d-flex justify-content-between align-items-center">
-                                <div class="track-order-result-quantity-image d-flex justify-content-center align-items-center gap-1">
-                                    <p>x{{item.quantity}}</p>
-                                    <img src="{{item.product_img_url}}" alt="" class="order-summary-image">
-                                </div>
-                                <a href="{% url 'detail-page' item.product_slug %}" style="
-                                text-decoration: none; color: black;">
-                                    <p> <strong>{{item.product}}</strong> ({{item.size}})</p>
-                                </a>
-                                {% if item.discount %}
-                                <p>Rs. {{item.discount_price}}</p>
-                                {% else %}
-                                <p>Rs. {{item.price}}</p>
-                                {% endif %}
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="table-responsive">
+
+                        <table class="sleek-table border">
+                            <thead>
+                                <tr>
+                                    <th>Quantity</th>
+                                    <th>Product</th>
+                                    <th>Size</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.products %}
+                                    <tr>
+                                        <td class="order-date">x{{item.quantity}}</td>
+                                        <td class="order-items d-flex justify-content-start gap-2 align-items-center">
+                                            <img src="{{item.product_img_url}}" alt="" class="order-summary-image">
+
+                                            <a href="{% url 'detail-page' item.product_slug %}" style="
+                                        text-decoration: none; color: black;">
+                                            <p> <strong>{{item.product}}</strong></p>
+                                        </td>
+                                        
+                                        <td class="order-price">{{item.size}}</td>
+                                        {% if item.discount %}
+                                        <td class="order-price">Rs. {{item.discount_price}}</td>
+
+                                        {% else %}
+                                        <td class="order-price">Rs. {{item.price}}</td>
+
+                                        {% endif %}
+
+                                        
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="empty-state">No orders found. Time to shop!</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="cancel-and-total d-flex justify-content-between align-items-center mt-3">
-                    <button class="cancel-btn-track-order">Cancel Order</button>
-                    <h5 class="text-end">Total: Rs. {{ order.order.price }}</h5>
+                    <a class="cancel-btn-track-order text-decoration-none text-white" href="{% url 'cancel-order' order.order.id %}">Cancel Order</a>
+                    <h5 class="text-end"><strong>Total: Rs. {{ order.order.price }}</strong></h5>
                 </div>
         </div>
     </div>

@@ -1095,6 +1095,7 @@ a{
 }
 .trackOrderOverlay{
     display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     left: 0;
@@ -1103,7 +1104,7 @@ a{
     background-color: rgba(0, 0, 0, 0.5); 
     backdrop-filter: blur(5px); 
     z-index: 1000;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     transition: opacity 0.3s ease;
     
@@ -1111,14 +1112,10 @@ a{
 
 .track-result{
     background: white;
-    width: 30%;
+    width: 40%;
     border-radius: 12px;
-    padding: 0; 
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    transform: translateY(-50px);
-    transition: transform 0.3s ease;
     overflow: hidden;
-
 }
 
 .track-order-header h4{
@@ -1162,11 +1159,13 @@ a{
     }
     .track-result{
         width: 100%;
-        transform: translateY(-200px);
     }
     .cancel-and-total h5{
         font-size: 1em;
         font-weight: 900;
+    }
+    .track-result .sleek-table{
+        border: 10px solid black;
     }
 }
 /* order success page */
