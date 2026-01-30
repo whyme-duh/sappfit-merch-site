@@ -336,6 +336,15 @@ nav{
     display: flex;
     justify-content: space-between;
 }
+@media only screen and (max-width:400px){
+    .btns-group{
+        display: flex;
+        gap: 2em;
+    }
+    .product-review-card{
+        width: 100%;
+    }
+}
 .add-to-cart-btn{
     background-color: black;
     border-radius: 5px;
