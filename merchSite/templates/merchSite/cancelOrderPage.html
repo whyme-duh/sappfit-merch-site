@@ -1,0 +1,40 @@
+{% extends 'merchSite/base.html' %}
+{% block title %}Cancel Order Page {% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Cancel Order <span id="modalOrderId">#</span></h3>
+            <button class="close-icon" onclick="closeCancelModal()">&times;</button>
+        </div>
+        
+        <form id="cancelForm" method="POST" action="">
+            {% csrf_token %}
+            <div class="modal-body">
+                <p class="text-muted">Are you sure? This action cannot be undone.</p>
+                
+                <div class="form-group">
+                    <label for="cancel-options">Reason for Cancellation</label>
+                    <select name="cancel-options" id="cancel-options" class="form-select" onchange="toggleOtherReason(this)">
+                        <option value="Changed Mind">Changed my mind</option>
+                        <option value="Ordered Mistake">Ordered by mistake</option>
+                        <option value="Found Cheaper">Found cheaper elsewhere</option>
+                        <option value="Shipping Time">Shipping time is too long</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-3" id="otherReasonGroup" style="display:none;">
+                    <label>Please specify details</label>
+                    <textarea name="reason" class="form-input" rows="2" placeholder="Tell us why..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeCancelModal()">Keep Order</button>
+                <button type="submit" class="btn-danger">Confirm Cancellation</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

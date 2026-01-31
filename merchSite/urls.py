@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.conf.urls.static import static
 from core import settings
-from .views import index, return_request, detail_page, direct_checkout_page, add_to_cart,place_order, track_order, my_cart, delete_cart_item, clear_cart, products_page, checkout, products_by_category, product_filter, product_filter_along_with_category, khalti_failure, khalti_success
+from .views import index, cancel_order_page,return_request, detail_page, direct_checkout_page, add_to_cart,place_order, track_order, my_cart, delete_cart_item, clear_cart, products_page, checkout, products_by_category, product_filter, product_filter_along_with_category, khalti_failure, khalti_success
 
 urlpatterns = [
     path('', index, name='home' ),
@@ -21,5 +21,6 @@ urlpatterns = [
     path('my-cart/khalti-success/', khalti_success, name='khalti-success'),
     path('my-cart/khalti-failure/', khalti_failure, name='khalti-failure'),
     path('track-order/', track_order, name='track-order'),
+    path('cancel-order/', cancel_order_page, name='cancel-order-page'),
 
 ] 

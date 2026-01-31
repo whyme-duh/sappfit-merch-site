@@ -132,9 +132,9 @@ def review_page(request):
                 delivered_products_list.append(item)
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
 
-@login_required
 def cancel_order(request, id):
-    order = Order.objects.get(id = id, user = request.user)
+  
+    order = Order.objects.get(id = id)
     if order.status == "Delivered" or order.status == "Shipped":
         messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
     else:

@@ -332,6 +332,10 @@ def place_order(request):
             print(f"Error creating order: {e}")
             messages.error(request, "Something went wrong creating the order.")
             return redirect('checkout')
+        
+
+def cancel_order_page(request):
+    return render(request, 'merchSite/cancelOrderPage.html')
 
 def my_cart(request):
     cartitem = get_cart_items(request)
