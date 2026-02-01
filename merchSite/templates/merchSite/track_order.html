@@ -44,6 +44,8 @@
                             <span class="badge bg-success p-2">Delivered</span>
                         {% elif order.order.status == "Cancelled" %}
                             <span class="badge bg-danger p-2">Cancelled</span>
+                        {% elif order.order.status == "Returned" %}
+                            <span class="badge bg-danger p-2">Returned</span>
                         {% else %}
                             <span class="badge bg-warning text-dark p-2">Processing / On the way</span>
                         {% endif %}

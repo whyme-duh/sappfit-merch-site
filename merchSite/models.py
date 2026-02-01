@@ -125,10 +125,10 @@ class Order(models.Model):
             if self.delivered_date is None:
                 self.delivered_date = datetime.datetime.now()
         elif self.status == "Returned":
-            if self.returned_date_date is None:
+            if self.returned_date is None:
                 self.returned_date = datetime.datetime.now()
         elif self.status == "Cancelled":
-            if self.cancelled_date_date is None:
+            if self.cancelled_date is None:
                 self.cancelled_date = datetime.datetime.now()
         else:
             self.delivered_date = None

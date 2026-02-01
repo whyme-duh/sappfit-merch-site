@@ -336,17 +336,19 @@ nav{
     display: flex;
     justify-content: space-between;
 }
-@media only screen and (max-width:400px){
+@media screen and (max-width:400px){
     .btns-group{
         display: flex;
         gap: 2em;
     }
-    .product-review-card{
-        width: 100%;
-    }
     .review-carousel-container{
-        
+        margin-top: 1em;
     }
+    .product-review-card{
+        width: 100% !important;
+    }
+ 
+ 
 }
 .add-to-cart-btn{
     background-color: black;

@@ -339,7 +339,7 @@ def cancel_order(request, id):
     if request.user.is_authenticated:
         redirect_page = "profile"
     order = Order.objects.get(id = id)
-    if order.status == "Delivered" or order.status == "Shipped":
+    if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
         messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
     else:
         if request.method == "POST":
