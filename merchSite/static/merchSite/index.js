@@ -22,6 +22,19 @@ function closeTrackModal() {
     modalOverlay.style.display = "none";
 }
 
+function cancelOrderInTrackOrderModel(option){
+    const cancelForm = document.getElementById('track-order-modal-box');
+
+    if (option == 'open'){
+        cancelForm.style.display = "block";
+    }else if (option == "close"){
+        cancelForm.style.display = "none";
+    }
+    else{
+        alert('incorrect');
+    }
+}
+
 function addToCart(actionUrl){
     const productDetailForm = document.getElementById('productDetailForm');
     console.log(productDetailForm);

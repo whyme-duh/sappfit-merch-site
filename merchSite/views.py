@@ -334,8 +334,23 @@ def place_order(request):
             return redirect('checkout')
         
 
-def cancel_order_page(request):
-    return render(request, 'merchSite/cancelOrderPage.html')
+def cancel_order(request, id):
+    redirect_page = "products"
+    if request.user.is_authenticated:
+        redirect_page = "profile"
+    order = Order.objects.get(id = id)
+    if order.status == "Delivered" or order.status == "Shipped":
+        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+    else:
+        if request.method == "POST":
+            cancellation_reason_choice = request.POST.get('cancel-options')
+            canellation_other_reason = request.POST.get('reason')
+            order.status = "Cancelled"
+            order.cancellation_reasons = cancellation_reason_choice
+            order.cancellation_other_reason = canellation_other_reason
+            order.save()
+            messages.success(request, f'Your Order has been cancelled succesfully!')
+    return redirect(redirect_page)
 
 def my_cart(request):
     cartitem = get_cart_items(request)

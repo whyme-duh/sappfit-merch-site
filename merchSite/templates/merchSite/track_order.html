@@ -95,8 +95,35 @@
                     </div>
                 </div>
                 <div class="cancel-and-total d-flex justify-content-between align-items-center mt-3">
-                    <a class="cancel-btn-track-order text-decoration-none text-white" href="{% url 'cancel-order-page' %}">Cancel Order</a>
+                    <button class="cancel-btn-track-order " onclick="cancelOrderInTrackOrderModel('open')">Cancel Order</button>
                     <h5 class="text-end"><strong>Total: Rs. {{ order.order.price }}</strong></h5>
+                </div>
+                <div class="track-order-modal-box" id="track-order-modal-box">
+                    <form id="cancelForm" method="POST" action="{% url 'cancel-order' order.order.id %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <p class="text-muted">Are you sure? This action cannot be undone.</p>
+                            <div class="form-group">
+                                <label for="cancel-options">Reason for Cancellation</label>
+                                <select name="cancel-options" id="cancel-options" class="form-select" onchange="toggleOtherReason(this)">
+                                    <option value="Changed Mind">Changed my mind</option>
+                                    <option value="Ordered Mistake">Ordered by mistake</option>
+                                    <option value="Found Cheaper">Found cheaper elsewhere</option>
+                                    <option value="Shipping Time">Shipping time is too long</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3" id="otherReasonGroup" style="display:none;">
+                                <label>Please specify details</label>
+                                <textarea name="reason" class="form-input" rows="2" placeholder="Tell us why..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" onclick="cancelOrderInTrackOrderModel('close')">Keep Order</button>
+                            <button type="submit" class="btn-danger">Confirm Cancellation</button>
+                        </div>
+                    </form>
                 </div>
         </div>
     </div>

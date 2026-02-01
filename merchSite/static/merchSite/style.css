@@ -344,6 +344,9 @@ nav{
     .product-review-card{
         width: 100%;
     }
+    .review-carousel-container{
+        
+    }
 }
 .add-to-cart-btn{
     background-color: black;
@@ -1152,6 +1155,23 @@ a{
     padding-inline:1em;
     padding-block:0.5em;
 }
+.track-order-modal-box{
+    margin-top: 1em;
+    display: none;
+}
+.track-order-modal-box .modal-body{
+    padding: 0;
+}
+.track-order-modal-box.active{
+    display: block;
+    transition: ease-in;
+}
+.track-order-modal-box .modal-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
 
 @media screen and (max-width:400px){
     .tracker-form{
@@ -1175,6 +1195,14 @@ a{
     }
     .track-result .sleek-table{
         border: 10px solid black;
+    }
+    .track-order-modal-box .modal-footer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .track-order-modal-box .modal-footer button{
+        width: 100%;
     }
 }
 /* order success page */
