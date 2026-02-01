@@ -60,7 +60,8 @@ class Order(models.Model):
         ('Processing' , 'Processing'),
         ('Shipped' , 'Shipped'),
         ('Delivered', 'Delivered'),
-        ('Cancelled' , 'Cancelled')
+        ('Cancelled' , 'Cancelled'),
+        ('Returned' , 'Returned')
     )
     CANELLATION_REASONS = (
         ('I selected wrong product.' , 'I selected wrong product.'),
@@ -78,6 +79,8 @@ class Order(models.Model):
     price = models.IntegerField(default = '', blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True)
     delivered_date = models.DateTimeField('delivered_date', null = True, blank = True)
+    cancelled_date = models.DateTimeField('cancelled_date', null = True, blank = True)
+    returned_date = models.DateTimeField('returned_date', null = True, blank = True)
     status = models.CharField(max_length=20, choices= STATUS_CHOICES, default='Pending')
     name = models.CharField(max_length = 80, blank = True, null = True)
     location = models.CharField(max_length = 80, blank = True, null = True)
@@ -121,6 +124,12 @@ class Order(models.Model):
         if self.status == "Delivered":
             if self.delivered_date is None:
                 self.delivered_date = datetime.datetime.now()
+        elif self.status == "Returned":
+            if self.returned_date_date is None:
+                self.returned_date = datetime.datetime.now()
+        elif self.status == "Cancelled":
+            if self.cancelled_date_date is None:
+                self.cancelled_date = datetime.datetime.now()
         else:
             self.delivered_date = None
         super(Order, self).save(*args, **kwargs)
