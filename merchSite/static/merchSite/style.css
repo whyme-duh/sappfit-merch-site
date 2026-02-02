@@ -362,9 +362,10 @@ nav{
     text-align: center;
 }
 .add-to-cart-btn:hover{
-    color: black;
-    background-color: white;
-    border: 1px solid black;
+    color: rgb(0, 0, 0);
+    background-color: rgba(204, 205, 174, 0.467);
+    border: 1px solid rgb(204, 205, 174);
+    font-weight: 600;
 }
 .direct-checout-btn{
     background-color: rgb(255, 255, 255);
@@ -379,7 +380,10 @@ nav{
 }
 .direct-checout-btn:hover{
     color: white;
-    background-color: black;
+    font-weight: 600;
+
+    background-color: rgba(3, 14, 46, 0.574);
+    border-color: rgb(71, 70, 70);
 
 }
 /* cart page */

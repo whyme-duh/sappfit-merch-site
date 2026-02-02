@@ -56,7 +56,7 @@ function openImportOrderModal(){
 
 function closeImportOrderModal(){
     const modalOverlay = document.getElementById('importOrderModalOverlay');
-    modalOverlay.style.remove('active');
+    modalOverlay.classList.remove('active');
 }
 
 function openCancelModal(actionUrl, orderId) {

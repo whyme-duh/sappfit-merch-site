@@ -300,9 +300,12 @@
                                     </div>
                                 </td>
                                 <td class="review-text">{{ review.review|truncatechars:50 }}</td>
+                                {% if reviews %}
+                                
                                  <td class="action-buttons">
                                     <a href= "{% url 'edit-review' review.id %}" class="action edit-btn">Edit</a>
                                     <a href="{% url 'delete-review' review.id %}" class="action cancel-btn">Delete</a>
+                                {% endif %}
 
                                 </td>
                             </tr>
