@@ -1,5 +1,5 @@
 from django.urls import path
-from . views import profile, sign_up, review_page, edit_review, delete_review, add_review, ResetPasswordView
+from . views import profile, sign_up, review_page, import_order,edit_review, delete_review, add_review, ResetPasswordView
 from django.contrib.auth import views as auth_views
 
 
@@ -12,5 +12,6 @@ urlpatterns = [
     path('password-reset/', ResetPasswordView.as_view(), name = 'password-reset' ),
     path('delete-review/<int:id>/', delete_review, name = 'delete-review' ),
     path('edit-review/<int:id>/', edit_review, name = 'edit-review' ),
+    path('import-order/', import_order, name = 'import-order' ),
   
 ]

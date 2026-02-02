@@ -49,6 +49,16 @@ function directCartToCheckout(actionUrl){
     productDetailForm.action = actionUrl;
 }
 
+function openImportOrderModal(){
+    const modalOverlay = document.getElementById('importOrderModalOverlay');
+    modalOverlay.classList.add('active');
+}
+
+function closeImportOrderModal(){
+    const modalOverlay = document.getElementById('importOrderModalOverlay');
+    modalOverlay.style.remove('active');
+}
+
 function openCancelModal(actionUrl, orderId) {
     const cancelForm = document.getElementById('cancelForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');

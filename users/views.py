@@ -1,5 +1,6 @@
 from collections import defaultdict
 import datetime
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from . forms import UserRegistrationForm, ReviewForm
@@ -132,21 +133,7 @@ def review_page(request):
                 delivered_products_list.append(item)
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
 
-def cancel_order(request, id):
-  
-    order = Order.objects.get(id = id)
-    if order.status == "Delivered" or order.status == "Shipped":
-        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-    else:
-        if request.method == "POST":
-            cancellation_reason_choice = request.POST.get('cancel-options')
-            canellation_other_reason = request.POST.get('reason')
-            order.status = "Cancelled"
-            order.cancellation_reasons = cancellation_reason_choice
-            order.cancellation_other_reason = canellation_other_reason
-            order.save()
-            messages.success(request, f'Your Order has been cancelled succesfully!')
-    return redirect('profile')
+
 
 
 
@@ -218,3 +205,26 @@ def edit_review(request, id):
     else:
         messages.error(request, "Something went wrong. Try Again!")
         return redirect('profile')
+    
+
+def import_order(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        order_id = request.POST.get('order_id')
+        try:
+            order = Order.objects.get(email = email , order_id = order_id)
+            if order.user == None   :
+                order.user = request.user   
+                order.save()
+                messages.success(request, "Imported successfully!")
+                return redirect('profile')
+            else:
+                messages.error(request, "It seems this order is of different user.")
+                return redirect('profile')
+        except (Order.DoesNotExist):
+            messages.error(request, "Error! Please provide correct details")
+            return redirect('profile')
+
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+ 

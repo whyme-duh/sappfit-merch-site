@@ -174,9 +174,21 @@ class ReturnProduct(models.Model):
     order = models.ForeignKey(Order, on_delete= models.PROTECT, null= True, blank = True)
     return_status = models.CharField(max_length=100, choices=RETURN_STATUS, default="Pending")
     return_request_date = models.DateTimeField(auto_now_add=True)
+    returned_date = models.DateTimeField('returned_date', null = True, blank = True)
+
 
     def __str__(self):
         return f'{self.user} requested return on {self.product}'
+    
+
+    def save(self, *args, **kwargs):
+        if self.return_status == "Returned":
+            if self.returned_date is None:
+                self.returned_date = datetime.datetime.now()
+       
+        else:
+            self.returned_date = None
+        super(ReturnProduct, self).save(*args, **kwargs)
 
 
 

@@ -23,6 +23,36 @@
                         <i class="fa fa-sign-out"></i> Logout
                     </button>
                 </form>
+                {% if not orders %}
+                <button onclick="openImportOrderModal()" class="import-order">Import Order</button>
+                {% endif %}
+            </div>
+        </div>
+        <div id="importOrderModalOverlay" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h3>Import Order</h3>
+                    <button class="close-icon" onclick="closeImportOrderModal()">&times;</button>
+                </div>
+                
+                <form id="cancelForm" method="POST" action="{% url 'import-order' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p class="text-muted">If you have order products using guest account, you can import that order in this profile.</p>
+                        
+                        <div class="form-group">
+                            <label for="email" required>Email</label>
+                            <input type="email" name="email">
+                            <label for="order_id" required>Order iD</label>
+                            <input type="text" name="order_id">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success    ">Import</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -255,7 +285,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for review in reviews %}
+                            {% for review in reviews %}
                             <tr>
                                 <td>{{review.id}}</td>
                                 <td>
@@ -298,6 +328,8 @@
                             <th>Size x Quantity</th>
                             <th>Returned Request At</th>
                             <th>Status</th>
+                            <th>Returned On</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -312,6 +344,11 @@
                                 </td>
                                 <td class="review-text">{{ product.return_request_date|date:"M d, Y" }}</td>
                                 <td class="review-text">{{ product.return_status }}</td>
+                                {% if product.returned_date %}
+                                <td class="review-text">{{ product.returned_date|date:'d M, Y (D)' }}</td>
+                                {% else %}
+                                <td class="review-text">Pending</td>
+                                {% endif %}
                             </tr>
                             
                         {% endfor %}
