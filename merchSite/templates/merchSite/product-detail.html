@@ -58,8 +58,11 @@
                 <h5 class="product-category">{{product.category}}</h5>
                 <h3 class="product-detail-name">{{product.name}}</h3>
                 {% if reviews %}
+                {% if total_rating > 1 %}
                 <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Reviews</span></p>
-
+                {% else %}
+                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Review</span></p>
+                {% endif %}
                 {%endif%}
                 
                 {% if product.discount %}
@@ -102,11 +105,16 @@
         <div class="reviews-container" id="reviews-container">
             <div class="reviews" id = "reviews">
                 <div class="review-info">
-                    <div class="review-header">
-                        <h5 class=""">Product Reviews</h5>
-                        <p>({{overall_rating}}) {{total_rating}} Reviews</p>
+                    <div class="review-header-container">
+                        <div class="review-header">
+                            <h2 class="review-container-header">Product Reviews</h2>
+                            {% if total_rating > 1 %}
+                            <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span style="cursor: pointer;"Reviews</span></p>
+                            {% else %}
+                            <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span  style="cursor: pointer;" onclick="showReviews()">Review</span></p>
+                            {% endif %}
+                        </div>
                         <button onclick="closeShowReviews()">X</button>
-
                     </div>
                     <div class="review-carousel-container">
 
