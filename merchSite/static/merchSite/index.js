@@ -16,6 +16,19 @@ function navbarFunction() {
   
 }
 
+// product detail page
+
+function showReviews(){
+    const reviewOverlay = document.getElementById('reviews-container');
+    reviewOverlay.style.display = "flex";
+}
+
+function closeShowReviews(){
+    const reviewOverlay = document.getElementById('reviews-container');
+    reviewOverlay.style.display = "none";
+
+}
+
 
 function closeTrackModal() {
     const modalOverlay = document.getElementById('trackOrderOverlay');

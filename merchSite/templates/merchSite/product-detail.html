@@ -5,141 +5,144 @@
 {% block content %}
 <div class="product-container">
     <div class="product-detail-main ">
-        <div class="main-container">
-            <div class="carousel-container">
-                <div class="carousel">
-                    <div class="carousel__button-container carousel__button-container--prev is-hidden">
-                        <button class="carousel__button carousel__button--prev">
-                            <i class="fa fa-angle-double-left"></i>
-                        </button>
-                    </div>
-                    <div class="carousel__track-container">
-                        <ul class="carousel__track">
-                            <li class="carousel__slide current-slide"><img src="{{product.image.url}}" alt=""
-                                    class="carousel__image">
-                            </li>
-                            <li class="carousel__slide"><img src="{{product.second_image.url}}" alt=""
-                                    class="carousel__image">
-                            </li>
-                            <li class="carousel__slide"><img src="{{product.third_image.url}}" alt=""
-                                    class="carousel__image">
-                            </li>
-                            <li class="carousel__slide"><img src="{{product.fourth_image.url}}" alt=""
-                                    class="carousel__image">
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="carousel__button-container carousel__button-container--next">
-                        <button class="carousel__button carousel__button--next">
-                            <i class="fa fa-angle-double-right"></i>
+        <div class="product-detail-container">
+            <div class="main-container">
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="carousel__button-container carousel__button-container--prev is-hidden">
+                            <button class="carousel__button carousel__button--prev">
+                                <i class="fa fa-angle-double-left"></i>
+                            </button>
+                        </div>
+                        <div class="carousel__track-container">
+                            <ul class="carousel__track">
+                                <li class="carousel__slide current-slide"><img src="{{product.image.url}}" alt=""
+                                        class="carousel__image">
+                                </li>
+                                <li class="carousel__slide"><img src="{{product.second_image.url}}" alt=""
+                                        class="carousel__image">
+                                </li>
+                                <li class="carousel__slide"><img src="{{product.third_image.url}}" alt=""
+                                        class="carousel__image">
+                                </li>
+                                <li class="carousel__slide"><img src="{{product.fourth_image.url}}" alt=""
+                                        class="carousel__image">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="carousel__button-container carousel__button-container--next">
+                            <button class="carousel__button carousel__button--next">
+                                <i class="fa fa-angle-double-right"></i>
 
-                        </button>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel__indicator-container">
+                    <div class="carousel__indicator indicator-1 current-slide">
+                        <img class="carousel__indicator--image" src="{{product.image.url}}" alt="">
+                    </div>
+                    <div class="carousel__indicator indicator-1">
+                        <img class="carousel__indicator--image" src="{{product.second_image.url}}" alt="">
+                    </div>
+                    <div class="carousel__indicator indicator-1">
+                        <img class="carousel__indicator--image" src="{{product.third_image.url}}" alt="">
+                    </div>
+                    <div class="carousel__indicator indicator-1">
+                        <img class="carousel__indicator--image" src="{{product.fourth_image.url}}" alt="">
                     </div>
                 </div>
             </div>
-            <div class="carousel__indicator-container">
-                <div class="carousel__indicator indicator-1 current-slide">
-                    <img class="carousel__indicator--image" src="{{product.image.url}}" alt="">
-                </div>
-                <div class="carousel__indicator indicator-1">
-                    <img class="carousel__indicator--image" src="{{product.second_image.url}}" alt="">
-                </div>
-                <div class="carousel__indicator indicator-1">
-                    <img class="carousel__indicator--image" src="{{product.third_image.url}}" alt="">
-                </div>
-                <div class="carousel__indicator indicator-1">
-                    <img class="carousel__indicator--image" src="{{product.fourth_image.url}}" alt="">
-                </div>
-            </div>
-        </div>
-        
-        <div class="product-detail">
-            <h5 class="product-category">{{product.category}}</h5>
-            <h3 class="product-detail-name">{{product.name}}</h3>
-            {% if reviews %}
-            <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Reviews</p>
-
-            {%endif%}
             
-            {% if product.discount %}
-            <div class="product-price">
-                <h5 class="prod-detail-original-price">Rs. {{product.discount_price}}</h5>
-                <strike class="product-dis-price" style="color:red" >Rs. {{product.price}}</strike>
-                <small class="discount-rate">{{discount_rate}}%</small>
-            </div>
-            {% else %}
-            <h5 class="prod-detail-original-price">Rs. {{product.price}}</h5>
-            {% endif %}
-        
-            <p class="product-description">{{product.description|safe}}</p>
-            <form method="POST" action="" id="productDetailForm">
-                {% csrf_token %}
-                <div class="quantity-size">
-                    <div class="form-group">
-                        <label for="size">Size:</label>
-                        <select name="size" required>
-                            {% for size, quantity in sizes.items %}
-                            <option value="{{ size }}">{{ size }} ({{ quantity }} available)</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" value="1" min="1" required>
-                </div>
-                </div>
-                <div class="btns-group">
-                    <button type="submit" class="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)">Add to Bag</button>
-                    <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
-                </div>
-               
+            <div class="product-detail">
+                <h5 class="product-category">{{product.category}}</h5>
+                <h3 class="product-detail-name">{{product.name}}</h3>
+                {% if reviews %}
+                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Reviews</span></p>
 
-            </form>
+                {%endif%}
+                
+                {% if product.discount %}
+                <div class="product-price">
+                    <h5 class="prod-detail-original-price">Rs. {{product.discount_price}}</h5>
+                    <strike class="product-dis-price" style="color:red" >Rs. {{product.price}}</strike>
+                    <small class="discount-rate">{{discount_rate}}%</small>
+                </div>
+                {% else %}
+                <h5 class="prod-detail-original-price">Rs. {{product.price}}</h5>
+                {% endif %}
+            
+                <p class="product-description">{{product.description|safe}}</p>
+                <form method="POST" action="" id="productDetailForm">
+                    {% csrf_token %}
+                    <div class="quantity-size">
+                        <div class="form-group">
+                            <label for="size">Size:</label>
+                            <select name="size" required>
+                                {% for size, quantity in sizes.items %}
+                                <option value="{{ size }}">{{ size }} ({{ quantity }} available)</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" value="1" min="1" required>
+                    </div>
+                    </div>
+                    <div class="btns-group">
+                        <button type="submit" class="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)">Add to Bag</button>
+                        <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
+                    </div>
+                
+
+                </form>
+            </div>
         </div>
+        {% if reviews %}
+        <div class="reviews-container" id="reviews-container">
+            <div class="reviews" id = "reviews">
+                <div class="review-info">
+                    <div class="review-header">
+                        <h5 class=""">Product Reviews</h5>
+                        <p>({{overall_rating}}) {{total_rating}} Reviews</p>
+                        <button onclick="closeShowReviews()">X</button>
+
+                    </div>
+                    <div class="review-carousel-container">
+
+                        {% for review in reviews %}
+                        <div class="product-review-card" data-review-id="{{review.id}}">
+                            <div class="user-review">
+                                <div class="review-user-section">
+                                    <h5 class="name-initial">{{review.user.username.0}}</h5>
+                                    <p class="pb-2 mb-0 user-name-review"><b>{{review.user.username}}</b></p>
+                                </div>
+                                <div class="review-stars pb-2">
+                                    {% if review.review_star == 1 %}
+                                    <img src="{% static 'merchSite/onestar.png' %} alt="star" width="100" height="20">
+                                    {% elif review.review_star == 2 %}
+                                    <img src="{% static 'merchSite/twostar.png' %}" alt="star" width="100" height="20">
+                                    {% elif review.review_star == 3 %}
+                                    <img src="{% static 'merchSite/threestar.png' %}" alt="star" width="100" height="20">
+                                    {% elif review.review_star == 4 %}
+                                    <img src="{% static 'merchSite/fourstar.png' %}" alt="star" width="100" height="20">
+                                    {% elif review.review_star == 5 %}
+                                    <img src="{% static 'merchSite/fivestar.png' %}" alt="star" width="100" height="20">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="pt-2">{{review.review}}</p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
          
         
     </div>
-    {% if reviews %}
-    <div class="reviews" id = "reviews">
-        <div class="review-info">
-            <!-- {% if reviews|length > 1 %}
-            <div class="arrows" id="arrows">
-                <div class="left-arrow" id="left-arrow"><i class="fa fa-arrow-left"></i></div>
-                <div class="right-arrow" id="right-arrow"><i class="fa fa-arrow-right"></i></div>
-            </div>
-            {% endif %} -->
-            <h5 class="home-heading mb-md-5">Product Reviews</h5>
-
-            <div class="review-carousel-container">
-
-                {% for review in reviews %}
-                <div class="product-review-card" data-review-id="{{review.id}}">
-                    <div class="user-review">
-                        <div class="review-user-section">
-                            <h5 class="name-initial">{{review.user.username.0}}</h5>
-                            <p class="pb-2 mb-0 user-name-review"><b>{{review.user.username}}</b></p>
-                        </div>
-                        <div class="review-stars pb-2">
-                            {% if review.review_star == 1 %}
-                            <img src="{% static 'merchSite/onestar.png' %} alt="star" width="100" height="20">
-                            {% elif review.review_star == 2 %}
-                            <img src="{% static 'merchSite/twostar.png' %}" alt="star" width="100" height="20">
-                            {% elif review.review_star == 3 %}
-                            <img src="{% static 'merchSite/threestar.png' %}" alt="star" width="100" height="20">
-                            {% elif review.review_star == 4 %}
-                            <img src="{% static 'merchSite/fourstar.png' %}" alt="star" width="100" height="20">
-                            {% elif review.review_star == 5 %}
-                            <img src="{% static 'merchSite/fivestar.png' %}" alt="star" width="100" height="20">
-                            {% endif %}
-                        </div>
-                    </div>
-                    <p class="pt-2">{{review.review}}</p>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
+    
     <div class="related-prod d-flex flex-column" id="related-prod">
         <h4 class="home-heading mb-5">Similar Products</h4>
         <div class="d-product-list">
