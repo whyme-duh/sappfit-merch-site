@@ -112,6 +112,8 @@ DATABASES = {
 }
 
 
+
+
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 CONSTANCE_CONFIG = {
@@ -121,6 +123,12 @@ CONSTANCE_CONFIG = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS =[
+    'users.backend.EmailOrUsernameBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -350,6 +350,7 @@ def cancel_order(request, id):
             order.cancellation_other_reason = canellation_other_reason
             order.save()
             messages.success(request, f'Your Order has been cancelled succesfully!')
+
     return redirect(redirect_page)
 
 def my_cart(request):
