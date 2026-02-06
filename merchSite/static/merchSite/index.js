@@ -16,18 +16,30 @@ function navbarFunction() {
   
 }
 
+// for tracking model
+
+const trackOrderOverlay = document.getElementById('trackOrderOverlay');
+if (trackOrderOverlay){
+    document.getElementById('body').style.overflow = "hidden";
+}
+else{
+    document.getElementById('body').style.overflow = "visible";
+    
+
+}
+
 // product detail page
 
 function showReviews(){
     const reviewOverlay = document.getElementById('reviews-container');
     reviewOverlay.style.display = "flex";
-    // document.getElementById('body').style.overflow = "hidden";
+    document.getElementById('body').style.overflow = "hidden";
 }
 
 function closeShowReviews(){
     const reviewOverlay = document.getElementById('reviews-container');
     reviewOverlay.style.display = "none";
-    // document.getElementById('body').style.overflow = "visible";
+    document.getElementById('body').style.overflow = "visible";
 
 }
 

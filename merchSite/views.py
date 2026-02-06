@@ -357,7 +357,6 @@ def cancel_order(request, id):
             order.cancellation_other_reason = cancellation_other_reason
             order.save()
             messages.success(request, f'Your Order has been cancelled succesfully!')
-
     return redirect('products')
 
 def my_cart(request):
@@ -432,6 +431,8 @@ def checkout(request):
                 else:
                     price = cart.product.price * cart.quantity
                 order.add_product(cart.product, cart.size, cart.quantity, price)
+                cart.product.size_options[cart.size] -= cart.quantity
+                cart.product.save()
 
             # send_confirmation_email(order)
             messages.success(request, f"Order placed successfully! (ID: {order.id})")
