@@ -29,7 +29,6 @@
                     <p class="cart-count">{{cart_count}}</p>
                     {% endif %} 
                 </a>
-
                 {% if user.is_authenticated %}
                 <a href="{% url 'profile'%}" class="nav-items">Profile</a>
                 {% else %}
@@ -44,6 +43,11 @@
     </nav>
     <div class="wrapper">
         <main>
+            <!-- <a class="alert-cart" id="alert-msg" href="{% url 'my-cart' %}">
+                <h5 class="text-center">The Cozy Legging Collection is your new go-to for 
+                    comfort and style. Crafted from the softest fabrics, 
+                    these leggings are designed for ultimate relaxation and versatility,</h5>
+            </a> -->
         
             {% if messages %}
             {% for msg in messages %}

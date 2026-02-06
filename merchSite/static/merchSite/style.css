@@ -107,21 +107,31 @@ main{
     position: relative;
 }
 .alert-success, .alert-warning, .alert-cart{
+    width: 100%;
     position: absolute;
     text-decoration: none;
     color: rgb(3, 99, 12);
     right: 0;
-    margin:1em;
-    padding:1em;
+    padding:0.75em;
     border-radius: 5px;
     background-color: rgb(184, 213, 139);
     z-index: 1;
     animation: alert-animation 0.2s ease-in;
-    text-align: center;
+    text-align: left;
+}
+.alert-cart{
+    background-color: rgb(184, 213, 139);
+
+}
+
+.alert-cart:hover{
+    color: rgb(3, 99, 12);
+
 }
 .alert-success h5, .alert-error h5, .alert-warning h5, .alert-cart h5{
-    font-size:1.25em;
+    font-size:1em;
     padding-inline:1em;
+    margin-bottom: 0;
 }
 
 .alert-error{
@@ -1554,14 +1564,11 @@ a{
         color: white;
         text-decoration: none;
     }
-    .alert-cart{
+    .alert-cart:hover{
         text-decoration: none;
         color: white;
-        background-color: green;
     }
-    .alert-success, .alert-error, .alert-warning, .add-to-cart-btn{
-        width: fit-content;
-    }
+    
     .alert-success h5, .alert-error h5, .alert-warning h5{
         font-size: 1em;
     }
@@ -1827,7 +1834,7 @@ a{
         margin-top: 1em;
     }
     .alert-success, .alert-error, .alert-warning{
-        width: 80%;
+        width: 100%;
     }
     .alert-success h5, .alert-error h5, .alert-warning h5{
         font-size: 0.5em;

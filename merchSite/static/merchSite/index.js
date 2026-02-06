@@ -3,7 +3,7 @@ setTimeout(function(){
     const alert = document.getElementById('alert-msg');
 
     alert.style.display = "none";
-}, 4000)
+}, 10000)
 
 
 function navbarFunction() {
