@@ -90,7 +90,6 @@ function openCancelModal(actionUrl, orderId) {
     const cancelForm = document.getElementById('cancelForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');
     const modalOrderIdSpan = document.getElementById('modalOrderId');
-
     cancelForm.action = actionUrl;
     modalOrderIdSpan.innerText = "#" + orderId;
     modalOverlay.classList.add('active');

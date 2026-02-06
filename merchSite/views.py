@@ -336,20 +336,11 @@ def place_order(request):
 
 def cancel_order(request, id):
     print("hi")
-    redirect_page = "products"
-    if request.user.is_authenticated:
-        redirect_page = "profile"
     order = Order.objects.get(id = id)
-    product_list = json.loads(order.product)
-    print(order)
-    # for i in range(len(product_list)):
-    #     print("hi")
-    #     product = Product.objects.get(id = product_list[i]['id'])
-    #     print(product)
-    if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
-        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-    else:
-        if request.method == "POST":
+    if request.method == "POST":
+        if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
+            messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+        else:
             cancellation_reason_choice = request.POST.get('cancel-options')
             cancellation_other_reason = request.POST.get('reason')
             order.status = "Cancelled"
@@ -357,7 +348,7 @@ def cancel_order(request, id):
             order.cancellation_other_reason = cancellation_other_reason
             order.save()
             messages.success(request, f'Your Order has been cancelled succesfully!')
-    return redirect('products')
+    return redirect('profile')
 
 def my_cart(request):
     cartitem = get_cart_items(request)
@@ -599,7 +590,6 @@ def clear_cart(request):
 
 
 def track_order(request):
-    track_order_form = TrackOrderForm()
     order_products = []
     
     if request.method == 'POST':
@@ -622,6 +612,7 @@ def track_order(request):
                             'order': order,
                             'products': products
                         })
+            
               
     else:
         track_order_form = TrackOrderForm()

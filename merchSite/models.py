@@ -121,15 +121,26 @@ class Order(models.Model):
         return Order.objects.filter(user = user_id).order_by('-date')
     
     def save(self, *args, **kwargs):
-        if self.status == "Delivered":
-            if self.delivered_date is None:
-                self.delivered_date = datetime.datetime.now()
-        elif self.status == "Returned":
-            if self.returned_date is None:
-                self.returned_date = datetime.datetime.now()
-        elif self.status == "Cancelled":
-            if self.cancelled_date is None:
-                self.cancelled_date = datetime.datetime.now()
+        if self.status == "Delivered" and self.delivered_date is None:
+            self.delivered_date = datetime.datetime.now()
+        elif self.status == "Returned" and self.returned_date is None:
+            self.returned_date = datetime.datetime.now()
+        elif self.status == "Cancelled" and self.cancelled_date is None:
+            self.cancelled_date = datetime.datetime.now()
+            if self.product:
+                product_list = json.loads(self.product)
+                for item in product_list:
+                    try:
+                        product_obj = Product.objects.get(id = item['id'])
+                        size = item['size']
+                        qty = int(item['quantity'])
+
+                        if size in product_obj.size_options:
+                            product_obj.size_options[size] += qty
+                            product_obj.save()
+                    except Product.DoesNotExist:
+                        continue
+
         else:
             self.delivered_date = None
         super(Order, self).save(*args, **kwargs)
@@ -182,10 +193,14 @@ class ReturnProduct(models.Model):
     
 
     def save(self, *args, **kwargs):
-        if self.return_status == "Returned":
-            if self.returned_date is None:
-                self.returned_date = datetime.datetime.now()
-       
+        if self.return_status == "Returned" and self.returned_date is None:
+            self.returned_date = datetime.datetime.now()
+            product = self.product
+            size = self.size
+            quantity = int(self.quantity)
+            if size in product.size_options:
+                product.size_options[size] += quantity
+                product.save()
         else:
             self.returned_date = None
         super(ReturnProduct, self).save(*args, **kwargs)
