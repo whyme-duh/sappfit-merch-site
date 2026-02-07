@@ -167,9 +167,9 @@ def add_to_cart(request, id):
                 if propsed_new_total <= max_stock:
                     cart_item.quantity = propsed_new_total
                     cart_item.save()
-                    messages.success(request, f'Updated the cart!', extra_tags="cart")
+                    messages.success(request, f'Updated your bag! To view it click here!', extra_tags="cart")
                 else:
-                    messages.error(request, f'Cannot add the item anymore in the cart.')
+                    messages.error(request, f'Cannot add the item anymore in your bag.')
             else:
                 if quantity <= max_stock:
                     Cart.objects.create(
@@ -179,7 +179,7 @@ def add_to_cart(request, id):
                         size=selected_size, 
                         quantity=quantity
                     )
-                    messages.success(request, 'Added this item to your bag. View your bag. ', extra_tags="cart")
+                    messages.success(request, 'Added this item to your bag. To view it click here! ', extra_tags="cart")
                 else:   
                     messages.error(request, f'Only {max_stock} items available.')
         else:
