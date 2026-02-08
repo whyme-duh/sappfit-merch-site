@@ -93,6 +93,7 @@
                     <!-- <div class="discount d-flex justify-content-between">
                         <p>Discount : </p> <p>{{discount}} </p>
                     </div> -->
+                  <hr>
                     <div class="total">
                         <strong class="d-flex justify-content-between">
                         <h5>Total : </h5><h5>Rs. {{total_price}}</h5>
@@ -100,9 +101,9 @@
                     </div>
                 </div>
 
-                <a href="{% url 'checkout' %}" class="btn  btn-lg mt-3 w-100" style="background-color: rgb(0, 0, 0);color: white;" > Proceed To Checkout</a>
+                <a href="{% url 'checkout' %}" class="btn  btn-lg mt-2 w-100" style="background-color: rgb(0, 0, 0);color: white;" > Proceed To Checkout</a>
                 {% if delivery_cost == 0 %}
-                <small>Free Delivery in order with Rs. 5000 or more.</small>
+                <p class="text-center mt-2">Free Delivery in order with Rs. 5000 or more.</p>
                 {% endif %}
             </div>
     {% else %}

@@ -488,13 +488,19 @@ a{
 .summary-cart-title{
     font-family: var(--intro-heading-font);
 }
+.delivery{
+    font-size:1.25em;
+}
 .total-cart-delete{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
+.total h5{
+    font-size: 1.5em !important;
+    font-weight: 700;
+}
 /* PRODUCT-DETAIL-STYLE */
 
 .product-container{
