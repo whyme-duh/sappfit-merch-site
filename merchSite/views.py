@@ -334,21 +334,22 @@ def place_order(request):
             return redirect('checkout')
         
 
-def cancel_order(request, id):
-    print("hi")
-    order = Order.objects.get(id = id)
-    if request.method == "POST":
-        if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
-            messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-        else:
-            cancellation_reason_choice = request.POST.get('cancel-options')
-            cancellation_other_reason = request.POST.get('reason')
-            order.status = "Cancelled"
-            order.cancellation_reasons = cancellation_reason_choice
-            order.cancellation_other_reason = cancellation_other_reason
-            order.save()
-            messages.success(request, f'Your Order has been cancelled succesfully!')
-    return redirect('profile')
+# def cancel_order(request, id):
+#     print("hi")
+#     order = Order.objects.get(id = id)
+#     if request.method == "POST":
+#         if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
+#             messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+#         else:
+#             cancellation_reason_choice = request.POST.get('cancel-options')
+#             cancellation_other_reason = request.POST.get('reason')
+#             print(cancellation_other_reason, cancellation_reason_choice)
+#             order.status = "Cancelled"
+#             order.cancellation_reasons = cancellation_reason_choice
+#             order.cancellation_other_reason = cancellation_other_reason
+#             order.save()
+#             messages.success(request, f'Your Order has been cancelled succesfully!')
+#     return redirect('profile')
 
 def my_cart(request):
     cartitem = get_cart_items(request)

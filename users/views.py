@@ -134,6 +134,24 @@ def review_page(request):
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
 
 
+def cancel_order(request, id):
+    print("hi")
+    order = Order.objects.get(id = id)
+    if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
+        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+        return redirect('profile')
+    else:
+        if request.method == "POST":
+            cancellation_reason_choice = request.POST.get('cancel-options')
+            cancellation_other_reason = request.POST.get('reason')
+            print(cancellation_other_reason, cancellation_reason_choice)
+            order.status = "Cancelled"
+            order.cancellation_reasons = cancellation_reason_choice
+            order.cancellation_other_reason = cancellation_other_reason
+            order.save()
+            messages.success(request, f'Your Order has been cancelled succesfully!')
+            return redirect('profile')
+
 
 
 
