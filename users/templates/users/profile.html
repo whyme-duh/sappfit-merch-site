@@ -131,7 +131,6 @@
                     {% csrf_token %}
                     <div class="modal-body">
                         <p class="text-muted">Are you sure? This action cannot be undone.</p>
-                        
                         <div class="form-group">
                             <label for="cancel-options">Reason for Cancellation</label>
                             <select name="cancel-options" id="cancel-options" class="form-select" onchange="toggleOtherReason(this)">

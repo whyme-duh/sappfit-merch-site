@@ -57,7 +57,7 @@ def profile(request):
 
 
     for order in orders:
-        ordered_date = order.date
+        delivered_date = order.delivered_date
         if not order.product:
             continue
         try:
@@ -78,11 +78,13 @@ def profile(request):
                     # is eligible for returning or not
 
                     if not item.get('returning_eligible'):
-                        if ordered_date.year == now_date.year and ordered_date.month == now_date.month:
-                            if ordered_date.day - now_date.day > 7:
+                        if delivered_date.year == now_date.year and delivered_date.month == now_date.month:
+                            if delivered_date.day - now_date.day > 7:
                                 item['returning_eligible'] = False
                             else:
                                 item['returning_eligible'] = True
+                        print(item.get('returning_eligible'))
+                    
 
                     quantity_returned = returns_map.get(item_key, 0)
                     
@@ -133,24 +135,26 @@ def review_page(request):
                 delivered_products_list.append(item)
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
 
-
-def cancel_order(request, id):
-    print("hi")
-    order = Order.objects.get(id = id)
-    if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
-        messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-        return redirect('profile')
-    else:
-        if request.method == "POST":
-            cancellation_reason_choice = request.POST.get('cancel-options')
-            cancellation_other_reason = request.POST.get('reason')
-            print(cancellation_other_reason, cancellation_reason_choice)
-            order.status = "Cancelled"
-            order.cancellation_reasons = cancellation_reason_choice
-            order.cancellation_other_reason = cancellation_other_reason
-            order.save()
-            messages.success(request, f'Your Order has been cancelled succesfully!')
-            return redirect('profile')
+# def cancel_order(request, id):
+#     print("hi")
+#     order = Order.objects.get(id = id)
+#     print(order.status)
+#     if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
+#         messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+#         return redirect('profile')
+#     else:
+#         print(request.method)
+#         if request.method == "POST":
+#             print(request.method)
+#             cancellation_reason_choice = request.POST.get('cancel-options')
+#             cancellation_other_reason = request.POST.get('reason')
+#             print(cancellation_other_reason, cancellation_reason_choice)
+#             order.status = "Cancelled"
+#             order.cancellation_reasons = cancellation_reason_choice
+#             order.cancellation_other_reason = cancellation_other_reason
+#             order.save()
+#             messages.success(request, f'Your Order has been cancelled succesfully!')
+#     return redirect('profile')
 
 
 

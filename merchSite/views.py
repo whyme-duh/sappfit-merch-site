@@ -334,22 +334,25 @@ def place_order(request):
             return redirect('checkout')
         
 
-# def cancel_order(request, id):
-#     print("hi")
-#     order = Order.objects.get(id = id)
-#     if request.method == "POST":
-#         if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
-#             messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-#         else:
-#             cancellation_reason_choice = request.POST.get('cancel-options')
-#             cancellation_other_reason = request.POST.get('reason')
-#             print(cancellation_other_reason, cancellation_reason_choice)
-#             order.status = "Cancelled"
-#             order.cancellation_reasons = cancellation_reason_choice
-#             order.cancellation_other_reason = cancellation_other_reason
-#             order.save()
-#             messages.success(request, f'Your Order has been cancelled succesfully!')
-#     return redirect('profile')
+def cancel_order(request, id):
+    print("hi")
+    order = Order.objects.get(id = id)
+    print(request.method)
+    if request.method == "POST":
+        if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
+            messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
+        else:
+            cancellation_reason_choice = request.POST.get('cancel-options')
+            cancellation_other_reason = request.POST.get('reason')
+            print(cancellation_other_reason, cancellation_reason_choice)
+            order.status = "Cancelled"
+            order.cancellation_reasons = cancellation_reason_choice
+            order.cancellation_other_reason = cancellation_other_reason
+            order.save()
+            messages.success(request, f'Your Order has been cancelled succesfully!')
+            return redirect('profile')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
 
 def my_cart(request):
     cartitem = get_cart_items(request)
@@ -625,9 +628,9 @@ def return_request(request, order_id):
     order = get_object_or_404(Order, id = order_id)
     return_elligible = None
     now_date = datetime.datetime.now()
-    ordered_date = order.date
-    if ordered_date.year == now_date.year and ordered_date.month == now_date.month:
-        if ordered_date.day - now_date.day > 7:
+    delivered_date = order.delivered_date
+    if delivered_date.year == now_date.year and delivered_date.month == now_date.month:
+        if delivered_date.day - now_date.day > 7:
             return_elligible = False
         else:
             return_elligible = True

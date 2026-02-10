@@ -93,6 +93,9 @@ class Order(models.Model):
     cancellation_other_reason = models.TextField(max_length=50, blank = True, null = True)
     payment_option = models.CharField(choices=PAYMENT_OPTIONS, null= True, blank = True)
 
+    payment_returned = models.BooleanField(default=False)
+    payment_return_date = models.DateTimeField('payment_returned', null= True, blank = True)
+
 
     def __str__(self):
         return f"{self.id} Order from {self.name} ({self.user}) - {self.product} "
@@ -125,6 +128,8 @@ class Order(models.Model):
             self.delivered_date = datetime.datetime.now()
         elif self.status == "Returned" and self.returned_date is None:
             self.returned_date = datetime.datetime.now()
+        elif self.payment_returned == "True" and self.payment_returned is False:
+            self.payment_return_date = datetime.datetime.now()
         elif self.status == "Cancelled" and self.cancelled_date is None:
             self.cancelled_date = datetime.datetime.now()
             if self.product:

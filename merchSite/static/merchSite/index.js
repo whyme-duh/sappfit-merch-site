@@ -91,7 +91,7 @@ function openCancelModal(actionUrl, orderId) {
     const modalOverlay = document.getElementById('cancelModalOverlay');
     const modalOrderIdSpan = document.getElementById('modalOrderId');
     cancelForm.action = actionUrl;
-    console.log(cancelForm, modalOverlay, modalOrderIdSpan);
+    console.log(cancelForm, modalOverlay, modalOrderIdSpan, actionUrl);
     modalOrderIdSpan.innerText = "#" + orderId;
     modalOverlay.classList.add('active');
 }
@@ -197,34 +197,34 @@ function hidePassword(hiddenId, iId, passwordField){
 
 //Carousel
 
-// const track = document.querySelector('.carousel__track');
-// // const slides = Array.from(track.children);
-// const nextButton = document.querySelector('.carousel__button-container--next');
-// const prevButton = document.querySelector('.carousel__button-container--prev');
-// const indicatorsNav = document.querySelector('.carousel__indicator-container');
-// const indicators = Array.from(indicatorsNav.children);
+const track = document.querySelector('.carousel__track');
+const slides = Array.from(track.children);
+const nextButton = document.querySelector('.carousel__button-container--next');
+const prevButton = document.querySelector('.carousel__button-container--prev');
+const indicatorsNav = document.querySelector('.carousel__indicator-container');
+const indicators = Array.from(indicatorsNav.children);
 
-// // find the width to move
-// const slideWidth = slides[0].getBoundingClientRect().width;
+// find the width to move
+const slideWidth = slides[0].getBoundingClientRect().width;
 
-// //Setting the slides in position
-// const setSlidePosition = (slide, index) => {
-//     slide.style.left = slideWidth * index + 'px';
-// }
+//Setting the slides in position
+const setSlidePosition = (slide, index) => {
+    slide.style.left = slideWidth * index + 'px';
+}
 
-// slides.forEach(setSlidePosition);
+slides.forEach(setSlidePosition);
 
-// //moveToSlide function
-// const moveToSlide = (track, currentSlide, targetSlide) => {
-//     track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
-//     currentSlide.classList.remove('current-slide');
-//     targetSlide.classList.add('current-slide');
-// }
+//moveToSlide function
+const moveToSlide = (track, currentSlide, targetSlide) => {
+    track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+    currentSlide.classList.remove('current-slide');
+    targetSlide.classList.add('current-slide');
+}
 
-// const updateIndicators = (currentIndi, targetIndi) => {
-//     currentIndi.classList.remove('current-slide');
-//     targetIndi.classList.add('current-slide');
-// };
+const updateIndicators = (currentIndi, targetIndi) => {
+    currentIndi.classList.remove('current-slide');
+    targetIndi.classList.add('current-slide');
+};
 
 
 //Show/Hide arrows function
