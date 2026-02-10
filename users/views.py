@@ -83,7 +83,6 @@ def profile(request):
                                 item['returning_eligible'] = False
                             else:
                                 item['returning_eligible'] = True
-                        print(item.get('returning_eligible'))
                     
 
                     quantity_returned = returns_map.get(item_key, 0)

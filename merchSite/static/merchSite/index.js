@@ -1,8 +1,10 @@
 
 setTimeout(function(){
     const alert = document.getElementById('alert-msg');
+    if(alert){
+        alert.style.display = "none";
+    }
 
-    alert.style.display = "none";
 }, 10000)
 
 
@@ -43,6 +45,9 @@ function closeShowReviews(){
 
 }
 
+document.getElementById('cancelForm').addEventListener('submit', function(e) {
+    console.log("Form is actually submitting to: " + this.action);
+});
 
 function closeTrackModal() {
     const modalOverlay = document.getElementById('trackOrderOverlay');
@@ -86,15 +91,14 @@ function closeImportOrderModal(){
     modalOverlay.classList.remove('active');
 }
 
-function openCancelModal(actionUrl, orderId) {
+
+function openCancelModal(actionUrl) {
     const cancelForm = document.getElementById('cancelForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');
-    const modalOrderIdSpan = document.getElementById('modalOrderId');
-    cancelForm.action = actionUrl;
-    console.log(cancelForm, modalOverlay, modalOrderIdSpan, actionUrl);
-    modalOrderIdSpan.innerText = "#" + orderId;
+    cancelForm.setAttribute('action', actionUrl);
     modalOverlay.classList.add('active');
 }
+
 
 function closeCancelModal() {
     const modalOverlay = document.getElementById('cancelModalOverlay');
@@ -198,95 +202,100 @@ function hidePassword(hiddenId, iId, passwordField){
 //Carousel
 
 const track = document.querySelector('.carousel__track');
-const slides = Array.from(track.children);
-const nextButton = document.querySelector('.carousel__button-container--next');
-const prevButton = document.querySelector('.carousel__button-container--prev');
-const indicatorsNav = document.querySelector('.carousel__indicator-container');
-const indicators = Array.from(indicatorsNav.children);
+if (track){
+    const slides = Array.from(track.children);
+    const nextButton = document.querySelector('.carousel__button-container--next');
+    const prevButton = document.querySelector('.carousel__button-container--prev');
+    const indicatorsNav = document.querySelector('.carousel__indicator-container');
+    const indicators = Array.from(indicatorsNav.children);
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    // find the width to move
 
-// find the width to move
-const slideWidth = slides[0].getBoundingClientRect().width;
-
-//Setting the slides in position
-const setSlidePosition = (slide, index) => {
-    slide.style.left = slideWidth * index + 'px';
-}
-
-slides.forEach(setSlidePosition);
-
-//moveToSlide function
-const moveToSlide = (track, currentSlide, targetSlide) => {
-    track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
-    currentSlide.classList.remove('current-slide');
-    targetSlide.classList.add('current-slide');
-}
-
-const updateIndicators = (currentIndi, targetIndi) => {
-    currentIndi.classList.remove('current-slide');
-    targetIndi.classList.add('current-slide');
-};
-
-
-//Show/Hide arrows function
-const showHideArrows = (targetIndex, prevButton, nextButton, slides) => {
-    if (targetIndex === 0) {
-        prevButton.classList.add('is-hidden');
-        nextButton.classList.remove('is-hidden');
-    } else if (targetIndex === slides.length - 1) {
-        prevButton.classList.remove('is-hidden');
-        nextButton.classList.add('is-hidden');
-    } else {
-        prevButton.classList.remove('is-hidden');
-        nextButton.classList.remove('is-hidden');
+    //Setting the slides in position
+    const setSlidePosition = (slide, index) => {
+        slide.style.left = slideWidth * index + 'px';
     }
+
+    slides.forEach(setSlidePosition);
+
+    //moveToSlide function
+    const moveToSlide = (track, currentSlide, targetSlide) => {
+        track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+        currentSlide.classList.remove('current-slide');
+        targetSlide.classList.add('current-slide');
+    }
+
+    const updateIndicators = (currentIndi, targetIndi) => {
+        currentIndi.classList.remove('current-slide');
+        targetIndi.classList.add('current-slide');
+    };
+
+
+    //Show/Hide arrows function
+    const showHideArrows = (targetIndex, prevButton, nextButton, slides) => {
+        if (targetIndex === 0) {
+            prevButton.classList.add('is-hidden');
+            nextButton.classList.remove('is-hidden');
+        } else if (targetIndex === slides.length - 1) {
+            prevButton.classList.remove('is-hidden');
+            nextButton.classList.add('is-hidden');
+        } else {
+            prevButton.classList.remove('is-hidden');
+            nextButton.classList.remove('is-hidden');
+        }
+    }
+
+    prevButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        const prevSlide = currentSlide.previousElementSibling;
+        const currentIndi = indicatorsNav.querySelector('.current-slide');
+        const prevIndi = currentIndi.previousElementSibling;
+        const prevIndex = slides.findIndex(slide => slide === prevSlide);
+
+
+
+        moveToSlide(track, currentSlide, prevSlide);
+        updateIndicators(currentIndi, prevIndi);
+        showHideArrows(prevIndex, prevButton, nextButton, slides);
+
+
+    });
+
+    nextButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        const nextSlide = currentSlide.nextElementSibling;
+        const currentIndi = indicatorsNav.querySelector('.current-slide');
+        const nextIndi = currentIndi.nextElementSibling;
+        const nextIndex = slides.findIndex(slide => slide === nextSlide);
+
+
+        moveToSlide(track, currentSlide, nextSlide);
+        updateIndicators(currentIndi, nextIndi);
+        showHideArrows(nextIndex, prevButton, nextButton, slides);
+    });
+
+
+    indicatorsNav.addEventListener('click', e => {
+        console.log('funker');
+        const targetIndi = e.target.closest('div');
+
+        if (!targetIndi) return;
+
+        const currentSlide = track.querySelector('.current-slide');
+        const currentIndi = indicatorsNav.querySelector('.current-slide');
+        const targetIndex = indicators.findIndex(dot => dot === targetIndi);
+        const targetSlide = slides[targetIndex];
+
+
+        moveToSlide(track, currentSlide, targetSlide);
+        updateIndicators(currentIndi, targetIndi);
+        showHideArrows(targetIndex, prevButton, nextButton, slides);
+    })
+
+
+
 }
 
-prevButton.addEventListener('click', e => {
-    const currentSlide = track.querySelector('.current-slide');
-    const prevSlide = currentSlide.previousElementSibling;
-    const currentIndi = indicatorsNav.querySelector('.current-slide');
-    const prevIndi = currentIndi.previousElementSibling;
-    const prevIndex = slides.findIndex(slide => slide === prevSlide);
-
-
-
-    moveToSlide(track, currentSlide, prevSlide);
-    updateIndicators(currentIndi, prevIndi);
-    showHideArrows(prevIndex, prevButton, nextButton, slides);
-
-
-});
-
-nextButton.addEventListener('click', e => {
-    const currentSlide = track.querySelector('.current-slide');
-    const nextSlide = currentSlide.nextElementSibling;
-    const currentIndi = indicatorsNav.querySelector('.current-slide');
-    const nextIndi = currentIndi.nextElementSibling;
-    const nextIndex = slides.findIndex(slide => slide === nextSlide);
-
-
-    moveToSlide(track, currentSlide, nextSlide);
-    updateIndicators(currentIndi, nextIndi);
-    showHideArrows(nextIndex, prevButton, nextButton, slides);
-});
-
-
-indicatorsNav.addEventListener('click', e => {
-    console.log('funker');
-    const targetIndi = e.target.closest('div');
-
-    if (!targetIndi) return;
-
-    const currentSlide = track.querySelector('.current-slide');
-    const currentIndi = indicatorsNav.querySelector('.current-slide');
-    const targetIndex = indicators.findIndex(dot => dot === targetIndi);
-    const targetSlide = slides[targetIndex];
-
-
-    moveToSlide(track, currentSlide, targetSlide);
-    updateIndicators(currentIndi, targetIndi);
-    showHideArrows(targetIndex, prevButton, nextButton, slides);
-})
 
 
 
@@ -353,15 +362,15 @@ window.onclick = function(event) {
 
 
 const reviewSection = document.getElementById("reviews");
-if (reviewSection){
-    const relatedProd = document.getElementById("related-prod");
+const relatedProd = document.getElementById("related-prod");
+
+if (reviewSection && relatedProd){
     relatedProd.style.marginTop = "5em";
 }
-else{
-    const relatedProd = document.getElementById("related-prod");
-    relatedProd.style.marginTop = "20em";
+// else{
+//     relatedProd.style.marginTop = "20em";
 
-}
+// }
 
 
 

@@ -103,8 +103,7 @@
                                     {% if order.order.status != "Delivered" and order.order.status != "Shipped"  and order.order.status != "Cancelled"%}
                                         <button class="action cancel-btn" 
                                         data-url="{% url 'cancel-order' order.order.id %}"
-                                        data-id="{{ order.order.id }}"
-                                        onclick="openCancelModal(this.dataset.url, this.dataset.id)">
+                                        onclick="openCancelModal(this.dataset.url)">
                                             Cancel
                                         </button>
                                     {% endif %}
@@ -127,7 +126,7 @@
                     <button class="close-icon" onclick="closeCancelModal()">&times;</button>
                 </div>
                 
-                <form id="cancelForm" method="POST" action="">
+                <form id="cancelForm" method="POST" action="" >
                     {% csrf_token %}
                     <div class="modal-body">
                         <p class="text-muted">Are you sure? This action cannot be undone.</p>
@@ -150,7 +149,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn-secondary" onclick="closeCancelModal()">Keep Order</button>
-                        <button type="submit" class="btn-danger">Confirm Cancellation</button>
+                        <button type="submit" class="btn-danger" id="cancelConfirmButton">Confirm Cancellation</button>
                     </div>
                 </form>
             </div>

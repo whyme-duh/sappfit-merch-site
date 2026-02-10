@@ -351,7 +351,7 @@ def cancel_order(request, id):
             order.save()
             messages.success(request, f'Your Order has been cancelled succesfully!')
             return redirect('profile')
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect('profile')
     
 
 def my_cart(request):
@@ -634,13 +634,11 @@ def return_request(request, order_id):
             return_elligible = False
         else:
             return_elligible = True
-
     if return_elligible:
         if request.user.is_authenticated and request.method == "POST":
             product_name = request.POST.get('product-name')
             size = request.POST.get('product-size')
             try:
-                
                 requested_quantity = int(request.POST.get('product-quantity', 0))
             except (ValueError, TypeError):
                 messages.error(request, "Invalid quantity provided.")
