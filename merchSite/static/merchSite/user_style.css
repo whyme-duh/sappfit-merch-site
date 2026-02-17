@@ -769,7 +769,11 @@
     }
     .header-actions{
         display: flex;
+        flex-wrap: wrap;
         margin-top: 2em;
+        width: 100%;
+    }
+    .import-order{
         width: 100%;
     }
     .header-actions form{

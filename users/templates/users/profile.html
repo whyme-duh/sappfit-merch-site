@@ -79,14 +79,14 @@
                                 <td class="order-id">#{{ order.order.id }}</td>
                                 <td class="order-date">{{ order.order.date|date:"M d, Y" }}</td>
                                 <td class="order-items">
-                                    <ul class="item-list">
+                                    <ol class="item-list">
                                         {% for item in order.products %}
                                             <li>
                                                 <span class="item-name">{{ item.product }}</span>
                                                 <span class="item-meta">({{ item.size }} &times; {{ item.quantity }})</span>
                                             </li>
                                         {% endfor %}
-                                    </ul>
+                                    </ol>
                                 </td>
                                 <td>
                                     {% if order.order.status == "Delivered" %}
@@ -122,11 +122,11 @@
         <div id="cancelModalOverlay" class="modal-overlay">
             <div class="modal-box">
                 <div class="modal-header">
-                    <h3>Cancel Order <span id="modalOrderId">#</span></h3>
+                    <h3>Cancel Order</h3>
                     <button class="close-icon" onclick="closeCancelModal()">&times;</button>
                 </div>
                 
-                <form id="cancelForm" method="POST" action="" >
+                <form id="cancelOrderForm" method="POST" action="">
                     {% csrf_token %}
                     <div class="modal-body">
                         <p class="text-muted">Are you sure? This action cannot be undone.</p>

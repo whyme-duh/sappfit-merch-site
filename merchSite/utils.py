@@ -53,3 +53,6 @@ def send_confirmation_email(order):
         print("Email sent successfully")
     except Exception as e:
         print(f"Failed to send email: {e}")
+
+
+    

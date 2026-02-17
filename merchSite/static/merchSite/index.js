@@ -92,10 +92,14 @@ function closeImportOrderModal(){
 }
 
 
+
 function openCancelModal(actionUrl) {
-    const cancelForm = document.getElementById('cancelForm');
+    const cancelForm = document.getElementById('cancelOrderForm');
     const modalOverlay = document.getElementById('cancelModalOverlay');
+    
+
     cancelForm.setAttribute('action', actionUrl);
+    console.log(cancelForm.action);
     modalOverlay.classList.add('active');
 }
 
@@ -300,10 +304,14 @@ if (track){
 
 
 window.onclick = function(event) {
-    if (event.target === modalOverlay) {
-        closeCancelModal();
-        closeTrackModal();
+    if (modalOverlay){
+        if (event.target === modalOverlay) {
+            closeCancelModal();
+            closeTrackModal();
+        }
     }
+
+    
 }
 // document.addEventListener("DOMContentLoaded", () => {
 //     // Select all review cards and the arrows
