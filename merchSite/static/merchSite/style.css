@@ -1617,12 +1617,11 @@ a{
     .checkout-page-info{
         padding: 1em;
         gap: 2em;
-        font-size: clamp(0.5em, 2vh, 0.85em);
+        font-size: clamp(0.5em, 2vh, 0.95em);
         flex-direction: column-reverse;
     }
     .cart-summary-info{
         align-items: center;
-        font-size: 0.85em;
     }
     
     .order-summary-image{

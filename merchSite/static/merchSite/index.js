@@ -45,9 +45,7 @@ function closeShowReviews(){
 
 }
 
-document.getElementById('cancelForm').addEventListener('submit', function(e) {
-    console.log("Form is actually submitting to: " + this.action);
-});
+
 
 function closeTrackModal() {
     const modalOverlay = document.getElementById('trackOrderOverlay');
@@ -280,7 +278,6 @@ if (track){
 
 
     indicatorsNav.addEventListener('click', e => {
-        console.log('funker');
         const targetIndi = e.target.closest('div');
 
         if (!targetIndi) return;
@@ -303,16 +300,16 @@ if (track){
 
 
 
-window.onclick = function(event) {
-    if (modalOverlay){
-        if (event.target === modalOverlay) {
-            closeCancelModal();
-            closeTrackModal();
-        }
-    }
+// window.onclick = function(event) {
+//     if (modalOverlay){
+//         if (event.target === modalOverlay) {
+//             closeCancelModal();
+//             closeTrackModal();
+//         }
+//     }
 
     
-}
+// }
 // document.addEventListener("DOMContentLoaded", () => {
 //     // Select all review cards and the arrows
 //     const reviewCards = document.querySelectorAll(".review-card");

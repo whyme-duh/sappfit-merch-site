@@ -231,7 +231,7 @@ def direct_checkout_page(request, id):
 
     if not cart_items.exists():
         messages.warning(request, "Your cart is empty.")
-        return redirect('product_detail', id=id)
+        return redirect('products')
     
     total_discounted_price = 0
     total_quantities = 0
@@ -254,7 +254,7 @@ def direct_checkout_page(request, id):
     total_price = item_costs + delivery_cost
         
 
-    return render(request, 'merchSite/directCheckout.html', {
+    return render(request, 'merchSite/checkoutPage.html', {
                         "cartitem": cart_items, 
                         "total_price": total_price, 
                         "delivery_cost": delivery_cost, 
@@ -335,16 +335,13 @@ def place_order(request):
         
 
 def cancel_order(request, id):
-    print("hi")
     order = Order.objects.get(id = id)
-    print(request.method)
     if request.method == "POST":
         if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
             messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
         else:
             cancellation_reason_choice = request.POST.get('cancel-options')
             cancellation_other_reason = request.POST.get('reason')
-            print(cancellation_other_reason, cancellation_reason_choice)
             order.status = "Cancelled"
             order.cancellation_reasons = cancellation_reason_choice
             order.cancellation_other_reason = cancellation_other_reason
