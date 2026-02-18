@@ -359,12 +359,17 @@ def my_cart(request):
         if item.product.discount:
             total_discounted_price += item.get_discounted_price() * item.quantity
         total_quantities += item.quantity
+        max_stock = int(item.product.size_options[item.size])
+        if max_stock < item.quantity:
+            item.delete()
+            messages.error(request, f'The item is not available!')
     item_costs = sum(item.get_total_cost for item in cartitem)
     if item_costs >= config.FREE_DELIVERY_THRESHOLD:
         delivery_cost = 0
     else:
         delivery_cost = config.DELIVERY_CHARGE
     total_price = item_costs + delivery_cost
+
     return render(request, 'merchSite/cart.html', {"cartitem": cartitem, "total_price": total_price, "delivery_cost": delivery_cost, "item_costs": item_costs, "total_quantities" : total_quantities, "total_discounted_price" : total_discounted_price})
 
 @never_cache
