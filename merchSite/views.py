@@ -363,6 +363,8 @@ def my_cart(request):
         if max_stock < item.quantity:
             item.delete()
             messages.error(request, f'The item is not available!')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
     item_costs = sum(item.get_total_cost for item in cartitem)
     if item_costs >= config.FREE_DELIVERY_THRESHOLD:
         delivery_cost = 0

@@ -38,9 +38,12 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 def profile(request):
     reviews = Review.objects.filter(user = request.user)
-    orders = Order.objects.filter(user=request.user).order_by('-date')
+    orders = Order.objects.filter(user=request.user).order_by('-date').order_by('-status')
     returned_products = ReturnProduct.objects.filter(user = request.user)
     now_date = datetime.datetime.now()
+    # this variable is to make sure that action table in profile is shown 
+    # only if there are orders that have status "Processing"
+    action_button = False
 
     # creating a dictionary that stores the product name and size
     returns_map = defaultdict(int)
@@ -100,6 +103,9 @@ def profile(request):
                             returns_map[item_key] -= product_quantity
                     else:
                         delivered_products.append(item)
+            if order.status == "Processing":
+                action_button = True
+
 
                    
         except json.JSONDecodeError:
@@ -107,7 +113,9 @@ def profile(request):
     context = {"order_products": order_products, 
             'reviews' : reviews, 
             'delivered_products' : delivered_products, 
-            'returned_products' : returned_products_list}
+            'returned_products' : returned_products_list,
+            'action_button' : action_button
+            }
 
   
     return render(request, 'users/profile.html', context)
@@ -133,27 +141,6 @@ def review_page(request):
             for item in products:
                 delivered_products_list.append(item)
     return render(request, 'users/review.html', {'delivered_products': delivered_products_list, "reviews": reviews})
-
-# def cancel_order(request, id):
-#     print("hi")
-#     order = Order.objects.get(id = id)
-#     print(order.status)
-#     if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
-#         messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
-#         return redirect('profile')
-#     else:
-#         print(request.method)
-#         if request.method == "POST":
-#             print(request.method)
-#             cancellation_reason_choice = request.POST.get('cancel-options')
-#             cancellation_other_reason = request.POST.get('reason')
-#             print(cancellation_other_reason, cancellation_reason_choice)
-#             order.status = "Cancelled"
-#             order.cancellation_reasons = cancellation_reason_choice
-#             order.cancellation_other_reason = cancellation_other_reason
-#             order.save()
-#             messages.success(request, f'Your Order has been cancelled succesfully!')
-#     return redirect('profile')
 
 
 
