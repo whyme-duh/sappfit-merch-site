@@ -323,6 +323,12 @@ nav{
     font-size: 0.75em;
     font-style: italic;
 }
+.size-info-oos{
+    color: red;
+    font-size: 0.75em;
+    font-weight: 700;
+    font-style: italic;
+}
 .product-name {
     padding-top: 0.5em;
     color: black;
@@ -345,6 +351,23 @@ nav{
 .btns-group{
     display: flex;
     justify-content: space-between;
+}
+.out-of-stock{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
+    border-radius: 5px;
+    padding: 1em;
+}
+.out-of-stock h5{
+    color: red;
+    margin: 0;
+    padding: 0;
+}
+.out-of-stock:hover{
+    background-color: rgba(255, 0, 0, 0.194);
 }
 @media screen and (max-width:400px){
     .btns-group{

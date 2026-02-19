@@ -92,10 +92,17 @@
                         <input type="number" name="quantity" value="1" min="1" required>
                     </div>
                     </div>
+                    {% if product.product_available_text != "Out of Stock" %}
                     <div class="btns-group">
                         <button type="submit" class="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)">Add to Bag</button>
                         <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
                     </div>
+                    {% else %}
+                    <div class="out-of-stock">
+                        <h5>Out Of Stock! Please come back later. <i class="fa fa-warning
+"></i></h5>
+                    </div>
+                    {% endif %}
                 
 
                 </form>

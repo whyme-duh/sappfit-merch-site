@@ -68,7 +68,7 @@ def products_page(request):
     products = Product.objects.all()
     for product in products:
         available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
     return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
 
 def product_filter(request, filter):
@@ -104,6 +104,10 @@ def detail_page(request, slug):
             total_stars_count += review.review_star
     
         overall_rating = total_stars_count/total_rating
+    
+    available_sizes = [size for size, value in product.size_options.items() if value > 0]
+    product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
+    
 
     sizes = product.size_options
     category = product.category
