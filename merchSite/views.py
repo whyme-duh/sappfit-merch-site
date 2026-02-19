@@ -205,25 +205,33 @@ def direct_checkout_page(request, id):
         session_id = request.session.session_key
     if selected_size in product.size_options:
         max_stock = int(product.size_options[selected_size])
-        if max_stock >= quantity:
+        if max_stock > 0:
+            if max_stock >= quantity:
+                if user:
+                    cart_obj, created = Cart.objects.get_or_create(user=user, product=product, size=selected_size, defaults={'quantity' : 0})
+                else:
+                    cart_obj, created = Cart.objects.get_or_create(session_id=session_id, product=product, size=selected_size, defaults={'quantity' : 0})
                 
-            if user:
-                cart_obj, created = Cart.objects.get_or_create(user=user, product=product, size=selected_size, defaults={'quantity' : 0})
+                if created:
+                    cart_obj.quantity = quantity
+                else:
+                    # this updates the quantity of existing item
+                    current_qty_in_cart = cart_obj.quantity
+                    proposed_new_total = current_qty_in_cart + quantity
+                    if proposed_new_total <=max_stock:
+                        cart_obj.quantity = proposed_new_total
+                        cart_obj.save()
+                    else:
+                        messages.error(request, f'Cannot add the item anymore.')
+                
+                cart_obj.save()
             else:
-                cart_obj, created = Cart.objects.get_or_create(session_id=session_id, product=product, size=selected_size, defaults={'quantity' : 0})
-            
-            if created:
-                cart_obj.quantity = quantity
-            else:
-                # this updates the quantity of existing item
-                cart_obj.quantity += quantity
-            
-            cart_obj.save()
+                messages.error(request, f'Only {max_stock} items available.')
         else:
-            messages.error(request, f'Only {max_stock} items available.')
+            messages.error(request, f'{selected_size} is out of stock.')
     else:
         messages.error(request, 'Invalid size selected')
-    
+
     if user:
         cart_items = Cart.objects.filter(user=user)
     else:
@@ -232,38 +240,11 @@ def direct_checkout_page(request, id):
     if not cart_items.exists():
         messages.warning(request, "Your cart is empty.")
         return redirect('products')
-    
-    total_discounted_price = 0
-    total_quantities = 0
-    item_costs = 0
-
-    for item in cart_items:
-        total_quantities += item.quantity
         
-        item_total = item.get_total_cost
-        item_costs += item_total
-        
-        if item.product.discount:
-            total_discounted_price += item.get_discounted_price() * item.quantity
+    return redirect('checkout')
 
-    if item_costs >= config.FREE_DELIVERY_THRESHOLD:
-        delivery_cost = 0
-    else:
-        delivery_cost = config.DELIVERY_CHARGE
-
-    total_price = item_costs + delivery_cost
-        
-
-    return render(request, 'merchSite/checkoutPage.html', {
-                        "cartitem": cart_items, 
-                        "total_price": total_price, 
-                        "delivery_cost": delivery_cost, 
-                        "item_costs": item_costs, 
-                        "total_quantities" : total_quantities, 
-                        "total_discounted_price" : total_discounted_price
-                    })
                 
-
+#this function is unusable
 # this function is used by the direct_checkout_page function
 # it is the substitute of checkout function and in this we use action to get this function
 def place_order(request):
@@ -332,6 +313,8 @@ def place_order(request):
             print(f"Error creating order: {e}")
             messages.error(request, "Something went wrong creating the order.")
             return redirect('checkout')
+    else:
+        return redirect('products')
         
 
 def cancel_order(request, id):
