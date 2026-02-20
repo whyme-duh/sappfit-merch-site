@@ -207,6 +207,7 @@ def direct_checkout_page(request, id):
         if not request.session.session_key:
             request.session.create()
         session_id = request.session.session_key
+   
     if selected_size in product.size_options:
         max_stock = int(product.size_options[selected_size])
         if max_stock > 0:
@@ -231,19 +232,13 @@ def direct_checkout_page(request, id):
                 cart_obj.save()
             else:
                 messages.error(request, f'Only {max_stock} items available.')
+
         else:
             messages.error(request, f'{selected_size} is out of stock.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     else:
         messages.error(request, 'Invalid size selected')
-
-    if user:
-        cart_items = Cart.objects.filter(user=user)
-    else:
-        cart_items = Cart.objects.filter(session_id=session_id)
-
-    if not cart_items.exists():
-        messages.warning(request, "Your cart is empty.")
-        return redirect('products')
         
     return redirect('checkout')
 
