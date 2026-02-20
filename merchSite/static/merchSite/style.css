@@ -414,8 +414,8 @@ nav{
 .direct-checout-btn:hover{
     color: white;
     font-weight: 600;
-    
-    background-color: rgba(58, 74, 123, 0.574);
+    background-color: #238276;
+    /* background-color: rgba(68, 230, 219, 0.437); */
     border-color: rgba(14, 5, 59, 0.277);
 
 }
