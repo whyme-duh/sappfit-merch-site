@@ -35,13 +35,13 @@ else{
 function showReviews(){
     const reviewOverlay = document.getElementById('reviews-container');
     reviewOverlay.style.display = "flex";
-    document.getElementById('body').style.overflow = "hidden";
+    // document.getElementById('body').style.overflow = "hidden";
 }
 
 function closeShowReviews(){
     const reviewOverlay = document.getElementById('reviews-container');
     reviewOverlay.style.display = "none";
-    document.getElementById('body').style.overflow = "visible";
+    // document.getElementById('body').style.overflow = "visible";
 
 }
 
