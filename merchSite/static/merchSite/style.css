@@ -30,6 +30,7 @@
 
 body{
     height: 100vh;
+    scroll-behavior: smooth;
 }
 .wrapper{
     display: flex;
@@ -956,8 +957,9 @@ a{
 }
 .review-content{
     align-self: center;
-    width: 80%;
+    width: 100%;
     display: flex;
+    gap: 1em;
     justify-content: space-between;
 }
 .review-info {
@@ -989,7 +991,7 @@ a{
 .review-carousel-container {
     display: flex;
     overflow: hidden;
-    width: 70%;
+    width: 50%;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: start;
@@ -1002,6 +1004,33 @@ a{
     gap: 0.5em;
     flex-direction: row;
     align-items: center;
+}
+.review-stars-count{
+    width: 40%;
+}
+.review-star-stats{
+    width: 100%;
+}
+.single-star-stat{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.bar{
+    width: 70%;
+    border: 1px solid black;
+    display: flex;
+    align-items: start;
+}
+.stat-bar{
+    padding: 0.75em;
+    background-color: orange;
+    width: 70%;
+}
+.single-star-stat p{
+    padding: 0;
+    margin: 0;
 }
 .name-initial{
     text-transform: uppercase;

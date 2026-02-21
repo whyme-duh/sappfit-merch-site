@@ -59,9 +59,9 @@
                 <h3 class="product-detail-name">{{product.name}}</h3>
                 {% if reviews %}
                 {% if total_rating > 1 %}
-                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Reviews</span></p>
+                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <a href="#reviews-container" style="color: black;">Review</a></p>
                 {% else %}
-                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Review</span></p>
+                <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <a href="#reviews-container" style="color: black;">Review</a></p>
                 {% endif %}
                 {%endif%}
                 
@@ -168,10 +168,19 @@
                 <div class="review-content">
                     <div class="review-stars-count">
                         {% if total_rating > 1 %}
-                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Reviews</span></p>
+                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Reviews</span></p>
                         {% else %}
-                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} <span class="text-decoration-underline" style="cursor: pointer;" onclick="showReviews()">Review</span></p>
+                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Review</span></p>
                         {% endif %}
+                        <div class="review-star-stats">
+                            <div class="single-star-stat">
+                                <p class="single-star">5 Star</p>
+                                <div class="bar">
+                                    <div class="stat-bar"></div>
+                                </div>
+                                <p class="percent">70%</p>
+                            </div>                            
+                        </div>
 
                         
                     </div>
