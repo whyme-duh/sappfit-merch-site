@@ -13,13 +13,14 @@ from django.core.mail import send_mail
 import random
 import datetime
 from users.models import Review
-from django.db.models import Sum, IntegerField
+from django.db.models import Count, Sum, IntegerField
 import requests
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from constance import config
 from . forms import TrackOrderForm
 from django.db.models.functions import Cast
+from collections import Counter
 
 def error_404_view(request, exception):
     return render(request, 'error/404.html')
@@ -89,8 +90,20 @@ def detail_page(request, slug):
     product = Product.objects.get(slug = slug)
     reviews = Review.objects.filter(product = product)
     total_stars_count = 0 
-    total_rating = len(reviews)
     overall_rating = 0
+
+    total_rating = reviews.count()
+
+    each_rating_star = dict(reviews.values('review_star').annotate(count = Count('review_star')).values_list('review_star', 'count'))
+    each_rating_star_stats = {}
+    for i in range(5, 0, -1):
+        count = each_rating_star.get(i,0)
+        percentage = (count / total_rating * 100) if total_rating > 0 else 0
+        each_rating_star_stats[str(i)] ={
+            'count' : count,
+            'percentage':round(percentage, 1)
+        }
+
     product_original_price = product.price
     product_price_with_discount = product.discount_price
     # this is to find the discount rate
@@ -98,12 +111,11 @@ def detail_page(request, slug):
         discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
     else:
         discount_rate = 0
-    
     if reviews:
         for review in reviews:
             total_stars_count += review.review_star
-    
         overall_rating = total_stars_count/total_rating
+            
     
     available_sizes = [size for size, value in product.size_options.items() if value > 0]
     product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
@@ -112,6 +124,9 @@ def detail_page(request, slug):
     sizes = product.size_options
     category = product.category
     other_products = Product.objects.exclude(category = category)
+
+
+
     for item in other_products:
         available_sizes = [size for size, value in item.size_options.items() if value > 0]
         item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
@@ -127,7 +142,8 @@ def detail_page(request, slug):
         "reviews": reviews, 
         "discount_rate" : discount_rate,
         "overall_rating" : overall_rating,
-        "total_rating": total_rating
+        "total_rating": total_rating,
+        "each_rating_star_stats" : each_rating_star_stats
     })
 
 def get_cart_items(request):

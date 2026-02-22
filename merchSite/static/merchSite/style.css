@@ -1038,7 +1038,7 @@ a{
 .stat-bar{
     padding: 0.75em;
     background-color: orange;
-    width: 70%;
+    width: var(--w);
 }
 .single-star-stat p{
     padding: 0;
