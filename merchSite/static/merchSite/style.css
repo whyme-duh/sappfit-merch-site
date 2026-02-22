@@ -30,7 +30,15 @@
 
 body{
     height: 100vh;
+}
+html{
     scroll-behavior: smooth;
+
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 .wrapper{
     display: flex;
@@ -992,6 +1000,7 @@ a{
     display: flex;
     overflow: hidden;
     width: 50%;
+    height: fit-content;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: start;
@@ -1010,6 +1019,9 @@ a{
 }
 .review-star-stats{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 .single-star-stat{
     width: 100%;
@@ -1038,6 +1050,7 @@ a{
     border-radius: 50%;
     padding-inline: 0.5em;
     padding-block: 0.25em;
+    height: fit-content;
     font-size: 1em;
     color: black;
 }
@@ -1045,14 +1058,14 @@ a{
     width: 100%;
     padding: 1em;
     border-radius: 5px;
-    background-color: rgb(247, 247, 247);
+    background-color: rgba(247, 247, 247, 0.442);
     transition: transform 0.5s ease-in-out;
+    border: 1px solid rgba(219, 219, 219, 0.472);
 }
 .user-review{
     display: flex;
     justify-content: space-between;
 }
-
 
 .user-name-review {
     font-size: 1.5em;

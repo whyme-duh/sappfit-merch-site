@@ -168,18 +168,46 @@
                 <div class="review-content">
                     <div class="review-stars-count">
                         {% if total_rating > 1 %}
-                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Reviews</span></p>
+                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}} out of 5.0) {{total_rating}} Reviews</span></p>
                         {% else %}
-                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}}) {{total_rating}} Review</span></p>
+                        <p style="font-weight: 700;"><i class="fa fa-star" style="color:orange;"></i> ({{overall_rating}} out of 5.0) {{total_rating}} Review</span></p>
                         {% endif %}
                         <div class="review-star-stats">
                             <div class="single-star-stat">
-                                <p class="single-star">5 Star</p>
+                                <p class="single-star">5 Stars</p>
                                 <div class="bar">
                                     <div class="stat-bar"></div>
                                 </div>
                                 <p class="percent">70%</p>
-                            </div>                            
+                            </div> 
+                            <div class="single-star-stat">
+                                <p class="single-star">4 Stars</p>
+                                <div class="bar">
+                                    <div class="stat-bar"></div>
+                                </div>
+                                <p class="percent">70%</p>
+                            </div>   
+                            <div class="single-star-stat">
+                                <p class="single-star">3 Stars</p>
+                                <div class="bar">
+                                    <div class="stat-bar"></div>
+                                </div>
+                                <p class="percent">70%</p>
+                            </div>   
+                            <div class="single-star-stat">
+                                <p class="single-star">2 Stars</p>
+                                <div class="bar">
+                                    <div class="stat-bar"></div>
+                                </div>
+                                <p class="percent">70%</p>
+                            </div>   
+                            <div class="single-star-stat">
+                                <p class="single-star">1 Star</p>
+                                <div class="bar">
+                                    <div class="stat-bar"></div>
+                                </div>
+                                <p class="percent">70%</p>
+                            </div>                              
                         </div>
 
                         
@@ -192,7 +220,7 @@
                                     <h5 class="name-initial">{{review.user.username.0}}</h5>
                                     <p class="pb-2 mb-0 user-name-review"><b>{{review.user.username}}</b></p>
                                 </div>
-                                <div class="review-stars pb-2">
+                                <div class="review-stars">
                                     {% if review.review_star == 1 %}
                                     <img src="{% static 'merchSite/onestar.png' %} alt="star" width="100" height="20">
                                     {% elif review.review_star == 2 %}
