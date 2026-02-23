@@ -67,15 +67,12 @@ function cancelOrderInTrackOrderModel(option){
 
 function addToCart(actionUrl){
     const productDetailForm = document.getElementById('productDetailForm');
-    console.log(productDetailForm);
-
     productDetailForm.action = actionUrl;
 }
 
 function directCartToCheckout(actionUrl){
     
     const productDetailForm = document.getElementById('productDetailForm');
-    console.log(productDetailForm);
     productDetailForm.action = actionUrl;
 }
 
@@ -97,7 +94,6 @@ function openCancelModal(actionUrl) {
     
 
     cancelForm.setAttribute('action', actionUrl);
-    console.log(cancelForm.action);
     modalOverlay.classList.add('active');
 }
 
@@ -149,8 +145,7 @@ function closeThis(){
     trackResult.style.display = "hide";
 }
 if (trackResult){
-    console.log(trackResult, trackResultBackground);
-    trackResultBackground.style.display = "fle";
+    trackResultBackground.style.display = "flex";
 }
 
 // eye sight for password
@@ -297,7 +292,20 @@ if (track){
 
 }
 
+// product detail part
 
+const minusBtn = document.getElementById('minus-btn');
+const plusBtn = document.getElementById('plus-btn');
+const quantityAmt = document.getElementById('quantity');
+
+minusBtn.addEventListener('click', ()=>{
+    quantityAmt.value -= 1;
+})
+plusBtn.addEventListener('click', ()=>{
+    let quantityVal = parseInt(quantityAmt.value, 10);
+    quantityVal += 1;
+    quantityAmt.value = quantityVal;
+})
 
 
 // window.onclick = function(event) {

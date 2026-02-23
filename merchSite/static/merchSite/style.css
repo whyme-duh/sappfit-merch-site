@@ -721,6 +721,61 @@ a{
     background-color: antiquewhite;
     color: black;
 }
+
+.size-radio-buttons{
+    margin-top: 1em;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 1em;
+}
+.size-radio-buttons input[type="radio"]{
+    opacity: 0; 
+    position: fixed;
+    width: 0;
+}
+
+.size-radio-buttons label{
+    margin-bottom: 0 !important;
+    display: inline-block;
+    background-color: #efcf6e70;
+    padding-inline: 2em;
+    padding-block:1em;
+    border: 2px solid #44444471;
+    border-radius: 4px; 
+    cursor: pointer;
+}
+.size-radio-buttons input[type="radio"]:checked + label {
+  background-color: #ffcf3f; 
+  color: #fff;
+  border-color: #f8cf56;
+}
+.size-radio-buttons input[type="radio"]:focus + label {
+  outline: max(2px, 0.1em) solid currentColor; 
+  outline-offset: max(2px, 0.1em);
+}
+
+.size-radio-buttons label:hover {
+  background-color: rgb(246, 208, 102);
+}
+.quantity-block{
+    margin-top: 1em;
+    display: flex;
+    justify-content: start;
+    gap: 1em;
+}
+.change-quantity-button{
+    padding-inline: 1em;
+    padding-block: 0.5em;
+    font-size: 1em;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.318);
+}
+.quantity-block input[type="number"]{
+    text-align: center;
+}
+
 a{
     text-decoration: none;
 }
@@ -1151,16 +1206,16 @@ a{
 
 .payment-options{
     margin-top:1em;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 1em;
 }
 .payment-form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5em;
+    width: 100%;
+    text-align: center;
 }
 .payment-form input[type="radio"]{
     opacity: 0; 
