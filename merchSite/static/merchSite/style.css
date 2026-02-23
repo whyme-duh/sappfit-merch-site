@@ -757,9 +757,7 @@ a{
 .related-prod, .other-prod{
     width: 80%;
 }
-.d-related-product{
-    margin-top: 10em;
-}
+
 
 /* sign in */
 .img-fluid{
@@ -818,6 +816,7 @@ a{
 .carousel__image {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
     object-fit: cover;
 }
 
@@ -826,8 +825,8 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: white;
     top: 50%;
     transform: translateY(-50%);
@@ -842,6 +841,7 @@ a{
     display: flex;
     justify-content: space-between;
 }
+
 .carousel__button-container>* {
     cursor: pointer;
 }
@@ -858,7 +858,9 @@ a{
 .carousel__button {
     padding: 0;
 }
-
+.carousel__button .fa{
+    font-size: 1.5em;
+}
 .carousel__button img {
     scale: 0.7;
 }
@@ -872,9 +874,6 @@ a{
     left: 20px;
 }
 
-
-.carousel__track-container {
-}
 
 .carousel__indicator-container {
     width: 100%;
@@ -1151,11 +1150,11 @@ a{
 }
 
 .payment-options{
-    margin-top:0.25em;
+    margin-top:1em;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .payment-form{
     display: flex;
@@ -1163,9 +1162,36 @@ a{
     justify-content: center;
     gap: 0.5em;
 }
+.payment-form input[type="radio"]{
+    opacity: 0; 
+    position: fixed;
+    width: 0;
+}
+.payment-form input[type="radio"]:checked + label {
+  background-color: #4c4; 
+  color: #fff;
+  border-color: #4c4;
+}
+.payment-form input[type="radio"]:focus + label {
+  outline: max(2px, 0.1em) solid currentColor; 
+  outline-offset: max(2px, 0.1em);
+}
+
 .payment-form label{
     margin-bottom: 0 !important;
+    display: inline-block;
+    background-color: #f3efef70;
+    padding-inline: 2em;
+    padding-block:1.5em;
+    border: 2px solid #44444471;
+    border-radius: 4px; 
+    cursor: pointer;
+    margin-right: 5px;
 }
+.payment-form label:hover {
+  background-color: rgb(255, 255, 255);
+}
+
 /* The Icon inside the input */
 .input-icon {
     position: absolute;
@@ -1180,7 +1206,7 @@ a{
 
 /* The Input Field */
 .custom-input {
-    padding-left: 45px; /* Make room for the icon */
+    padding-left: 45px; 
     padding-right: 15px;
     height: 50px;
     border-radius: 8px;
@@ -1194,13 +1220,13 @@ a{
 /* Focus State */
 .custom-input:focus {
     background-color: #fff;
-    border-color: #5E338D; /* Your purple brand color */
-    box-shadow: 0 0 0 4px rgba(94, 51, 141, 0.1); /* Soft purple glow */
+    border-color: #5E338D; 
+    box-shadow: 0 0 0 4px rgba(94, 51, 141, 0.1); 
 }
 
 .custom-input:focus + .input-icon,
 .input-wrapper:focus-within .input-icon {
-    color: #5E338D; /* Icon turns purple on focus */
+    color: #5E338D; 
 }
 
 /* --- Button --- */
@@ -1208,7 +1234,7 @@ a{
     width: 100%;
     margin-top: 1rem;
     padding: 15px;
-    background-color: #5E338D;
+    background-color: #a047ffb8;
     color: white;
     border: none;
     border-radius: 8px;
@@ -1223,7 +1249,7 @@ a{
 }
 
 .checkout-btn:hover {
-    background-color: #4a2770; /* Slightly darker purple */
+    background-color: #7f43c0; /* Slightly darker purple */
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(94, 51, 141, 0.3);
 }
