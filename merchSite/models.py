@@ -52,6 +52,11 @@ class Product(models.Model):
         if self.discount:
             return f'-{int(((self.price-self.discount_price)/self.price) * 100)}%'
     
+    @property
+    def product_available_text(self):
+        available_sizes = [size for size, value in self.size_options.items() if value > 0]
+        return f"Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+
     
    
 class Order(models.Model):

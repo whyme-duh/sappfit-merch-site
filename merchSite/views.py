@@ -30,24 +30,14 @@ def error_500_view(request):
 
 
 def index(request):
+    # this date is used at the footer
     date = datetime.datetime.now()
-    print(date)
     featured_products = Product.objects.filter(discount = True)
-    
-    
-    for product in featured_products:
-        available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
-        product.save()
     return render(request, 'merchSite/home.html', {"products" : featured_products, "date":date })
 
 def products_by_category(request, id):
-    display = ""
     categories = Categorie.objects.all()
     products = Product.objects.filter(category = id)
-    for product in products:
-        available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
 
 def product_filter_along_with_category(request, id, filter):
@@ -57,9 +47,6 @@ def product_filter_along_with_category(request, id, filter):
     if filter == "hightolow":
         products = Product.objects.filter(category = id).order_by('-price')
     categories = Categorie.objects.all()
-    for product in products:
-        available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
 
 
@@ -67,9 +54,6 @@ def product_filter_along_with_category(request, id, filter):
 def products_page(request):
     categories = Categorie.objects.all()
     products = Product.objects.all()
-    for product in products:
-        available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
     return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories})
 
 def product_filter(request, filter):
@@ -79,15 +63,11 @@ def product_filter(request, filter):
     if filter == "hightolow":
         products = Product.objects.all().order_by('-price')
     categories = Categorie.objects.all()
-    for product in products:
-        available_sizes = [size for size, value in product.size_options.items() if value > 0]
-        product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     return render(request, 'merchSite/productsPage.html', { "products" : products, "categories" : categories, 'active_filter': filter})
 
 
-
 def detail_page(request, slug):
-    product = Product.objects.get(slug = slug)
+    product = get_object_or_404(Product, slug = slug)
     reviews = Review.objects.filter(product = product)
     total_stars_count = 0 
     overall_rating = 0
@@ -107,33 +87,21 @@ def detail_page(request, slug):
     product_original_price = product.price
     product_price_with_discount = product.discount_price
     # this is to find the discount rate
+    discount_rate = 0
     if product_price_with_discount:
         discount_rate = int(((product_original_price-product_price_with_discount)/product_original_price)*100)
-    else:
-        discount_rate = 0
+    
     if reviews:
         for review in reviews:
             total_stars_count += review.review_star
         overall_rating = total_stars_count/total_rating
             
     
-    available_sizes = [size for size, value in product.size_options.items() if value > 0]
-    product.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
     
 
     sizes = product.size_options
-    category = product.category
-    other_products = Product.objects.exclude(category = category)
-
-
-
-    for item in other_products:
-        available_sizes = [size for size, value in item.size_options.items() if value > 0]
-        item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+    other_products = Product.objects.exclude(category = product.category)
     similar_products = Product.objects.filter(category = product.category).exclude(slug=slug)
-    for item in similar_products:
-        available_sizes = [size for size, value in item.size_options.items() if value > 0]
-        item.product_available_text = "Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
     
     return render(request, 'merchSite/product-detail.html', {"product": product, 
         "related_products" : similar_products, 
@@ -156,7 +124,7 @@ def get_cart_items(request):
 
 def add_to_cart(request, id):
     
-    product = Product.objects.get(id = id)
+    product = get_object_or_404(Product, id = id)
     selected_size = request.POST.get('size')
     quantity = int(request.POST.get('quantity',1))
 
@@ -212,7 +180,8 @@ def add_to_cart(request, id):
 
 # this function is used for "checkout" button on the product page
 def direct_checkout_page(request, id):
-    product = Product.objects.get(id = id)
+    product = get_object_or_404(Product, id = id)
+
     selected_size = request.POST.get('size')
     quantity = int(request.POST.get('quantity',1))
     user = None
@@ -333,7 +302,7 @@ def place_order(request):
         
 
 def cancel_order(request, id):
-    order = Order.objects.get(id = id)
+    order = get_object_or_404(Order, id = id)
     if request.method == "POST":
         if order.status == "Delivered" or order.status == "Shipped" or order.status == "Returned":
             messages.error(request, f"Since the product has been {order.status}, you can't cancel the product.")
