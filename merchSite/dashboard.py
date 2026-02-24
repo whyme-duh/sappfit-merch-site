@@ -8,6 +8,8 @@ def dashboard_callback(request, context):
     total_income = Order.objects.filter(status="Delivered").aggregate(Sum('price'))['price__sum'] or 0
     total_order = Order.objects.filter(status = "Delivered").count()
     pending_order = Order.objects.filter(status = "Pending").count()
+    cancelled_order = Order.objects.filter(status = "Cancelled").count()
+    returned_order = Order.objects.filter(status = "Returned").count()
     current_month = timezone.now().month
     products = Product.objects.all()
     out_of_stock_products = []
@@ -42,13 +44,25 @@ def dashboard_callback(request, context):
             },
             {
                 "title": "Pending Orders",
-                "metric": f"Rs. {pending_order}",
+                "metric": f"{pending_order}",
                 "footer" : "Need Attention ",
                 "color": "warning"
             },
             {
-                "title": "Total Orders",
-                "metric": f"Rs. {total_order}",
+                "title": "Total Orders Delivered",
+                "metric": f"{total_order}",
+                "footer" : "All time ",
+                "color": "info"
+            },
+            {
+                "title": "Total Cancelled Order",
+                "metric": f"{cancelled_order}",
+                "footer" : "All time ",
+                "color": "info"
+            },
+            {
+                "title": "Total Returned Order",
+                "metric": f"{returned_order}",
                 "footer" : "All time ",
                 "color": "info"
             },
