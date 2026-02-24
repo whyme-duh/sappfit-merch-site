@@ -20,15 +20,15 @@ function navbarFunction() {
 
 // for tracking model
 
-const trackOrderOverlay = document.getElementById('trackOrderOverlay');
-if (trackOrderOverlay){
-    document.getElementById('body').style.overflow = "hidden";
-}
-else{
-    document.getElementById('body').style.overflow = "visible";
+// const trackOrderOverlay = document.getElementById('trackOrderOverlay');
+// if (trackOrderOverlay){
+//     document.getElementById('body').style.overflow = "hidden";
+// }
+// else{
+//     document.getElementById('body').style.overflow = "visible";
     
 
-}
+// }
 
 // product detail page
 
