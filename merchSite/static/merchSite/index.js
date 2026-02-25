@@ -32,6 +32,14 @@ function navbarFunction() {
 
 // product detail page
 
+const addToCartBtn = document.getElementById('add-to-cart-btn');
+addToCartBtn.addEventListener('mouseenter', () => {
+    addToCartBtn.innerHTML =`<i style="font-size:24px" class="fa">&#xf07a;</i>`;
+})
+addToCartBtn.addEventListener('mouseleave', () => {
+    addToCartBtn.innerText = "Add to Bag";
+})
+
 function showReviews(){
     const reviewOverlay = document.getElementById('reviews-container');
     reviewOverlay.style.display = "flex";

@@ -55,7 +55,7 @@ class Product(models.Model):
     @property
     def product_available_text(self):
         available_sizes = [size for size, value in self.size_options.items() if value > 0]
-        return f"Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "No sizes available"
+        return f"Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
 
     
    

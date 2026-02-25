@@ -102,7 +102,7 @@
                     <!-- </div> -->
                     {% if product.product_available_text != "Out of Stock" %}
                     <div class="btns-group">
-                        <button type="submit" class="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)">Add to Bag</button>
+                        <button type="submit" class="add-to-cart-btn" id="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)" om>Add to Bag</button>
                         <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
                     </div>
                     {% else %}
@@ -129,7 +129,11 @@
                     <div class="related-product-card" >
                         <img src="{{product.image.url}}" class="related-prod-img">
                         <div class="details">
+                           {% if product.product_available_text == "Out of Stock" %}
+                            <small class="size-info-oos">{{product.product_available_text}}</small>
+                            {% else %}
                             <small class="size-info">{{product.product_available_text}}</small>
+                            {% endif %}
 
                             <h5 class="mb-0">{{product.name}}</h5>
                             {% if product.discount %}
@@ -156,7 +160,11 @@
             <div class="related-product-card" >
                 <img src="{{product.image.url}}" class="related-prod-img">
                 <div class="details">
-                    <small class="size-info">{{product.product_available_text}}</small>
+                    {% if product.product_available_text == "Out of Stock" %}
+                            <small class="size-info-oos">{{product.product_available_text}}</small>
+                            {% else %}
+                            <small class="size-info">{{product.product_available_text}}</small>
+                            {% endif %}
                     <h5 class="mb-0">{{product.name}}</h5>
                     {% if product.discount %}
                     <div class="price d-block">

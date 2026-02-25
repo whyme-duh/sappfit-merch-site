@@ -32,7 +32,11 @@
                             <p>{{product.discount_rate}}</p>
                         </div>
                     </div>
-                    <small class="size-info"> {{product.product_available_text}}</small>
+                    {% if product.product_available_text == "Out of Stock" %}
+                    <small class="size-info-oos">{{product.product_available_text}}</small>
+                    {% else %}
+                    <small class="size-info">{{product.product_available_text}}</small>
+                    {% endif %}
                     <h5 class="product-name">{{product.name}}</h5>
                 </a>
 
