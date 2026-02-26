@@ -81,7 +81,7 @@ def detail_page(request, slug):
         percentage = (count / total_rating * 100) if total_rating > 0 else 0
         each_rating_star_stats[str(i)] ={
             'count' : count,
-            'percentage':round(percentage, 1)
+            'percentage':round(percentage)
         }
 
     product_original_price = product.price
@@ -217,7 +217,7 @@ def direct_checkout_page(request, id):
                 cart_obj.save()
             else:
                 messages.error(request, f'Only {max_stock} items available.')
-
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             messages.error(request, f'{selected_size} is out of stock.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

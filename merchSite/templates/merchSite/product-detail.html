@@ -103,7 +103,7 @@
                     {% if product.product_available_text != "Out of Stock" %}
                     <div class="btns-group">
                         <button type="submit" class="add-to-cart-btn" id="add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" onclick="addToCart(this.dataset.url)" om>Add to Bag</button>
-                        <button type="submit" class="direct-checout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
+                        <button type="submit" class="direct-checout-btn" id="direct-checkout-btn" data-url="{% url 'direct_checkout_page' product.id %}" onclick="directCartToCheckout(this.dataset.url)">Checkout</button>
                     </div>
                     {% else %}
                     <div class="out-of-stock">

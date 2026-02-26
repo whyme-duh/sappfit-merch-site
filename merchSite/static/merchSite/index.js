@@ -34,10 +34,23 @@ function navbarFunction() {
 
 const addToCartBtn = document.getElementById('add-to-cart-btn');
 addToCartBtn.addEventListener('mouseenter', () => {
-    addToCartBtn.innerHTML =`<i style="font-size:24px" class="fa">&#xf07a;</i>`;
+    addToCartBtn.innerHTML =`<i style="font-size:24px; color:brown;" class="fa fa-shopping-bag"></i>`;
 })
 addToCartBtn.addEventListener('mouseleave', () => {
     addToCartBtn.innerText = "Add to Bag";
+})
+
+const checkoutBtn = document.getElementById('direct-checkout-btn');
+checkoutBtn.addEventListener('mouseenter', () => {
+    checkoutBtn.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#006400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="21" r="1"></circle>
+  <circle cx="20" cy="21" r="1"></circle>
+  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  <path d="m9 11 2 2 4-4"></path>
+</svg>`;
+})
+checkoutBtn.addEventListener('mouseleave', () => {
+    checkoutBtn.innerText = "Checkout";
 })
 
 function showReviews(){
