@@ -158,7 +158,7 @@
     }
 
     .carousel__track-container {
-        width: 285%;
+        width: 100%;
         height: 50vh;
 
     }
@@ -167,7 +167,6 @@
     }
     .carousel__slide .current-slide{
         width: 100%;
-
     }
     .carousel__image{
         width: 100%;
@@ -222,6 +221,13 @@
     .quantity-size{
         width: 100%;
         display: block;
+    }
+    .size-radio-buttons{
+        justify-content: space-evenly;
+    }
+    .quantity-block{
+        width:100%;
+        justify-content: space-evenly;
     }
     .product-detail-name{
         font-size: 1.85em;
@@ -453,7 +459,9 @@
         width: 80%;
         margin-top: 0;
         flex-direction: column;
-
+    }
+    .product-detail-container{
+        display: block;
     }
     .main-container{
         width: 100%;
@@ -461,16 +469,14 @@
     }
     .carousel-container {
         width: 100%;
-
     }
     .current-slide{
         width: 100%;
     }
 
     .carousel__track-container {
-        width: 285%;
-        height: 50vh;
-
+        width: 100%;
+        height: 60vh;
     }
     .carousel__slide{
         width: 100%;
@@ -529,6 +535,17 @@
     }
     .review-card{
         margin-top: 1em;
+    }
+    .review-content{
+        flex-direction: column;
+        gap: 2em;
+    }
+    .review-stars-count{
+        width: 100%;
+    }
+    .review-carousel-container{width: 100%;}
+    .stat-bar{
+        height: 100%;
     }
     .alert-success, .alert-error, .alert-warning{
         width: 100%;
@@ -589,5 +606,6 @@
         width: 50px;
         height: 50px;
     }
+
 }
 
