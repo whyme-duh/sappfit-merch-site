@@ -12,11 +12,17 @@
             {% endfor %}
         </div>
         <div class="filters">
-            <select name="filter" id="filters" onchange="window.location.href = this.value">
-                <option value="lowtohighprice">Filters</option>
-                <option value="{% url 'products-filter' 'lowtohigh'%}" {% if active_filter == 'lowtohigh' %}selected{% endif %}>Low to High (Price)</option>
-                <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>High to Low (Price)</option>
-            </select>
+            
+            <div class="select-container">
+                <select name="filter" id="filters" class="styled-select" onchange="window.location.href = this.value">
+                    <option value="{% url 'products'%}">Default Sorting</option>
+                    <option value="{% url 'products-filter' 'lowtohigh'%}" {% if active_filter == 'lowtohigh' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>Price: High to Low</option>
+                    <!-- <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>Discounted</option> -->
+                    <!-- <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>High Rated</option> -->
+                </select>
+                <i class="fa fa-chevron-down select-icon"></i>
+            </div>
         </div>
     </div>
     <div class="product-list mt-5">

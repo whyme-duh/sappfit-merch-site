@@ -16,12 +16,18 @@
             {% endfor %}
         </div>
         {% if products %}
+        
         <div class="filters">
-            <select name="filter" id="filters" onchange="window.location.href = this.value">
-                <option value="lowtohighprice">Filters</option>
-                <option value="{% url 'products-filter-category'  id 'lowtohigh' %}">Low to High (Price)</option>
-                <option value="{% url 'products-filter-category' id 'hightolow' %}">High to Low (Price)</option>
-            </select>
+            <div class="select-container">
+                <select name="filter" id="filters" class="styled-select" onchange="window.location.href = this.value">
+                    <option value="{% url 'categories-page' id%}">Default Sorting</option>
+                    <option value="{% url 'products-filter-category'  id 'lowtohigh' %}">Price: Low to High</option>
+                    <option value="{% url 'products-filter-category' id 'hightolow' %}">Price: High to Low</option>
+                    <!-- <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>Discounted</option> -->
+                    <!-- <option value="{% url 'products-filter' 'hightolow' %}" {% if active_filter == 'hightolow' %}selected{% endif %}>High Rated</option> -->
+                </select>
+                <i class="fa fa-chevron-down select-icon"></i>
+            </div>
         </div>
         {% endif %}
     </div>

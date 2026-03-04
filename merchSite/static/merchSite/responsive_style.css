@@ -97,18 +97,19 @@
     .header-top{
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
         width: 95%;
         gap: 0.5em;
 
     }
     .filters{
-        width: 90%;
         margin-top:1em;
         display: flex;
+        width: 100%;
         justify-content: flex-start;
-        gap: 0.5em;
-        align-items: center;
+        align-items: left;
+        padding-inline: 1.5em;
     }
     .filters label, option, select{
         font-size: 1em;
@@ -117,9 +118,16 @@
         padding-block: 0.6em;
 
     }
-
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .select-container {
+        width: 100%;
+    }
     .categories-list{
-        font-size: 0.85em;
+            font-size: 0.85em;
     }
     .product-card{
         width: 100%;
@@ -428,20 +436,14 @@
         gap: 0.5em;
 
     }
-    .filters{
-        width: 90%;
-        margin-top:1em;
-        display: flex;
-        justify-content: flex-start;
-        gap: 0.5em;
-        align-items: center;
+    
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
-    .filters label, option, select{
-        font-size: 1em;
-    }
-    .filters select{
-        padding-block: 0.6em;
-
+    .select-container {
+        width: 100%;
     }
 
     .categories-list{
