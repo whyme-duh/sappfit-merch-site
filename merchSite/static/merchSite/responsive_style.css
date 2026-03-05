@@ -167,7 +167,7 @@
 
     .carousel__track-container {
         width: 100%;
-        height: 50vh;
+        height: 70vh;
 
     }
     .carousel__slide{
@@ -192,7 +192,6 @@
     }
 
     .carousel__indicator--image {
-        height: 100%;
         border-radius: 5px;
     }
 
@@ -235,10 +234,14 @@
     }
     .quantity-block{
         width:100%;
-        justify-content: space-evenly;
+        justify-content:center;
+        gap: 1em;
     }
     .product-detail-name{
         font-size: 1.85em;
+    }
+    .btns-group{
+        gap: 1em;
     }
     
     .reviews{
@@ -478,7 +481,7 @@
 
     .carousel__track-container {
         width: 100%;
-        height: 60vh;
+        height: 100vh;
     }
     .carousel__slide{
         width: 100%;
