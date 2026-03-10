@@ -1,6 +1,7 @@
 from django.urls import include, path
 from django.conf.urls.static import static
 from core import settings
+from .custom_admin_views import custom_admin_view
 from .views import cancel_order, index,return_request, detail_page, direct_checkout_page, add_to_cart,place_order, track_order, my_cart, delete_cart_item, clear_cart, products_page, checkout, products_by_category, product_filter, product_filter_along_with_category, khalti_failure, khalti_success
 
 urlpatterns = [
@@ -22,4 +23,7 @@ urlpatterns = [
     path('my-cart/khalti-success/', khalti_success, name='khalti-success'),
     path('my-cart/khalti-failure/', khalti_failure, name='khalti-failure'),
     path('track-order/', track_order, name='track-order'),
+    # for custom admin page
+    path('custom-admin/', custom_admin_view, name='custom-admin-view'),
+    
 ] 

@@ -1,0 +1,112 @@
+:root {
+    --cream-bg: #fdfaf5;
+    --card-bg: #ffffff;
+    --accent-soft: #f4eee0;
+    --text-main: #4a443f;
+    --text-muted: #8e857d;
+    --accent-color: #d4a373; /* Warm tan */
+    --success: #a3b18a;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cream-bg);
+    color: var(--text-main);
+    margin: 0;
+}
+
+
+.main-content {
+    margin-left: 240px;
+    padding: 2rem 3rem;
+}
+
+/* KPI Cards */
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.kpi-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #efeae0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--text-main);
+}
+
+/* Notifications */
+.alert-stock {
+    background-color: #fff4e6;
+    border: 1px solid #ffd8a8;
+    color: #d9480f;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.alert-stock i {
+    margin-right: 1rem;
+}
+
+/* Inventory Table */
+.inventory-section {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #efeae0;
+}
+
+.table th {
+    font-weight: 400;
+    color: var(--text-muted);
+    border-bottom: 1px solid #f4eee0;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.table td {
+    vertical-align: middle;
+    color: var(--text-main);
+    border-bottom: 1px solid #f9f6f1;
+    padding: 1.2rem 0;
+}
+
+/* Custom Dropdown for Status */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.status-available { background: #e9f5e9; color: #2e7d32; }
+.status-low { background: #fff4e6; color: #d9480f; }
+.status-out { background: #fdf2f2; color: #c53030; }
+
+@media (max-width: 992px) {
+    .sidebar { width: 100%; height: auto; position: relative; border-bottom: 1px solid #e9e0d2; }
+    .main-content { margin-left: 0; padding: 1.5rem; }
+}

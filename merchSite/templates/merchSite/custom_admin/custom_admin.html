@@ -1,0 +1,95 @@
+{% extends 'merchSite/base.html' %}
+{% load static %}
+<title>{% block title %} Custom Admin {% endblock %}</title>
+{% block content %}
+
+<div class="main-content container">
+    <header class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="header">Brief Admin Page</h2>
+        <a href="{% url 'admin:index' %}">
+            <button class="btn btn-outline-dark px-4" style="border-radius: 8px;">Admin</button>
+
+        </a>
+    </header>
+
+    {% if out_of_stock_products %}
+    {% for osp in out_of_stock_products %}
+    <div class="alert-stock">
+        <strong>Stock Alert: &nbsp;</strong>{{osp}} is out of stock.
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-label">Total Sales</div>
+            <div class="kpi-value">{{total_sales}}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Income ({{current_month_name}})</div>
+            <div class="kpi-value">Rs. {{monthly_sales}}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Total Income</div>
+            <div class="kpi-value">Rs. {{total_income}}</div>
+        </div>
+        
+        <div class="kpi-card">
+            <div class="kpi-label">Total Order Processing</div>
+            <div class="kpi-value">{{pending_order}}</div>
+        </div>
+    </div>
+
+    <div class="inventory-section">
+        <h5 class="mb-4" style="font-weight: 600;">Product Inventory</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Stock Level</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Organic Cotton Tee</td>
+                    <td>$28.00</td>
+                    <td>3</td>
+                    <td>
+                        <select class="status-badge status-low" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
+                            <option value="Low Stock" selected>Low Stock</option>
+                            <option value="Available">Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Linen Trousers</td>
+                    <td>$65.00</td>
+                    <td>4</td>
+                    <td>
+                        <select class="status-badge status-low" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
+                            <option value="Low Stock" selected>Low Stock</option>
+                            <option value="Available">Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ceramic Vase</td>
+                    <td>$42.00</td>
+                    <td>85</td>
+                    <td>
+                        <select class="status-badge status-available" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
+                            <option value="Available" selected>Available</option>
+                            <option value="Low Stock">Low Stock</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

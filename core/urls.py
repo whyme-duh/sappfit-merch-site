@@ -28,7 +28,7 @@ admin.site.index_title = "Welcome"
 
 urlpatterns = [
     path('__reload__/', include("django_browser_reload.urls")),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name = 'admin'),
     path('', include('merchSite.urls')),
     path('users/', include('users.urls')),
     path('login/',CustomLoginView.as_view(template_name = 'users/login.html', redirect_authenticated_user= True), name = 'login'),
