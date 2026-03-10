@@ -39,7 +39,7 @@
                 <a href="javascript:void(0);" class="icon" onclick="navbarFunction()">
                     <i class="fa fa-bars"></i>
                 </a>
-                {% if user.is_superuser %}
+                {% if user.is_superuser or user.is_staff%}
                 <a href="{% url 'custom-admin-view'%}" class="nav-items">Admin Panel</a>
                 {% endif %}
             </div>

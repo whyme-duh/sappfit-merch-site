@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from merchSite.models import User, Product, Order
 
 def custom_admin_view(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.is_staff:
         total_income = Order.objects.filter(status="Delivered").aggregate(Sum('price'))['price__sum'] or 0
         total_sales = Order.objects.filter(status = "Delivered").count()
         pending_order = Order.objects.filter(status = "Pending").count()
