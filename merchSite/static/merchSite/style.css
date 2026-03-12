@@ -452,7 +452,7 @@ nav{
 }
 .add-to-cart-btn:hover{
     color: rgb(0, 0, 0);
-    background-color: rgba(204, 205, 174, 0.467);
+    background-color: rgba(194, 240, 221, 0.467);
     border: 1px solid rgb(204, 205, 174);
     font-weight: 600;
 }

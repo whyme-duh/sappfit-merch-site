@@ -35,7 +35,10 @@ function navbarFunction() {
 const addToCartBtn = document.getElementById('add-to-cart-btn');
 if (addToCartBtn){
     addToCartBtn.addEventListener('mouseenter', () => {
-        addToCartBtn.innerHTML =`<i style="font-size:24px; color:brown;" class="fa fa-shopping-bag"></i>`;
+        addToCartBtn.innerHTML =`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 7V6C16 4.34315 14.6569 3 13 3H11C9.34315 3 8 4.34315 8 6V7M16 7H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V7H8M16 7H8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
     })
     addToCartBtn.addEventListener('mouseleave', () => {
         addToCartBtn.innerText = "Add to Bag";
@@ -45,7 +48,7 @@ if (addToCartBtn){
 const checkoutBtn = document.getElementById('direct-checkout-btn');
 if (checkoutBtn){
     checkoutBtn.addEventListener('mouseenter', () => {
-        checkoutBtn.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#006400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        checkoutBtn.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="21" r="1"></circle>
     <circle cx="20" cy="21" r="1"></circle>
     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
