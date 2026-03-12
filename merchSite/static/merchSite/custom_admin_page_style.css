@@ -110,3 +110,15 @@ body {
     .sidebar { width: 100%; height: auto; position: relative; border-bottom: 1px solid #e9e0d2; }
     .main-content { margin-left: 0; padding: 1.5rem; }
 }
+.kpi-danger{
+    background-color: rgba(235, 56, 56, 0.603);
+}
+.kpi-danger .kpi-label, .kpi-danger .kpi-value{
+    color: white;
+}
+.kpi-warning{
+    background-color: rgba(228, 176, 33, 0.651);
+}
+.kpi-warning .kpi-label, .kpi-warning .kpi-value{
+    color: white;
+}

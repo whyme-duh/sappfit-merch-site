@@ -13,14 +13,28 @@
     </header>
 
     {% if out_of_stock_products %}
-    {% for osp in out_of_stock_products %}
     <div class="alert-stock">
-        <strong> <i class="fa fa-bell"></i>Stock Alert: &nbsp;</strong>{{osp}} is out of stock.
+        <strong> <i class="fa fa-bell"></i>Stock Alert: &nbsp;</strong>
+        {% for osp in out_of_stock_products %}
+            {{ osp }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+         is out of stock.
     </div>
-    {% endfor %}
     {% endif %}
 
     <div class="kpi-container">
+        {% if out_of_stock_products %}
+        <div class="kpi-card kpi-danger">
+            <div class="kpi-label">No. Out Of Socks</div>
+            <div class="kpi-value">{{out_of_stock_products|length}} products</div>
+        </div>
+        {% endif %}
+        {% if pending_order %}
+         <div class="kpi-card kpi-warning">
+            <div class="kpi-label ">In-process Orders</div>
+            <div class="kpi-value">{{pending_order}}</div>
+        </div>
+        {% endif %}
         <div class="kpi-card">
             <div class="kpi-label">Total Sales</div>
             <div class="kpi-value">{{total_sales}}</div>
@@ -34,10 +48,8 @@
             <div class="kpi-value">Rs. {{total_income}}</div>
         </div>
         
-        <div class="kpi-card">
-            <div class="kpi-label">Total Order Processing</div>
-            <div class="kpi-value">{{pending_order}}</div>
-        </div>
+       
+        
     </div>
 
     <div class="inventory-section">
