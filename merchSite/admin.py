@@ -7,7 +7,7 @@ from django.utils.html import format_html
 @admin.register(Product)
 class ProductAdmin(ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ['name', 'price', 'category', 'size_options', 'discount', 'discount_price']
+    list_display = ['name', 'price', 'category', 'size_options','total_quantity', 'discount', 'discount_price']
     list_filter = ['category', 'discount', ]
 
 

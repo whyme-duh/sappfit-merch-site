@@ -43,15 +43,26 @@ class Product(models.Model):
     slug = models.SlugField(null= True, blank=False)
     category = models.ForeignKey(Categorie, on_delete = models.CASCADE, null = True, blank = True)
     size_options = JSONField(default= dict)
+    total_quantity = models.IntegerField(null = True, blank = True, editable=False)
     product_available_text = models.TextField(max_length=100, blank = True, null = True)
 
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        if isinstance(self.size_options, dict):
+            self.total_quantity = sum(int(quantity) for quantity in self.size_options.values() if str(quantity).isdigit())
+        else:
+            self.total_quantity = 0
+        super(Product, self).save(*args, **kwargs)
+
+
+    
     def discount_rate(self):
         if self.discount:
             return f'-{int(((self.price-self.discount_price)/self.price) * 100)}%'
     
+
     @property
     def product_available_text(self):
         available_sizes = [size for size, value in self.size_options.items() if value > 0]
@@ -96,7 +107,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length = 1000, blank = True, null = True)
     cancellation_reasons = models.CharField(max_length=100, blank = True, null= True)
     cancellation_other_reason = models.TextField(max_length=50, blank = True, null = True)
-    payment_option = models.CharField(choices=PAYMENT_OPTIONS, null= True, blank = True)
+    payment_option = models.CharField(choices=PAYMENT_OPTIONS, max_length=100, null= True, blank = True)
 
     payment_returned = models.BooleanField(default=False)
     payment_return_date = models.DateTimeField('payment_returned', null= True, blank = True)

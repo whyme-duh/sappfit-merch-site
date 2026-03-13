@@ -15,7 +15,7 @@ def custom_admin_view(request):
         out_of_stock_products = []
         for product in products:
             available_size = [size for size, value in product.size_options.items() if value > 0]
-            available_size_text = "Avilable" if available_size else "Out of Stock"
+            available_size_text = "Available" if available_size else "Out of Stock"
             if available_size_text == "Out of Stock":
                 out_of_stock_products.append(product.name)
         current_month_name = datetime.datetime.now().strftime("%B")
