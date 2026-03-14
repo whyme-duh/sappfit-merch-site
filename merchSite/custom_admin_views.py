@@ -27,8 +27,8 @@ def custom_admin_view(request):
             "total_sales" : total_sales,
             "current_month_name" : current_month_name,
             "monthly_sales" : monthly_sales,
-            "out_of_stock_products": out_of_stock_products
-            
+            "out_of_stock_products": out_of_stock_products,
+            "products" : products
         }
         return render(request, 'merchSite/custom_admin/custom_admin.html', context = context)
     return redirect('home')

@@ -102,10 +102,14 @@ body {
     transition: all 0.2s;
 }
 
-.status-available { background: #e9f5e9; color: #2e7d32; }
-.status-low { background: #fff4e6; color: #d9480f; }
-.status-out { background: #fdf2f2; color: #c53030; }
-
+.add-stock{
+    text-decoration: none;
+    color: black;
+    padding-inline: 1em;
+    padding-block:0.35em;
+    background-color: rgb(182, 240, 155);
+    border-radius: 5px;
+}
 @media (max-width: 992px) {
     .sidebar { width: 100%; height: auto; position: relative; border-bottom: 1px solid #e9e0d2; }
     .main-content { margin-left: 0; padding: 1.5rem; }

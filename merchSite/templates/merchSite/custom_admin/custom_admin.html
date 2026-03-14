@@ -59,47 +59,33 @@
                 <tr>
                     <th>Product Name</th>
                     <th>Price</th>
-                    <th>Stock Level</th>
+                    <th>Quantity</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Organic Cotton Tee</td>
-                    <td>$28.00</td>
-                    <td>3</td>
-                    <td>
-                        <select class="status-badge status-low" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
-                            <option value="Low Stock" selected>Low Stock</option>
-                            <option value="Available">Available</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Linen Trousers</td>
-                    <td>$65.00</td>
-                    <td>4</td>
-                    <td>
-                        <select class="status-badge status-low" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
-                            <option value="Low Stock" selected>Low Stock</option>
-                            <option value="Available">Available</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Ceramic Vase</td>
-                    <td>$42.00</td>
-                    <td>85</td>
-                    <td>
-                        <select class="status-badge status-available" onchange="this.className = 'status-badge ' + (this.value === 'Available' ? 'status-available' : this.value === 'Low Stock' ? 'status-low' : 'status-out')">
-                            <option value="Available" selected>Available</option>
-                            <option value="Low Stock">Low Stock</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                        </select>
-                    </td>
-                </tr>
+                {% for product in products %}
+                    {% if product.total_quantity < 2 %}
+                     <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.total_quantity}}</td>
+                        <td>
+                            {% if product.total_quantity == 0 %}
+                            Out of Stock
+                            {% else %}
+                            Low Stock
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin:merchSite_product_change' product.id %}" class="add-stock">Add Stock</a>
+                        </td>
+                    </tr>
+
+                    {% endif %}
+                {% endfor %}
+                
             </tbody>
         </table>
     </div>
