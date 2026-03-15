@@ -110,6 +110,15 @@ body {
     background-color: rgb(182, 240, 155);
     border-radius: 5px;
 }
+
+.product-detail-link{
+    text-decoration: none;
+    color: black;
+}
+.product-detail-link:hover{
+    color: black;
+    text-decoration: underline;
+}
 @media (max-width: 992px) {
     .sidebar { width: 100%; height: auto; position: relative; border-bottom: 1px solid #e9e0d2; }
     .main-content { margin-left: 0; padding: 1.5rem; }

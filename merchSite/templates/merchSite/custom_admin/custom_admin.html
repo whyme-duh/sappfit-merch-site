@@ -68,7 +68,44 @@
                 {% for product in products %}
                     {% if product.total_quantity < 2 %}
                      <tr>
-                        <td>{{product.name}}</td>
+                        <td><a href="{% url 'detail-page' product.slug%}" class="product-detail-link">{{product.name}}</a></td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.total_quantity}}</td>
+                        <td>
+                            {% if product.total_quantity == 0 %}
+                            Out of Stock
+                            {% else %}
+                            Low Stock
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin:merchSite_product_change' product.id %}" class="add-stock">Add Stock</a>
+                        </td>
+                    </tr>
+
+                    {% endif %}
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="inventory-section mt-5">
+        <h5 class="mb-4" style="font-weight: 600;">Orders</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    {% if product.total_quantity < 2 %}
+                     <tr>
+                        <td><a href="{% url 'detail-page' product.slug%}" class="product-detail-link">{{product.name}}</a></td>
                         <td>{{product.price}}</td>
                         <td>{{product.total_quantity}}</td>
                         <td>
