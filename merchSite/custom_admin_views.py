@@ -9,7 +9,8 @@ def custom_admin_view(request):
     if request.user.is_superuser or request.user.is_staff:
         total_income = Order.objects.filter(status="Delivered").aggregate(Sum('price'))['price__sum'] or 0
         total_sales = Order.objects.filter(status = "Delivered").count()
-        pending_order = Order.objects.filter(status = "Pending").count()
+        pending_order = Order.objects.filter(status = "Pending")
+        pending_order_count = pending_order.count()
         current_month = timezone.now().month
         products = Product.objects.all()
         out_of_stock_products = []
@@ -28,7 +29,8 @@ def custom_admin_view(request):
             "current_month_name" : current_month_name,
             "monthly_sales" : monthly_sales,
             "out_of_stock_products": out_of_stock_products,
-            "products" : products
+            "products" : products,
+            "pending_order_count": pending_order_count
         }
         return render(request, 'merchSite/custom_admin/custom_admin.html', context = context)
     return redirect('home')

@@ -32,7 +32,7 @@
         {% if pending_order %}
          <div class="kpi-card kpi-warning">
             <div class="kpi-label ">In-process Orders</div>
-            <div class="kpi-value">{{pending_order}}</div>
+            <div class="kpi-value">{{pending_order_count}}</div>
         </div>
         {% endif %}
         <div class="kpi-card">
@@ -94,33 +94,28 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Price</th>
+                    <th>Products List</th>
+                    <th>User</th>
                     <th>Quantity</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for product in products %}
-                    {% if product.total_quantity < 2 %}
+                {% for order in pending_order %}
                      <tr>
-                        <td><a href="{% url 'detail-page' product.slug%}" class="product-detail-link">{{product.name}}</a></td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.total_quantity}}</td>
                         <td>
-                            {% if product.total_quantity == 0 %}
-                            Out of Stock
-                            {% else %}
-                            Low Stock
-                            {% endif %}
+                            {{order.date}}
+                        </td>
+                        <td>{{order.user}}</td>
+                        <td>{{product.price}}</td>
+                        <td>
                         </td>
                         <td>
-                            <a href="{% url 'admin:merchSite_product_change' product.id %}" class="add-stock">Add Stock</a>
+                            <a href="" class="add-stock">Change Status</a>
                         </td>
                     </tr>
 
-                    {% endif %}
                 {% endfor %}
                 
             </tbody>
