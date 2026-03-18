@@ -98,6 +98,7 @@
                     <th>User</th>
                     <th>Total Cost</th>
                     <th>Order Placed</th>
+                    <th>Payment Option</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -106,12 +107,13 @@
                      <tr>
                         <td>
                             {% for item in order.products %}
-                            {{item.product}} ({{item.size}}, {{item.quantity}} unit)
+                            {{item.product}} ({{item.size}} size, {{item.quantity}} unit)
                             {% endfor %}
                         </td>
                         <td>{{order.orders.user}}</td>
                         <td>Rs. {{order.orders.price}}</td>
                         <td>{{order.orders.date|date:'d M, Y'}}</td>
+                        <td>{{order.orders.payment_option}}</td>
                         <td>
                             <a href="{% url 'admin:merchSite_order_change' order.orders.id %}" class="add-stock">Change Status</a>
                         </td>
