@@ -1,3 +1,5 @@
+import json
+
 from django.utils import timezone
 import datetime
 from django.db.models import Sum
@@ -12,13 +14,19 @@ def custom_admin_view(request):
         pending_order = Order.objects.filter(status = "Pending")
         pending_order_count = pending_order.count()
         current_month = timezone.now().month
-        products = Product.objects.all()
-        out_of_stock_products = []
-        for product in products:
-            available_size = [size for size, value in product.size_options.items() if value > 0]
-            available_size_text = "Available" if available_size else "Out of Stock"
-            if available_size_text == "Out of Stock":
-                out_of_stock_products.append(product.name)
+        products = Product.objects.filter(total_quantity__lt = 2)
+        out_of_stock_products  = Product.objects.filter(total_quantity = 0)
+        pending_orders_offload = []
+        for order in pending_order:
+            try:
+                product_list = json.loads(order.product)
+                pending_orders_offload.append({
+                    'order' : order,
+                    'products' : product_list
+                })
+            except json.JSONDecodeError:
+                continue
+
         current_month_name = datetime.datetime.now().strftime("%B")
         
         monthly_sales = Order.objects.filter(date__month = current_month, status = "Delivered").aggregate(Sum('price'))['price__sum'] or 0
@@ -28,9 +36,10 @@ def custom_admin_view(request):
             "total_sales" : total_sales,
             "current_month_name" : current_month_name,
             "monthly_sales" : monthly_sales,
-            "out_of_stock_products": out_of_stock_products,
             "products" : products,
-            "pending_order_count": pending_order_count
+            "out_of_stock_products": out_of_stock_products,
+            "pending_order_count": pending_order_count,
+            "pending_orders_offload":  pending_orders_offload
         }
         return render(request, 'merchSite/custom_admin/custom_admin.html', context = context)
     return redirect('home')

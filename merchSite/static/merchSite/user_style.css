@@ -15,6 +15,7 @@
     --warning-color: #f59e0b;
     --sign-in-font: "Special Gothic Expanded One", sans-serif;
 }
+
 .sign-in-container{
     width: 100%;
     display: flex;
@@ -49,11 +50,16 @@
     justify-content: end;
     align-items: end;
 }
+
 .forget-passwd a{
     color: rgb(59, 59, 59);
 }
 .forget-passwd a:hover{
     color: black;
+}
+
+.btn-login:hover{
+    background-color: rgb(241, 187, 116);
 }
 /* --- Layout Structure --- */
 .profile-wrapper {

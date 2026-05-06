@@ -7,7 +7,7 @@
     <header class="d-flex justify-content-between align-items-center mb-5">
         <h2 class="header">Brief Admin Page</h2>
         <a href="{% url 'admin:index' %}">
-            <button class="btn btn-outline-dark px-4" style="border-radius: 8px;">Admin</button>
+            <button class="btn btn-outline-dark px-4" style="border-radius: 8px;">Admin Page</button>
 
         </a>
     </header>
@@ -53,37 +53,33 @@
     </div>
 
     <div class="inventory-section">
-        <h5 class="mb-4" style="font-weight: 600;">Product Inventory</h5>
-        <table class="table">
+        <h5 style="font-weight: 600;">Product Inventory</h5>
+        <small style="color:grey;">This table contains the list of products which are either out of stock or low on stock (les than 2) </small>
+        <table class="table mt-4">
             <thead>
                 <tr>
                     <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Size Options</th>
                     <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
                     <th>Action</th>
+                    <th>Featured</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
-                    {% if product.total_quantity < 2 %}
                      <tr>
                         <td><a href="{% url 'detail-page' product.slug%}" class="product-detail-link">{{product.name}}</a></td>
-                        <td>{{product.price}}</td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.size_options}}</td>
                         <td>{{product.total_quantity}}</td>
-                        <td>
-                            {% if product.total_quantity == 0 %}
-                            Out of Stock
-                            {% else %}
-                            Low Stock
-                            {% endif %}
-                        </td>
+                        <td>Rs. {{product.price}}</td>
                         <td>
                             <a href="{% url 'admin:merchSite_product_change' product.id %}" class="add-stock">Add Stock</a>
                         </td>
-                    </tr>
+                        <td>{{product.discount}}</td>
 
-                    {% endif %}
+                    </tr>
                 {% endfor %}
                 
             </tbody>
@@ -97,22 +93,31 @@
                     <th>Products List</th>
                     <th>User</th>
                     <th>Quantity</th>
-                    <th>Status</th>
+                    <th>Paid?</th>
+                    <th>Payment Option</th>
                     <th>Action</th>
-                </tr>
+                </tr>   
             </thead>
             <tbody>
-                {% for order in pending_order %}
+                {% for order in pending_orders_offload %}
                      <tr>
                         <td>
-                            {{order.date}}
+                            <ul style="list-style-type:none; padding: 0;">
+                            {% for item in order.products%}
+                            <li style="padding-block: 0.25em;">
+                                <span style="font-weight: 600;">{{item.product}}</span> ({{item.size}}) * {{item.quantity}} unit
+
+                            </li>
+                            {% endfor %}
+                            </ul>
+                            
                         </td>
-                        <td>{{order.user}}</td>
-                        <td>{{product.price}}</td>
+                        <td>{{order.order.user}}</td>
+                        <td>Rs. {{order.order.price}}</td>
+                        <td>{{order.order.is_paid}}</td>
+                        <td>{{order.order.payment_option}}</td>
                         <td>
-                        </td>
-                        <td>
-                            <a href="" class="add-stock">Change Status</a>
+                            <a href="{% url 'admin:merchSite_order_change' order.order.id %}" class="add-stock">Change Status</a>
                         </td>
                     </tr>
 
