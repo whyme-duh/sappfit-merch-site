@@ -1,5 +1,7 @@
 import json
 
+import json
+
 from django.utils import timezone
 import datetime
 from django.db.models import Sum
@@ -32,7 +34,6 @@ def custom_admin_view(request):
         monthly_sales = Order.objects.filter(date__month = current_month, status = "Delivered").aggregate(Sum('price'))['price__sum'] or 0
         context = {
             "total_income" : total_income,
-            "pending_order" : pending_order,
             "total_sales" : total_sales,
             "current_month_name" : current_month_name,
             "monthly_sales" : monthly_sales,
