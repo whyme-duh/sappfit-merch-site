@@ -94,7 +94,7 @@ def detail_page(request, slug):
     if reviews:
         for review in reviews:
             total_stars_count += review.review_star
-        overall_rating = total_stars_count/total_rating
+        overall_rating = round(total_stars_count/total_rating, 1)
             
     
     

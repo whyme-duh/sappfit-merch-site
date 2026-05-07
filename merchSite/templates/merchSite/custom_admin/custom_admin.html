@@ -1,11 +1,12 @@
 {% extends 'merchSite/base.html' %}
 {% load static %}
 <title>{% block title %} Custom Admin {% endblock %}</title>
+
 {% block content %}
 
 <div class="main-content container">
     <header class="d-flex justify-content-between align-items-center mb-5">
-        <h2 class="header">Brief Admin Page</h2>
+        <h1 class="header">Brief Admin Page</h1>
         <a href="{% url 'admin:index' %}">
             <button class="btn btn-outline-dark px-4" style="border-radius: 8px;">Admin Page</button>
 
@@ -61,6 +62,7 @@
                     <th>Product Name</th>
                     <th>Category</th>
                     <th>Size Options</th>
+                    <th>Total Quantity</th>
                     <th>Price</th>
                     <th>Action</th>
                     <th>Featured</th>
@@ -86,25 +88,21 @@
         </table>
     </div>
     <div class="inventory-section mt-5">
-        <h5 class="mb-4" style="font-weight: 600;">Pending Orders</h5>
-        <table class="table">
+        <h5 style="font-weight: 600;">Pending Orders</h5>
+        <small style="color:grey;">This table contains the list of pending orders. </small>
+
+        <table class="table mt-3">
             <thead>
                 <tr>
                     <th>Products List</th>
                     <th>User</th>
-<<<<<<< HEAD
-                    <th>Quantity</th>
+                    <th>Cost</th>
                     <th>Paid?</th>
-=======
-                    <th>Total Cost</th>
-                    <th>Order Placed</th>
->>>>>>> ccbc7cc40475f32a91b309175a303024bdac67ca
                     <th>Payment Option</th>
                     <th>Action</th>
                 </tr>   
             </thead>
             <tbody>
-<<<<<<< HEAD
                 {% for order in pending_orders_offload %}
                      <tr>
                         <td>
@@ -123,22 +121,7 @@
                         <td>{{order.order.is_paid}}</td>
                         <td>{{order.order.payment_option}}</td>
                         <td>
-                            <a href="{% url 'admin:merchSite_order_change' order.order.id %}" class="add-stock">Change Status</a>
-=======
-                {% for order in pending_order_list %}
-                     <tr>
-                        <td>
-                            {% for item in order.products %}
-                            {{item.product}} ({{item.size}} size, {{item.quantity}} unit)
-                            {% endfor %}
-                        </td>
-                        <td>{{order.orders.user}}</td>
-                        <td>Rs. {{order.orders.price}}</td>
-                        <td>{{order.orders.date|date:'d M, Y'}}</td>
-                        <td>{{order.orders.payment_option}}</td>
-                        <td>
-                            <a href="{% url 'admin:merchSite_order_change' order.orders.id %}" class="add-stock">Change Status</a>
->>>>>>> ccbc7cc40475f32a91b309175a303024bdac67ca
+                            <a href="{% url 'admin:merchSite_order_change' order.order.id %}" class="add-stock">Edit Order</a>
                         </td>
                     </tr>
 

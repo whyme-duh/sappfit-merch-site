@@ -31,7 +31,7 @@
                     {% endif %} 
                 </a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'profile'%}" class="nav-items">Profile</a>
+                <a href="{% url 'profile'%}" class="nav-items">My Account</a>
                 {% else %}
                 <a href="{% url 'login'%}" class="nav-items">Login</a>
                 <a href="{% url 'sign-up'%}" class="nav-items">Sign Up</a>
