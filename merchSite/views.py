@@ -126,7 +126,18 @@ def add_to_cart(request, id):
     
     product = get_object_or_404(Product, id = id)
     selected_size = request.POST.get('size')
-    quantity = int(request.POST.get('quantity',1))
+
+
+    try:
+        quantity = int(request.POST.get('quantity',1))
+        if quantity <= 0:
+            messages.error(request, "Quantity cannot be negative!")
+            return redirect(request.META.get('HTTP_REFERER', 'products'))
+    except (ValueError, TypeError):
+        messages.error("Invalid Quantity Provided")
+        return redirect(request.META.get('HTTP_REFERER', 'products'))
+        
+
 
     user = None
     session_id = None
@@ -175,7 +186,7 @@ def add_to_cart(request, id):
     else:
         messages.error(request, 'Invalid size selected')
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER', 'products'))
 
 
 # this function is used for "checkout" button on the product page

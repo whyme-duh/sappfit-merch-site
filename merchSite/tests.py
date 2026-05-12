@@ -96,6 +96,16 @@ class AddingToCartTest(TestCase):
         print("Test Passed")
 
 
+    def test_negative_quantity_in_cart(self):
+        response = self.client.post(self.add_to_cart_url, {'size' : 'L', 'quantity' : -1}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Quantity cannot be negative!")
+
+        from . models import Cart
+        self.assertFalse(Cart.objects.filter(product= self.product, size = 'L').exist())
+        print("Test Passed")
+
+
     
         
     
