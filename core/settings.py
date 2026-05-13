@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*",  "192.168.1.167:8000"]
+ALLOWED_HOSTS = ["*",  "192.168.1.167:6000"]
 
 UNFOLD = {
     "SITE_TITLE": "SappFIt MerchSite",
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'constance.backends.database',
     'merchSite',
     'users',
+    'corsheaders',
     'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,6 +73,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000", 
 ]
 
 ROOT_URLCONF = 'core.urls'
