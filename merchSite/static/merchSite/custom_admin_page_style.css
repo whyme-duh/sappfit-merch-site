@@ -111,6 +111,10 @@ body {
     border-radius: 5px;
 }
 
+.add-stock:hover{
+    color: white;
+    background-color: rgb(13, 116, 6);
+}
 .product-detail-link{
     text-decoration: none;
     color: black;

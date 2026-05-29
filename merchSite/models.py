@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 import PIL
+from django.urls import reverse
 from django.views import View
 from django.forms import fields, forms
 from ckeditor.fields import RichTextField
@@ -68,7 +69,8 @@ class Product(models.Model):
         available_sizes = [size for size, value in self.size_options.items() if value > 0]
         return f"Available in " + ", ".join(available_sizes) + " sizes" if available_sizes else "Out of Stock"
 
-    
+    def get_absolute_url(self):
+        return reverse('detail-page', args=[self.slug])
    
 class Order(models.Model):
     STATUS_CHOICES = (

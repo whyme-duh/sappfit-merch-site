@@ -3,7 +3,7 @@ import hashlib
 import hmac
 import json
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from core import settings
 from merchSite.utils import send_confirmation_email
 from . models import Product, Cart,  Order, Categorie, ReturnProduct
@@ -28,6 +28,23 @@ def error_404_view(request, exception):
 def error_500_view(request):
     return render(request, 'error/500.html')
 
+# this function is a test that is to be used in sappfit website
+def featured_products_api(request):
+    products = Product.objects.filter(discount = True)[:3]
+    data = []
+    for p in products:
+        image_url = request.build_absolute_uri(p.image.url) if p.image else None
+        product_url = request.build_absolute_uri(p.get_absolute_url()) if p.slug else None
+
+        data.append({
+            'id': p.id,
+            'name' : p.name,
+            'price' : p.price,
+            'discount_price' : p.discount_price,
+            'image_url' : image_url,
+            'product_url' : product_url
+        })
+    return JsonResponse(data, safe = False)
 
 def index(request):
     # this date is used at the footer
@@ -48,7 +65,6 @@ def product_filter_along_with_category(request, id, filter):
         products = Product.objects.filter(category = id).order_by('-price')
     categories = Categorie.objects.all()
     return render(request, 'merchSite/productsByCategory.html', { "products" : products, "categories" : categories, "id": id})
-
 
 
 def products_page(request):
@@ -94,7 +110,7 @@ def detail_page(request, slug):
     if reviews:
         for review in reviews:
             total_stars_count += review.review_star
-        overall_rating = total_stars_count/total_rating
+        overall_rating = round(total_stars_count/total_rating, 1)
             
     
     
@@ -126,7 +142,18 @@ def add_to_cart(request, id):
     
     product = get_object_or_404(Product, id = id)
     selected_size = request.POST.get('size')
-    quantity = int(request.POST.get('quantity',1))
+
+
+    try:
+        quantity = int(request.POST.get('quantity',1))
+        if quantity <= 0:
+            messages.error(request, "Quantity cannot be negative!")
+            return redirect(request.META.get('HTTP_REFERER', 'products'))
+    except (ValueError, TypeError):
+        messages.error("Invalid Quantity Provided")
+        return redirect(request.META.get('HTTP_REFERER', 'products'))
+        
+
 
     user = None
     session_id = None
@@ -175,7 +202,7 @@ def add_to_cart(request, id):
     else:
         messages.error(request, 'Invalid size selected')
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER', 'products'))
 
 
 # this function is used for "checkout" button on the product page
