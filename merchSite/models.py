@@ -119,7 +119,7 @@ class Order(models.Model):
     def add_product(self, product, size, quantity, price):
         product_data = {
             'order_id' : self.id,
-            'id': product.id,
+            'id': producwt.id,
             'product': product.name, 
             'size': size,
             'quantity': quantity,
