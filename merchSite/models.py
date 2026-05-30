@@ -8,6 +8,7 @@ from django.views import View
 from django.forms import fields, forms
 from ckeditor.fields import RichTextField
 from django.db.models import JSONField
+from django.core.exceptions import ValidationError
 import json
 # Create your models here.
 
@@ -50,11 +51,30 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+
+    def clean(self):
+        if self.discount and not self.discount_price:
+            raise ValidationError(
+                {
+                    'discount_price' : 'Please provide the discount price.'
+                }
+            )
+        if self.discount and self.discount_price > self.price:
+            raise ValidationError(
+                {
+                    'discount_price': 'Discount price cannot be greater than the actual price.'
+                }
+            )
+            
+        super().clean()
+    
     def save(self, *args, **kwargs):
         if isinstance(self.size_options, dict):
             self.total_quantity = sum(int(quantity) for quantity in self.size_options.values() if str(quantity).isdigit())
         else:
             self.total_quantity = 0
+
+        self.full_clean()
         super(Product, self).save(*args, **kwargs)
 
 
@@ -121,7 +141,7 @@ class Order(models.Model):
     def add_product(self, product, size, quantity, price):
         product_data = {
             'order_id' : self.id,
-            'id': producwt.id,
+            'id': product.id,
             'product': product.name, 
             'size': size,
             'quantity': quantity,

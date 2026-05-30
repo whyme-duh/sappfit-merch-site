@@ -26,9 +26,9 @@ import dj_database_url
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*",  "192.168.1.167:6000"]
+ALLOWED_HOSTS = ["*"]
 
 UNFOLD = {
     "SITE_TITLE": "SappFIt MerchSite",
@@ -77,6 +77,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000", 
+    "http://sappfit.pythonanywhere.com", 
 ]
 
 ROOT_URLCONF = 'core.urls'
